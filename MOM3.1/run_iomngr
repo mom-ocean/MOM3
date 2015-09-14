@@ -1,0 +1,68 @@
+#! /bin/csh -f
+echo " "
+echo " =>executing: run_iomngr"
+echo " "
+#
+# script for testing the io manager on CRAY and sgi platforms 
+#
+
+#set PLATFORM = 'sgi' # also for everything other than CRAY
+set PLATFORM = 'cray'
+
+
+set MOMpath = /net/rcp/MOM_3        # base model code
+set WORK = TEMP_DIR                 # temp directory
+set OUTPUT = `pwd`                  # directory holding run script
+
+set error = false
+if (! -r iomngr.F) then
+  echo '=>Error: "iomngr.F" is not in this UPDATES directory'
+  set error = true
+endif
+
+if (! -r iomngr.h) then
+  echo '=>Error: "iomngr.h" is not in this UPDATES directory'
+  set error = true
+endif
+
+if ("$error" == "true") then
+  exit
+endif
+
+mkdir $WORK
+cp iomngr.F $WORK
+cp iomngr.h $WORK
+set list = (stdunits.h derived_options.h)
+foreach file ($list)
+  cp $MOMpath/$file $WORK
+end
+cd $WORK
+
+
+echo "=>compiling..."
+
+if ($PLATFORM == 'sgi') then
+ echo '=>running iomngr test on sgi (or anyting other than CRAY)'
+ set OPTIONS = "-Dsgi -Dtest_iomngr"
+ echo 'OPTIONS=' $OPTIONS
+ f90 $OPTIONS -o sgi_a.out iomngr.F
+ echo "=> running...results are being written to results_sgi_iotest"
+ sgi_a.out > $OUTPUT/results_sgi_iotest
+endif
+
+
+if ($PLATFORM == 'cray') then
+ echo '=>running iomngr test on cray (YMP, C90, or T90)'
+ /bin/rm .assign
+ set OPTIONS = " -Dcray_t90 -O 2  -Dtest_iomngr"
+ echo 'OPTIONS=' $OPTIONS
+ f90 $OPTIONS -o cray_a.out iomngr.F
+ echo "=> running...results are being written to results_cray_iotest"
+ cray_a.out > $OUTPUT/results_cray_iotest
+endif
+
+cd $OUTPUT
+/bin/rm -r $WORK
+
+echo " "
+echo "=> Done"

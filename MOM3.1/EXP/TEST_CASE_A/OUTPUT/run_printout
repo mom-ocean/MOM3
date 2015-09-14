@@ -1,0 +1,881 @@
+Warning: no access to tty (Bad file number).
+Thus no job control in this shell.
+--------------------------------------------------------------
+NOAA/GFDL            CRAY T932           NQS BATCH JOB SUMMARY
+--------------------------------------------------------------
+
+NQS Request:  run_mom_1A2
+NQS ID:       4706.t932
+
+NQS Queue:    aprod@t932
+
+#QSUB -lT     10800sec
+#QSUB -lM     28mw
+#QSUB -lQ     4mw
+
+Submitted:    Thu Jul 6 10:28:45
+Started:      Thu Jul 6 10:34:50
+
+--------------------------------------------------------------
+
+
+unset echo timestamp
+Thu Jul  6 10:34:51 + executing .cshrc
+Thu Jul  6 10:34:51 + executing .cshrc-ett
+unset echo timestamp
+Thu Jul  6 10:34:52 + executing .login
+/usr/spool/nqe/spool/scripts/++08X+++++0+++
++ set myEXP = TEST_CASE_A
++ set myHOST = rcp:
++ set datainpath = /archive/ett/MOM_3/EXP/TEST_CASE_A
++ set DATABASE = /archive/rcp/MOM_3/DATABASE
++ set MOMpath = /net/rcp/MOM_3
++ set MOMupdates = /t90/ett/EXP/TEST_CASE_A/MOM_UPDATES
++ set printoutpath = /t90/ett/EXP/TEST_CASE_A
++ set WORKDIR = /vftmp/ett/tmpdir.089795a
++ set NEWNETCDF = /usr/local/lib
++ set NETCDFlib = -L/usr/local/lib -ludunits -L/usr/local/lib -lnetcdf
++ set NETCDFINCpath = /usr/local/include
++ set CASE = A
++ set LEVITUS_DATA_IC = yes
++ set SPONGE_DATA = no
++ set SCRIPPS_DATA = yes
++ set READ_DENSCOEF = no
++ set COMPILE_LIST = all
++ setenv NPES 1
++ set BOUNDS_CHECKER = yes
++ if ( A == 0 ) then
++ if ( A == 1 ) then
++ if ( A == 2 || A == A ) then
++ set ATMOSpath = /net/rcp/MOM_3/SBC/MONTHLY
++ echo ==> Configuring for MONTHLY S.B.C. TEST CASE #A
+==> Configuring for MONTHLY S.B.C. TEST CASE #A
++ else if ( A == 3 ) then
++ set iotraj = -1
++ set iotavg = -1
++ set iotmb = -1
++ set ioglen = -1
++ set iotrmb = -1
++ set iovmsf = -1
++ set iogyre = -1
++ set ioprxz = -1
++ set ioext = -1
++ set iodsp = -1
++ set iotsi = -1
++ set iozmbc = -1
++ set ioxbt = -1
++ echo  
+ 
++ echo OPTIONS follow:
+OPTIONS follow:
++ echo  
+ 
++ set OPTS =  
++ if ( yes == yes ) then
++ set OPTS =    -Dlevitus_ic
++ else
++ if ( yes == yes ) then
++ set OPTS =     -Dlevitus_ic -Dscripps_kmt
++ else
++ if ( no == yes ) then
++ if ( no == yes ) then
++ if ( A == 0 ) then
++ if ( A == 1 ) then
++ if ( A == 2 || A == A ) then
++ set OPTS =     -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data
++ else if ( A == 3 ) then
++ set TIMING_OPTIONS =  
++ echo TIMING_OPTIONS =
+TIMING_OPTIONS =
++ echo  
+ 
++ set IO_OPTIONS = -Dramdrive
++ echo IO_OPTIONS = -Dramdrive
+IO_OPTIONS = -Dramdrive
++ echo  
+ 
++ set GRID_OPTIONS = -Dgenerate_a_grid
++ echo GRID_OPTIONS = -Dgenerate_a_grid
+GRID_OPTIONS = -Dgenerate_a_grid
++ echo  
+ 
++ if ( yes == yes ) then
++ set TOPOGRAPHY_OPTIONS = -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes 
++ else
++ echo TOPOGRAPHY_OPTIONS = -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes
+TOPOGRAPHY_OPTIONS = -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes
++ echo  
+ 
++ set EXMODE_OPTIONS = -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian 
++ echo EXMODE_OPTIONS = -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian
+EXMODE_OPTIONS = -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian
++ echo  
+ 
++ set DEBUG_OPTIONS =  
++ echo DEBUG_OPTIONS =
+DEBUG_OPTIONS =
++ echo  
+ 
++ set COMPILER_OPTIONS =  -F -O 2 -ei 
++ if ( yes == yes ) then
++ set COMPILER_OPTIONS = ( -F -O 2 -ei -R b )
++ endif
++ source /local/f90/3.1.0.0
++ set save_echo = 1
++ set save_timestamp = 0
++ unset echo timestamp
+----------------------------------------------------
+SWITCHING THE FORTRAN COMPILER, LIBRARIES, AND TOOLS
+----------------------------------------------------
+Switching 'cf90' to 'cf90.3.1.0.0'...ok.
+Switching 'craylibs' to 'craylibs.3.1.0.0'...ok.
+Switching 'craytools' to 'craytools.3.1.0.0'...ok.
+----------------------------------------------------
++ if ( 1 != 1 ) then
++ set PARALLEL_OPTIONS =  
++ endif
++ echo =>COMPILER OPTIONS = -F -O 2 -ei -R b
+=>COMPILER OPTIONS = -F -O 2 -ei -R b
++ echo  
+ 
++ echo =>PARALLEL OPTIONS =  
+=>PARALLEL OPTIONS =  
++ echo  
+ 
++ set OPT2 =  
++ set OPT2 =   -Dtest_case_A 
++ set OPT2 =   -Dtest_case_A  -Drestorst 
++ set OPT2 =   -Dtest_case_A  -Drestorst  -Dfirfil
++ set OPT2 =   -Dtest_case_A  -Drestorst  -Dfirfil -Drobert_time_filter
++ set OPT2 =   -Dtest_case_A  -Drestorst  -Dfirfil -Drobert_time_filter -Dsalinity_psu
++ set OPT2 =   -Dtest_case_A  -Drestorst  -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian
++ set OPT2 =   -Dtest_case_A  -Drestorst  -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag 
++ set OPT2 =   -Dtest_case_A  -Drestorst  -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag  -Dtracer_horz_mix_const
++ set OPT2 =   -Dtest_case_A  -Drestorst  -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag  -Dtracer_horz_mix_const -Dquicker 
++ set OPT2 =   -Dtest_case_A  -Drestorst  -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag  -Dtracer_horz_mix_const -Dquicker  -Dredi_diffusion
++ set OPT2 =   -Dtest_case_A  -Drestorst  -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag  -Dtracer_horz_mix_const -Dquicker  -Dredi_diffusion -Dgent_mcwilliams
++ set OPT2 =   -Dtest_case_A  -Drestorst  -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag  -Dtracer_horz_mix_const -Dquicker  -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5
++ set OPT2 =   -Dtest_case_A  -Drestorst  -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag  -Dtracer_horz_mix_const -Dquicker  -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical
++ set OPT2 =   -Dtest_case_A  -Drestorst  -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag  -Dtracer_horz_mix_const -Dquicker  -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med 
++ set OPT2 =   -Dtest_case_A  -Drestorst  -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag  -Dtracer_horz_mix_const -Dquicker  -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med  -Dbbl_ag -Ddetrain -Dbbl_mask
++ set OPT2 =   -Dtest_case_A  -Drestorst  -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag  -Dtracer_horz_mix_const -Dquicker  -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med  -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell
++ echo OPT2 = -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell
+OPT2 = -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell
++ echo  
+ 
++ set OPT =   -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes  -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian     
++ echo OPT = -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian
+OPT = -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian
++ echo  
+ 
++ if ( 1 != 1 ) then
++ set DIAGNOSTICS =  
++ set DIAGNOSTICS =    -Dshow_zonal_mean_of_sbc 
++ set DIAGNOSTICS =     -Dshow_zonal_mean_of_sbc  -Dgyre_components 
++ set DIAGNOSTICS =      -Dshow_zonal_mean_of_sbc  -Dgyre_components  -Dtracer_averages 
++ set DIAGNOSTICS =       -Dshow_zonal_mean_of_sbc  -Dgyre_components  -Dtracer_averages  -Denergy_analysis 
++ set DIAGNOSTICS =        -Dshow_zonal_mean_of_sbc  -Dgyre_components  -Dtracer_averages  -Denergy_analysis  -Dtime_step_monitor 
++ set DIAGNOSTICS =         -Dshow_zonal_mean_of_sbc  -Dgyre_components  -Dtracer_averages  -Denergy_analysis  -Dtime_step_monitor  -Dmatrix_sections 
++ set DIAGNOSTICS =          -Dshow_zonal_mean_of_sbc  -Dgyre_components  -Dtracer_averages  -Denergy_analysis  -Dtime_step_monitor  -Dmatrix_sections  -Dtrajectories 
++ set DIAGNOSTICS =           -Dshow_zonal_mean_of_sbc  -Dgyre_components  -Dtracer_averages  -Denergy_analysis  -Dtime_step_monitor  -Dmatrix_sections  -Dtrajectories  -Dstability_tests 
++ set DIAGNOSTICS =            -Dshow_zonal_mean_of_sbc  -Dgyre_components  -Dtracer_averages  -Denergy_analysis  -Dtime_step_monitor  -Dmatrix_sections  -Dtrajectories  -Dstability_tests  -Dsave_convection 
++ set DIAGNOSTICS =             -Dshow_zonal_mean_of_sbc  -Dgyre_components  -Dtracer_averages  -Denergy_analysis  -Dtime_step_monitor  -Dmatrix_sections  -Dtrajectories  -Dstability_tests  -Dsave_convection  -Dsnapshots 
++ set DIAGNOSTICS =              -Dshow_zonal_mean_of_sbc  -Dgyre_components  -Dtracer_averages  -Denergy_analysis  -Dtime_step_monitor  -Dmatrix_sections  -Dtrajectories  -Dstability_tests  -Dsave_convection  -Dsnapshots  -Dtime_averages 
++ set DIAGNOSTICS =               -Dshow_zonal_mean_of_sbc  -Dgyre_components  -Dtracer_averages  -Denergy_analysis  -Dtime_step_monitor  -Dmatrix_sections  -Dtrajectories  -Dstability_tests  -Dsave_convection  -Dsnapshots  -Dtime_averages  -Dsave_mixing_coeff 
++ set DIAGNOSTICS =                -Dshow_zonal_mean_of_sbc  -Dgyre_components  -Dtracer_averages  -Denergy_analysis  -Dtime_step_monitor  -Dmatrix_sections  -Dtrajectories  -Dstability_tests  -Dsave_convection  -Dsnapshots  -Dtime_averages  -Dsave_mixing_coeff  -Dsave_pressure 
++ set DIAGNOSTICS =                 -Dshow_zonal_mean_of_sbc  -Dgyre_components  -Dtracer_averages  -Denergy_analysis  -Dtime_step_monitor  -Dmatrix_sections  -Dtrajectories  -Dstability_tests  -Dsave_convection  -Dsnapshots  -Dtime_averages  -Dsave_mixing_coeff  -Dsave_pressure  -Dmeridional_overturning_basin 
++ set DIAGNOSTICS =                  -Dshow_zonal_mean_of_sbc  -Dgyre_components  -Dtracer_averages  -Denergy_analysis  -Dtime_step_monitor  -Dmatrix_sections  -Dtrajectories  -Dstability_tests  -Dsave_convection  -Dsnapshots  -Dtime_averages  -Dsave_mixing_coeff  -Dsave_pressure  -Dmeridional_overturning_basin  -Dmeridional_tracer_budget 
++ set DIAGNOSTICS =                   -Dshow_zonal_mean_of_sbc  -Dgyre_components  -Dtracer_averages  -Denergy_analysis  -Dtime_step_monitor  -Dmatrix_sections  -Dtrajectories  -Dstability_tests  -Dsave_convection  -Dsnapshots  -Dtime_averages  -Dsave_mixing_coeff  -Dsave_pressure  -Dmeridional_overturning_basin  -Dmeridional_tracer_budget  -Dreadrmsk 
++ set DIAGNOSTICS =                    -Dshow_zonal_mean_of_sbc  -Dgyre_components  -Dtracer_averages  -Denergy_analysis  -Dtime_step_monitor  -Dmatrix_sections  -Dtrajectories  -Dstability_tests  -Dsave_convection  -Dsnapshots  -Dtime_averages  -Dsave_mixing_coeff  -Dsave_pressure  -Dmeridional_overturning_basin  -Dmeridional_tracer_budget  -Dreadrmsk  -Dshow_details 
++ endif
++ echo DIAGNOSTICS = -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details
+DIAGNOSTICS = -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details
++ echo  
+ 
++ set NETCDF = -Duse_netCDF
++ if ( -Duse_netCDF ==  ) then
++ set OPTIONS =     -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data    -Dtest_case_A  -Drestorst  -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag  -Dtracer_horz_mix_const -Dquicker  -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med  -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell   -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes  -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian      -Duse_netCDF
++ echo OPTIONS = -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF
+OPTIONS = -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF
++ echo  
+ 
++ echo ==> changing to a working directory and cleaning it out
+==> changing to a working directory and cleaning it out
++ cd /vftmp/ett/tmpdir.089795a
++ if ( all == all ) then
+No match.
+No match.
+No match.
++ endif
++ if ( -r restart.dta ) then
+No match.
++ endif
+No match.
++ if ( all == all ) then
++ echo ==> copying files from /net/rcp/MOM_3
+==> copying files from /net/rcp/MOM_3
++ rcp /net/rcp/MOM_3/chksum.F90 /net/rcp/MOM_3/datamod.F90 /net/rcp/MOM_3/diag_snapregions.F90 /net/rcp/MOM_3/mom3mpp.F90 /net/rcp/MOM_3/mpp.F90 /net/rcp/MOM_3/mpp_domains.F90 /net/rcp/MOM_3/mpp_io.F90 /net/rcp/MOM_3/readic_mod.F90 /net/rcp/MOM_3/sbcmod.F90 /net/rcp/MOM_3/tinterp.F90 /net/rcp/MOM_3/tmngr_mod.F90 /net/rcp/MOM_3/xobc_mod.F90 /net/rcp/MOM_3/xsponge_mod.F90 .
++ rcp /net/rcp/MOM_3/accel.h /net/rcp/MOM_3/addobc.F /net/rcp/MOM_3/adv_vel.F /net/rcp/MOM_3/baroclinic.F /net/rcp/MOM_3/barotropic.F /net/rcp/MOM_3/bbl.h /net/rcp/MOM_3/bcest.F /net/rcp/MOM_3/blkdta.F /net/rcp/MOM_3/blmixi.F /net/rcp/MOM_3/calc_psgrad.F /net/rcp/MOM_3/checks.F /net/rcp/MOM_3/cnep.h /net/rcp/MOM_3/cobc.F /net/rcp/MOM_3/cobc.h /net/rcp/MOM_3/cobc2.F /net/rcp/MOM_3/congrad.F /net/rcp/MOM_3/convect.F /net/rcp/MOM_3/coord.h /net/rcp/MOM_3/cpolar.h /net/rcp/MOM_3/cprnts.h /net/rcp/MOM_3/cshort.h /net/rcp/MOM_3/ctavg.h /net/rcp/MOM_3/delsq.F /net/rcp/MOM_3/dens.h /net/rcp/MOM_3/denscoef.F /net/rcp/MOM_3/derived_options.h /net/rcp/MOM_3/diag.h /net/rcp/MOM_3/diag_energy.F /net/rcp/MOM_3/diag_gyre.F /net/rcp/MOM_3/diag_initial.F /net/rcp/MOM_3/diag_masks.F /net/rcp/MOM_3/diag_merd_basin.F /net/rcp/MOM_3/diag_mw_inside.F /net/rcp/MOM_3/diag_mw_outside.F /net/rcp/MOM_3/diag_nor1st.F /net/rcp/MOM_3/diag_out_scalar.F /net/rcp/MOM_3/diag_out_snap.F /net/rcp/MOM_3/diag_out_timavg.F /net/rcp/MOM_3/diag_out_xy.F /net/rcp/MOM_3/diag_out_xyz.F /net/rcp/MOM_3/diag_out_yz.F /net/rcp/MOM_3/diag_ptraj.F /net/rcp/MOM_3/diag_ptraj.h /net/rcp/MOM_3/diag_region.F /net/rcp/MOM_3/diag_region.h /net/rcp/MOM_3/diag_region_out.F /net/rcp/MOM_3/diag_region_out.h /net/rcp/MOM_3/diag_rhoterms.F /net/rcp/MOM_3/diag_snapregions.h /net/rcp/MOM_3/diag_stab.F /net/rcp/MOM_3/diag_stab.h /net/rcp/MOM_3/diag_termbal.F /net/rcp/MOM_3/diag_termbal.h /net/rcp/MOM_3/diag_vmix.F /net/rcp/MOM_3/diag_xbt.F /net/rcp/MOM_3/diag_xbt.h /net/rcp/MOM_3/docnam.h /net/rcp/MOM_3/driver.F /net/rcp/MOM_3/emode.h /net/rcp/MOM_3/expl_freesurf.F /net/rcp/MOM_3/fast_fir.F /net/rcp/MOM_3/fdifm.h /net/rcp/MOM_3/fdift.h /net/rcp/MOM_3/filfir.F /net/rcp/MOM_3/filt.F /net/rcp/MOM_3/filtr.F /net/rcp/MOM_3/filtr.h /net/rcp/MOM_3/filuv.F /net/rcp/MOM_3/findex.F /net/rcp/MOM_3/gasbc.F /net/rcp/MOM_3/get_ocean_bc.F /net/rcp/MOM_3/getriver.F /net/rcp/MOM_3/gosbc.F /net/rcp/MOM_3/grdvar.h /net/rcp/MOM_3/grids.F /net/rcp/MOM_3/hmixc.F /net/rcp/MOM_3/hmixc.h /net/rcp/MOM_3/impl_freesurf.F /net/rcp/MOM_3/implq.F /net/rcp/MOM_3/index.h /net/rcp/MOM_3/invtri.F /net/rcp/MOM_3/iomngr.F /net/rcp/MOM_3/iomngr.h /net/rcp/MOM_3/iounit.h /net/rcp/MOM_3/isopyc.F /net/rcp/MOM_3/isopyc.h /net/rcp/MOM_3/isopyc_sf.h /net/rcp/MOM_3/kppmix.F /net/rcp/MOM_3/libpatch.F /net/rcp/MOM_3/loadmw.F /net/rcp/MOM_3/mom.F /net/rcp/MOM_3/mw.h /net/rcp/MOM_3/nc_mom.h /net/rcp/MOM_3/ndcon.h /net/rcp/MOM_3/neptune.F /net/rcp/MOM_3/nonconstdiff.F /net/rcp/MOM_3/obc_data.h /net/rcp/MOM_3/odam.F /net/rcp/MOM_3/param.h /net/rcp/MOM_3/pconst.h /net/rcp/MOM_3/poisson.F /net/rcp/MOM_3/ppmix.F /net/rcp/MOM_3/r_time_filter.F /net/rcp/MOM_3/restio.F /net/rcp/MOM_3/rinum.F /net/rcp/MOM_3/rinum.h /net/rcp/MOM_3/rotation.F /net/rcp/MOM_3/scalar.h /net/rcp/MOM_3/setocn.F /net/rcp/MOM_3/setsff.F /net/rcp/MOM_3/setvbc.F /net/rcp/MOM_3/size.h /net/rcp/MOM_3/size_check.F /net/rcp/MOM_3/smagnl.F /net/rcp/MOM_3/state.F /net/rcp/MOM_3/state.h /net/rcp/MOM_3/statekpp.F /net/rcp/MOM_3/stdunits.h /net/rcp/MOM_3/switch.F /net/rcp/MOM_3/switch.h /net/rcp/MOM_3/task_simulator.F /net/rcp/MOM_3/taskrows.h /net/rcp/MOM_3/tcmix.F /net/rcp/MOM_3/tcslab.h /net/rcp/MOM_3/timeinterp.F /net/rcp/MOM_3/timer.F /net/rcp/MOM_3/timer.h /net/rcp/MOM_3/tmngr.F /net/rcp/MOM_3/tmngr.h /net/rcp/MOM_3/topog.F /net/rcp/MOM_3/tracer.F /net/rcp/MOM_3/tracer_adv_flx.F /net/rcp/MOM_3/unesco_density.F /net/rcp/MOM_3/util.F /net/rcp/MOM_3/vers.h /net/rcp/MOM_3/vmix1d.F /net/rcp/MOM_3/vmixc.F /net/rcp/MOM_3/vmixc.h /net/rcp/MOM_3/xland.F /net/rcp/MOM_3/xland.h .
++ rcp /net/rcp/MOM_3/baroclinic_obc.inc /net/rcp/MOM_3/barotropic1_obc.inc /net/rcp/MOM_3/barotropic2_obc.inc /net/rcp/MOM_3/loadmw_obc.inc /net/rcp/MOM_3/mom_obc.inc /net/rcp/MOM_3/setocn_obc.inc /net/rcp/MOM_3/tracer_obc.inc .
++ else
++ if ( A != 0 ) then
++ echo ==> copying  ATMOS files from /net/rcp/MOM_3/SBC/MONTHLY
+==> copying  ATMOS files from /net/rcp/MOM_3/SBC/MONTHLY
++ rcp rcp:/net/rcp/MOM_3/SBC/MONTHLY/*.[Ffh] .
++ rcp rcp:/net/rcp/MOM_3/SBC/MONTHLY/*.F90 .
++ endif
++ echo ==> copying updated files from /t90/ett/EXP/TEST_CASE_A/MOM_UPDATES
+==> copying updated files from /t90/ett/EXP/TEST_CASE_A/MOM_UPDATES
++ rcp rcp:/t90/ett/EXP/TEST_CASE_A/MOM_UPDATES/*.[Ffh] .
++ rcp rcp:/t90/ett/EXP/TEST_CASE_A/MOM_UPDATES/*.F90 .
+rcp: No match.
++ rcp rcp:/t90/ett/EXP/TEST_CASE_A/MOM_UPDATES/*.inc .
++ /bin/rm a.out
+cmd-1025 /bin/rm: a.out: No such file or directory
++ setenv NPROC 5
++ if ( yes == yes ) then
++ echo => compiling with the bounds checker option
+=> compiling with the bounds checker option
++ endif
++ if ( all == all ) then
++ set list = `ls  *.[Ff] `
++ ls addobc.F adv_vel.F atmos.F baroclinic.F barotropic.F bcest.F blkdta.F blmixi.F calc_psgrad.F checks.F cobc.F cobc2.F congrad.F convect.F delsq.F denscoef.F diag_energy.F diag_gyre.F diag_initial.F diag_masks.F diag_merd_basin.F diag_mw_inside.F diag_mw_outside.F diag_nor1st.F diag_out_scalar.F diag_out_snap.F diag_out_timavg.F diag_out_xy.F diag_out_xyz.F diag_out_yz.F diag_ptraj.F diag_region.F diag_region_out.F diag_rhoterms.F diag_stab.F diag_termbal.F diag_vmix.F diag_xbt.F driver.F expl_freesurf.F fast_fir.F filfir.F filt.F filtr.F filuv.F findex.F gasbc.F get_ocean_bc.F getriver.F gosbc.F grids.F hmixc.F impl_freesurf.F implq.F invtri.F iomngr.F isopyc.F kppmix.F libpatch.F loadmw.F mom.F neptune.F nonconstdiff.F odam.F poisson.F ppmix.F r_time_filter.F restio.F rinum.F rotation.F setatm.F setocn.F setsff.F setvbc.F size_check.F smagnl.F state.F statekpp.F switch.F task_simulator.F tcmix.F timeinterp.F timer.F tmngr.F topog.F tracer.F tracer_adv_flx.F unesco_density.F util.F vmix1d.F vmixc.F xland.F
+No match.
++ else
++ echo  
+ 
++ echo => Preprocessing and Compiling the following...
+=> Preprocessing and Compiling the following...
++ set list90 = ( mpp.F90 mpp_domains.F90 mpp_io.F90 datamod.F90 )
++ set list90 = ( mpp.F90 mpp_domains.F90 mpp_io.F90 datamod.F90 mom3mpp.F90 sbcmod.F90 tmngr_mod.F90 )
++ set list90 = ( mpp.F90 mpp_domains.F90 mpp_io.F90 datamod.F90 mom3mpp.F90 sbcmod.F90 tmngr_mod.F90 xobc_mod.F90 xsponge_mod.F90 chksum.F90 )
++ set list90 = ( mpp.F90 mpp_domains.F90 mpp_io.F90 datamod.F90 mom3mpp.F90 sbcmod.F90 tmngr_mod.F90 xobc_mod.F90 xsponge_mod.F90 chksum.F90 tinterp.F90 )
++ if ( A == 2 || A == A ) then
++ set list90 = ( mpp.F90 mpp_domains.F90 mpp_io.F90 datamod.F90 mom3mpp.F90 sbcmod.F90 tmngr_mod.F90 xobc_mod.F90 xsponge_mod.F90 chksum.F90 tinterp.F90 xctdbc_mod.F90 )
++ endif
++ foreach file ( mpp.F90 mpp_domains.F90 mpp_io.F90 datamod.F90 mom3mpp.F90 sbcmod.F90 tmngr_mod.F90 xobc_mod.F90 xsponge_mod.F90 chksum.F90 tinterp.F90 xctdbc_mod.F90 )
++ echo mpp.F90
+mpp.F90
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c mpp.F90
++ end
++ echo mpp_domains.F90
+mpp_domains.F90
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c mpp_domains.F90
++ end
++ echo mpp_io.F90
+mpp_io.F90
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c mpp_io.F90
++ end
++ echo datamod.F90
+datamod.F90
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c datamod.F90
++ end
++ echo mom3mpp.F90
+mom3mpp.F90
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c mom3mpp.F90
++ end
++ echo sbcmod.F90
+sbcmod.F90
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c sbcmod.F90
++ end
++ echo tmngr_mod.F90
+tmngr_mod.F90
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c tmngr_mod.F90
++ end
++ echo xobc_mod.F90
+xobc_mod.F90
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c xobc_mod.F90
++ end
++ echo xsponge_mod.F90
+xsponge_mod.F90
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c xsponge_mod.F90
++ end
++ echo chksum.F90
+chksum.F90
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c chksum.F90
++ end
++ echo tinterp.F90
+tinterp.F90
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c tinterp.F90
++ end
++ echo xctdbc_mod.F90
+xctdbc_mod.F90
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c xctdbc_mod.F90
++ end
++ foreach file ( addobc.F adv_vel.F atmos.F baroclinic.F barotropic.F bcest.F blkdta.F blmixi.F calc_psgrad.F checks.F cobc.F cobc2.F congrad.F convect.F delsq.F denscoef.F diag_energy.F diag_gyre.F diag_initial.F diag_masks.F diag_merd_basin.F diag_mw_inside.F diag_mw_outside.F diag_nor1st.F diag_out_scalar.F diag_out_snap.F diag_out_timavg.F diag_out_xy.F diag_out_xyz.F diag_out_yz.F diag_ptraj.F diag_region.F diag_region_out.F diag_rhoterms.F diag_stab.F diag_termbal.F diag_vmix.F diag_xbt.F driver.F expl_freesurf.F fast_fir.F filfir.F filt.F filtr.F filuv.F findex.F gasbc.F get_ocean_bc.F getriver.F gosbc.F grids.F hmixc.F impl_freesurf.F implq.F invtri.F iomngr.F isopyc.F kppmix.F libpatch.F loadmw.F mom.F neptune.F nonconstdiff.F odam.F poisson.F ppmix.F r_time_filter.F restio.F rinum.F rotation.F setatm.F setocn.F setsff.F setvbc.F size_check.F smagnl.F state.F statekpp.F switch.F task_simulator.F tcmix.F timeinterp.F timer.F tmngr.F topog.F tracer.F tracer_adv_flx.F unesco_density.F util.F vmix1d.F vmixc.F xland.F )
++ echo addobc.F
+addobc.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c addobc.F
++ end
++ echo adv_vel.F
+adv_vel.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c adv_vel.F
++ end
++ echo atmos.F
+atmos.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c atmos.F
++ end
++ echo baroclinic.F
+baroclinic.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c baroclinic.F
++ end
++ echo barotropic.F
+barotropic.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c barotropic.F
++ end
++ echo bcest.F
+bcest.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c bcest.F
++ end
++ echo blkdta.F
+blkdta.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c blkdta.F
++ end
++ echo blmixi.F
+blmixi.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c blmixi.F
++ end
++ echo calc_psgrad.F
+calc_psgrad.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c calc_psgrad.F
++ end
++ echo checks.F
+checks.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c checks.F
++ end
++ echo cobc.F
+cobc.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c cobc.F
++ end
++ echo cobc2.F
+cobc2.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c cobc2.F
++ end
++ echo congrad.F
+congrad.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c congrad.F
++ end
++ echo convect.F
+convect.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c convect.F
++ end
++ echo delsq.F
+delsq.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c delsq.F
++ end
++ echo denscoef.F
+denscoef.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c denscoef.F
++ end
++ echo diag_energy.F
+diag_energy.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_energy.F
++ end
++ echo diag_gyre.F
+diag_gyre.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_gyre.F
++ end
++ echo diag_initial.F
+diag_initial.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_initial.F
++ end
++ echo diag_masks.F
+diag_masks.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_masks.F
++ end
++ echo diag_merd_basin.F
+diag_merd_basin.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_merd_basin.F
++ end
++ echo diag_mw_inside.F
+diag_mw_inside.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_mw_inside.F
++ end
++ echo diag_mw_outside.F
+diag_mw_outside.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_mw_outside.F
++ end
++ echo diag_nor1st.F
+diag_nor1st.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_nor1st.F
++ end
++ echo diag_out_scalar.F
+diag_out_scalar.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_out_scalar.F
++ end
++ echo diag_out_snap.F
+diag_out_snap.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_out_snap.F
++ end
++ echo diag_out_timavg.F
+diag_out_timavg.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_out_timavg.F
++ end
++ echo diag_out_xy.F
+diag_out_xy.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_out_xy.F
++ end
++ echo diag_out_xyz.F
+diag_out_xyz.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_out_xyz.F
++ end
++ echo diag_out_yz.F
+diag_out_yz.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_out_yz.F
++ end
++ echo diag_ptraj.F
+diag_ptraj.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_ptraj.F
++ end
++ echo diag_region.F
+diag_region.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_region.F
++ end
++ echo diag_region_out.F
+diag_region_out.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_region_out.F
++ end
++ echo diag_rhoterms.F
+diag_rhoterms.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_rhoterms.F
++ end
++ echo diag_stab.F
+diag_stab.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_stab.F
++ end
++ echo diag_termbal.F
+diag_termbal.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_termbal.F
++ end
++ echo diag_vmix.F
+diag_vmix.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_vmix.F
++ end
++ echo diag_xbt.F
+diag_xbt.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c diag_xbt.F
++ end
++ echo driver.F
+driver.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c driver.F
++ end
++ echo expl_freesurf.F
+expl_freesurf.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c expl_freesurf.F
++ end
++ echo fast_fir.F
+fast_fir.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c fast_fir.F
++ end
++ echo filfir.F
+filfir.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c filfir.F
++ end
++ echo filt.F
+filt.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c filt.F
++ end
++ echo filtr.F
+filtr.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c filtr.F
++ end
++ echo filuv.F
+filuv.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c filuv.F
++ end
++ echo findex.F
+findex.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c findex.F
++ end
++ echo gasbc.F
+gasbc.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c gasbc.F
++ end
++ echo get_ocean_bc.F
+get_ocean_bc.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c get_ocean_bc.F
++ end
++ echo getriver.F
+getriver.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c getriver.F
++ end
++ echo gosbc.F
+gosbc.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c gosbc.F
++ end
++ echo grids.F
+grids.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c grids.F
++ end
++ echo hmixc.F
+hmixc.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c hmixc.F
++ end
++ echo impl_freesurf.F
+impl_freesurf.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c impl_freesurf.F
++ end
++ echo implq.F
+implq.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c implq.F
++ end
++ echo invtri.F
+invtri.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c invtri.F
++ end
++ echo iomngr.F
+iomngr.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c iomngr.F
++ end
++ echo isopyc.F
+isopyc.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c isopyc.F
++ end
++ echo kppmix.F
+kppmix.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c kppmix.F
++ end
++ echo libpatch.F
+libpatch.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c libpatch.F
++ end
++ echo loadmw.F
+loadmw.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c loadmw.F
++ end
++ echo mom.F
+mom.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c mom.F
++ end
++ echo neptune.F
+neptune.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c neptune.F
++ end
++ echo nonconstdiff.F
+nonconstdiff.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c nonconstdiff.F
++ end
++ echo odam.F
+odam.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c odam.F
++ end
++ echo poisson.F
+poisson.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c poisson.F
++ end
++ echo ppmix.F
+ppmix.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c ppmix.F
++ end
++ echo r_time_filter.F
+r_time_filter.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c r_time_filter.F
++ end
++ echo restio.F
+restio.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c restio.F
++ end
++ echo rinum.F
+rinum.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c rinum.F
++ end
++ echo rotation.F
+rotation.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c rotation.F
++ end
++ echo setatm.F
+setatm.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c setatm.F
++ end
++ echo setocn.F
+setocn.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c setocn.F
++ end
++ echo setsff.F
+setsff.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c setsff.F
++ end
++ echo setvbc.F
+setvbc.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c setvbc.F
++ end
++ echo size_check.F
+size_check.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c size_check.F
++ end
++ echo smagnl.F
+smagnl.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c smagnl.F
++ end
++ echo state.F
+state.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c state.F
++ end
++ echo statekpp.F
+statekpp.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c statekpp.F
++ end
++ echo switch.F
+switch.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c switch.F
++ end
++ echo task_simulator.F
+task_simulator.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c task_simulator.F
++ end
++ echo tcmix.F
+tcmix.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c tcmix.F
++ end
++ echo timeinterp.F
+timeinterp.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c timeinterp.F
++ end
++ echo timer.F
+timer.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c timer.F
++ end
++ echo tmngr.F
+tmngr.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c tmngr.F
++ end
++ echo topog.F
+topog.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c topog.F
++ end
++ echo tracer.F
+tracer.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c tracer.F
++ end
++ echo tracer_adv_flx.F
+tracer_adv_flx.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c tracer_adv_flx.F
++ end
++ echo unesco_density.F
+unesco_density.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c unesco_density.F
++ end
++ echo util.F
+util.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c util.F
++ end
++ echo vmix1d.F
+vmix1d.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c vmix1d.F
++ end
++ echo vmixc.F
+vmixc.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c vmixc.F
++ end
++ echo xland.F
+xland.F
++ f90 -F -O 2 -ei -R b -Dshow_zonal_mean_of_sbc -Dgyre_components -Dtracer_averages -Denergy_analysis -Dtime_step_monitor -Dmatrix_sections -Dtrajectories -Dstability_tests -Dsave_convection -Dsnapshots -Dtime_averages -Dsave_mixing_coeff -Dsave_pressure -Dmeridional_overturning_basin -Dmeridional_tracer_budget -Dreadrmsk -Dshow_details -Dlevitus_ic -Dscripps_kmt -Dtime_varying_sbc_data -Dtest_case_A -Drestorst -Dfirfil -Drobert_time_filter -Dsalinity_psu -Dvelocity_horz_laplacian -Dtracer_horz_laplacian -Dvelocity_horz_mix_smag -Dtracer_horz_mix_const -Dquicker -Dredi_diffusion -Dgent_mcwilliams -Dkppvmix -Dkpp_nonlocal_transport_no_match -Dkpp_cstar_5 -Dbryan_lewis_vertical -Dxlandmix -Dxlandmix_eta -Dxland_eta_double_med -Dbbl_ag -Ddetrain -Dbbl_mask -Dpartial_cell -Dramdrive -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells -Dsmooth_topo -Dsmooth_topo_allow_deepening -Dsmooth_topog_after_user_changes -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear -Dexplicit_eta_laplacian -Duse_netCDF -I/usr/local/include -c xland.F
++ end
++ echo => linking ...
+=> linking ...
++ f90 -Wl-S 250000 -D preset=nan -L/usr/local/lib -ludunits -L/usr/local/lib -lnetcdf addobc.o adv_vel.o atmos.o baroclinic.o barotropic.o bcest.o blkdta.o blmixi.o calc_psgrad.o checks.o chksum.o cobc.o cobc2.o congrad.o convect.o datamod.o delsq.o denscoef.o diag_energy.o diag_gyre.o diag_initial.o diag_masks.o diag_merd_basin.o diag_mw_inside.o diag_mw_outside.o diag_nor1st.o diag_out_scalar.o diag_out_snap.o diag_out_timavg.o diag_out_xy.o diag_out_xyz.o diag_out_yz.o diag_ptraj.o diag_region.o diag_region_out.o diag_rhoterms.o diag_stab.o diag_termbal.o diag_vmix.o diag_xbt.o driver.o expl_freesurf.o fast_fir.o filfir.o filt.o filtr.o filuv.o findex.o gasbc.o get_ocean_bc.o getriver.o gosbc.o grids.o hmixc.o impl_freesurf.o implq.o invtri.o iomngr.o isopyc.o kppmix.o libpatch.o loadmw.o mom.o mom3mpp.o mpp.o mpp_domains.o mpp_io.o neptune.o nonconstdiff.o odam.o poisson.o ppmix.o r_time_filter.o restio.o rinum.o rotation.o sbcmod.o setatm.o setocn.o setsff.o setvbc.o size_check.o smagnl.o state.o statekpp.o switch.o task_simulator.o tcmix.o timeinterp.o timer.o tinterp.o tmngr.o tmngr_mod.o topog.o tracer.o tracer_adv_flx.o unesco_density.o util.o vmix1d.o vmixc.o xctdbc_mod.o xland.o xobc_mod.o xsponge_mod.o
++ echo            ... done linking
+           ... done linking
++ set days = 365.0
++ set diag = 365.0
++ set NAMELIST_EOF = /
++ cat
++ cat
++ cat
++ cat
++ cat
++ cat
++ cat
++ cat
++ cat
++ cat
++ cat
++ cat
++ cat
++ cat
++ cat
++ echo  
+ 
++ echo  ==> the namelists are:
+ ==> the namelists are:
++ cat namelist.bbl namelist.blmix namelist.contrl namelist.diagn namelist.ictime namelist.io namelist.isopyc namelist.kppmix namelist.mbcin namelist.mixing namelist.ncdiff namelist.ppmix namelist.riglid namelist.smagnl namelist.tsteps
+ &bbl raydrag=0.0e-5, cdbotbbl=3.0e-3, kvbbltop=200.0, entrain_kbbl=0.0,
+      entrain_kbbl_constant=0.0,
+ /
+ &blmix afkph=0.6, dfkph=0.85, sfkph=4.5e-5, zfkph=2500.0e2,
+ /
+ &contrl init=.true., runlen=365.0, rununits='days',
+         restrt=.false., initpt=.true.
+ /
+ &diagn  tsiint=0.0, 
+         tavgint=365.0,  itavg=.true.,
+         tmbint=365.0,    itmb=.true., tmbper=365.0,
+         trmbint=365.0,  itrmb=.true., 
+         gyreint=365.0,  igyre=.true., 
+	 snapint=365.0,
+	 timavgint=365.0, timavgper=365.0,
+         glenint=365.0,  vmsfint=365.0, stabint=365.0, zmbcint=365.0,
+         extint=365.0,   prxzint=365.0, dspint=365.0, dspper=365.0,
+         trajint=365.0,  xbtint=365.0, xbtper=365.0, exconvint=365.0, cmixint=365.0,
+         crossint=365.0, pressint=365.0, fctint=365.0, tyzint=365.0, rhoint=365.0
+ /
+ &ictime eqyear=.true., eqmon=.false., refinit=.true., 
+         year0=1, month0=1, day0=1, hour0=0, min0=0, sec0=0,
+ /         
+ &io     iotavg=-1, iotmb=-1,   iotrmb=-1, iozmbc=-1,
+         ioglen=-1, iovmsf=-1, iogyre=-1,
+         ioprxz=-1, ioext=-1,   iodsp=-1,
+         iotsi=-1,   iotraj=-1, ioxbt=-1,
+ /         
+ &isopyc ahisop=0.8e7, slmx=0.01, athkdf=0.8e7, ahsteep=0.8e7   
+ /
+ &kppmix
+  lri=.true., ldd=.false.,
+  visc_con_limit=1000.0, diff_con_limit=1000.0,
+  visc_cbu_limit=50.0, diff_cbt_limit=50.0,
+  visc_cbu_iw=20.0, diff_cbt_iw=0.0,
+ /
+ &mbcin   /
+ &mixing am=1.5e9, ah=0.0, ambi=1.e22, ahbi=1.e21,
+         kappa_m=20.0, kappa_h=0.10, aidif=1.0,
+         nmix=17, eb=.true.,  ncon=1, cdbot=0.0,
+         acor=0.0, dampts=12.0,12.0,
+         rjfrst=-85.0,filter_reflat_s=-81.0,filter_reflat_n=79.0,
+         eta_mix=5.e7
+ /
+ &ncdiff dbot=2000.e2, dtop=100.e2, 
+         diffmin=1.e5, diffmax=1.e8,  
+         vmhs_alpha=0.015, vmhs_rate2_limit=1.96e-12,
+         ijvmhs_maxlen=10,diffint=4.0, diffsnapint=365.0 
+ /
+ &ppmix wndmix=10.0,  
+ /
+ &riglid mxscan=2000, tolrsf=1.0e8, tolrsp=1.0e-4,
+         tolrfs=1.0e-4,
+ /
+ &smagnl k_smag=6.0, diff_c_back=0.0, visc_c_back=2.e7, prandtl=1.0
+ /
+ &tsteps dtts=43200, dtuv=3000., dtsf=25.,
+ /
++ echo ==>Assigning files...
+==>Assigning files...
++ /bin/rm .assign
+cmd-1025 /bin/rm: .assign: No such file or directory
++ setenv FILENV .assign
++ dmget /archive/ett/MOM_3/EXP/TEST_CASE_A/region_masks /archive/ett/MOM_3/EXP/TEST_CASE_A/northmasks
++ rcp rcp:/archive/ett/MOM_3/EXP/TEST_CASE_A/region_masks region_masks
++ rcp rcp:/archive/ett/MOM_3/EXP/TEST_CASE_A/northmasks northmasks
++ if ( yes == yes ) then
++ if ( ! ( -r temp.mom.ic ) || ! ( -r salt.mom.ic ) ) then
++ echo ...getting and copying to temp.mom.ic and salt.mom.ic
+...getting and copying to temp.mom.ic and salt.mom.ic
++ dmget /archive/ett/MOM_3/EXP/TEST_CASE_A/jan.temp.mom /archive/ett/MOM_3/EXP/TEST_CASE_A/jan.salt.mom
++ cp /archive/ett/MOM_3/EXP/TEST_CASE_A/jan.temp.mom temp.mom.ic
++ cp /archive/ett/MOM_3/EXP/TEST_CASE_A/jan.salt.mom salt.mom.ic
++ endif
++ endif
++ if ( no == yes ) then
++ if ( yes == yes ) then
++ rcp rcp:/net/rcp/MOM_3/scripps.top .
++ endif
++ if ( A == 1 || A == 2 || A == A ) then
++ if ( ! ( -r taux.mom ) || ! ( -r tauy.mom ) ) then
++ echo ...getting and copying taux, tauy, SST, and SSS
+...getting and copying taux, tauy, SST, and SSS
++ dmget /archive/ett/MOM_3/EXP/TEST_CASE_A/taux.mom /archive/ett/MOM_3/EXP/TEST_CASE_A/tauy.mom /archive/ett/MOM_3/EXP/TEST_CASE_A/sst.mom /archive/ett/MOM_3/EXP/TEST_CASE_A/sss.mom
++ cp /archive/ett/MOM_3/EXP/TEST_CASE_A/taux.mom .
++ cp /archive/ett/MOM_3/EXP/TEST_CASE_A/tauy.mom .
++ cp /archive/ett/MOM_3/EXP/TEST_CASE_A/sst.mom .
++ cp /archive/ett/MOM_3/EXP/TEST_CASE_A/sss.mom .
++ endif
++ endif
++ if ( no == yes ) then
++ rcp rcp:/t90/ett/EXP/TEST_CASE_A/archive.A archive.time
+rcp: /t90/ett/EXP/TEST_CASE_A/archive.A: No such file or directory
++ echo ==> Running with 1 processor(s)
+==> Running with 1 processor(s)
++ a.out
++ echo copying results to /t90/ett/EXP/TEST_CASE_A/printout.A
+copying results to /t90/ett/EXP/TEST_CASE_A/printout.A
++ rcp results rcp:/t90/ett/EXP/TEST_CASE_A/printout.A
++ echo  
+ 
++ /bin/ls -laF document.dta particles_initial.000002.01.01.dta sections.000002.01.01.dta
+-rw-r--r--   1 ett      o           2821 Jul  6 10:57 document.dta
+-rw-r--r--   1 ett      o           5184 Jul  6 10:57 particles_initial.000002.01.01.dta
+-rw-r--r--   1 ett      o         527008 Jul  6 11:27 sections.000002.01.01.dta
++ /bin/ls -laF cmix.000002.01.01.dta.nc cvct.000002.01.01.dta.nc energy_int.000002.01.01.dta.nc gyre_comp.000002.01.01.dta.nc overturn.000002.01.01.dta.nc particles.000002.01.01.dta.nc pressure.000002.01.01.dta.nc snapshots.000002.01.01.dta.nc time_mean.000002.01.01.dta.nc tracer_avg.000002.01.01.dta.nc tracer_bud.000002.01.01.dta.nc ts_intgrls.000002.01.01.dta.nc zmean_sbc.000002.01.01.dta.nc
+-rw-r--r--   1 ett      o        12237728 Jul  6 11:28 cmix.000002.01.01.dta.nc
+-rw-r--r--   1 ett      o         875772 Jul  6 11:28 cvct.000002.01.01.dta.nc
+-rw-r--r--   1 ett      o          10156 Jul  6 11:28 energy_int.000002.01.01.dta.nc
+-rw-r--r--   1 ett      o          58356 Jul  6 11:28 gyre_comp.000002.01.01.dta.nc
+-rw-r--r--   1 ett      o          48016 Jul  6 11:28 overturn.000002.01.01.dta.nc
+-rw-r--r--   1 ett      o           4588 Jul  6 11:28 particles.000002.01.01.dta.nc
+-rw-r--r--   1 ett      o        2624508 Jul  6 11:28 pressure.000002.01.01.dta.nc
+-rw-r--r--   1 ett      o        7402600 Jul  6 11:28 snapshots.000002.01.01.dta.nc
+-rw-r--r--   1 ett      o        7402608 Jul  6 11:28 time_mean.000002.01.01.dta.nc
+-rw-r--r--   1 ett      o          44364 Jul  6 11:28 tracer_avg.000002.01.01.dta.nc
+-rw-r--r--   1 ett      o           7156 Jul  6 11:28 tracer_bud.000002.01.01.dta.nc
+-rw-r--r--   1 ett      o          53104 Jul  6 11:28 ts_intgrls.000002.01.01.dta.nc
+-rw-r--r--   1 ett      o           5852 Jul  6 11:28 zmean_sbc.000002.01.01.dta.nc
++ rcp cmix.000002.01.01.dta.nc cvct.000002.01.01.dta.nc energy_int.000002.01.01.dta.nc gyre_comp.000002.01.01.dta.nc overturn.000002.01.01.dta.nc particles.000002.01.01.dta.nc pressure.000002.01.01.dta.nc snapshots.000002.01.01.dta.nc time_mean.000002.01.01.dta.nc tracer_avg.000002.01.01.dta.nc tracer_bud.000002.01.01.dta.nc ts_intgrls.000002.01.01.dta.nc zmean_sbc.000002.01.01.dta.nc rcp:/t90/ett/EXP/TEST_CASE_A/OUTPUT/
++ rcp archive.time rcp:/t90/ett/EXP/TEST_CASE_A/archive.A
+rcp: archive.time: No such file or directory
++ echo  
+ 
++ echo ==> done
+==> done
++ /usr/local/bin/endjob
+
+--------------------------------------------------------------
+NOAA/GFDL            CRAY T932           NQS BATCH JOB SUMMARY
+--------------------------------------------------------------
+
+NQS Request:  run_mom_1A2
+NQS ID:       4706.t932
+
+NQS Queue:    aprod@t932
+
+#QSUB -lT     10800sec
+#QSUB -lM     28mw
+#QSUB -lQ     4mw
+
+Submitted:    Thu Jul 6 10:28:45
+Finished:     Thu Jul 6 11:32:25
+
+                L I M I T / U S E D
+
+CPU         10800.000 sec /   2531.147 sec ( 6.5% system)
+Memory         28.000 mw  /     19.751 mw
+Quickfile       4.000 mw  /      0.000 mw
+
+--------------------------------------------------------------
+
+
+Job Accounting - Summary Report
+===============================
+
+Job Accounting File Name         : /tmp/nqs.+++++008X/.jacct12005
+Operating System                 : sn7203 t90 10.0.0.3 gfd.0 CRAY TS
+User Name (ID)                   : ett (3203)
+Group Name (ID)                  : o (79)
+Account Name (ID)                : oa1 (79651)
+Job Name (ID)                    : run_mom_1A2 (12005)
+Report Starts                    : 07/06/00 10:34:51
+Report Ends                      : 07/06/00 11:32:26
+Elapsed Time                     :         3455      Seconds
+User CPU Time                    :         2384.8722 Seconds
+System CPU Time                  :          193.8749 Seconds
+I/O Wait Time (Locked)           :           24.8298 Seconds
+I/O Wait Time (Unlocked)         :           34.6144 Seconds
+CPU Time Memory Integral         :        15362.2650 Mword-seconds
+SDS Time Memory Integral         :            0.0000 Mword-seconds
+I/O Wait Time Memory Integral    :           56.2513 Mword-seconds
+Data Transferred                 :           32.8737 MWords
+Maximum memory used              :           19.1563 MWords
+Logical I/O Requests             :        21615
+Physical I/O Requests            :        11481
+Number of Commands               :          904
+Billing Units                    :            0.0000
+
+

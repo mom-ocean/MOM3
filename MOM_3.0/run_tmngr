@@ -1,0 +1,60 @@
+#! /bin/csh -f
+echo " "
+echo " =>executing: run_tmngr"
+echo " "
+#
+#
+# script for testing the "tmngr.F" module
+#
+
+#set PLATFORM = "cray"
+set PLATFORM = "sgi"
+
+set OPTIONS = '-Dtest_tmngr -Dsnapshots -Dxbts'
+
+
+set MOMpath = /net/rcp/MOM_3        # base model code
+set WORK = TEMP_DIR                 # temp directory
+set OUTPUT = `pwd`                  # directory holding run script
+
+if (! -r tmngr.F) then
+  echo '=>Error: "tmngr.F" is not in this UPDATES directory'
+  exit
+endif
+
+echo "=>Grabbing sources from $MOMpath"
+mkdir $WORK
+set list = (tmngr_mod.F90 stdunits.h tmngr.h switch.F switch.h derived_options.h)
+foreach file ($list)
+  cp $MOMpath/$file $WORK
+end
+cp tmngr.F $WORK
+cd $WORK
+
+echo "=>compiling..."
+if ("$PLATFORM" == "cray") then
+  echo "PLATFORM = cray"
+  f90 $OPTIONS *.F90 *.F
+endif
+
+if ("$PLATFORM" == "sgi") then
+  echo "PLATFORM = sgi"
+  set LIST90 = (*.F90)
+  set LIST   = (*.F)
+  foreach file ($LIST90)
+    set F = $file:r.F
+    mv $file $F #change to .F for preprocessor and use free format -FR
+    f90 -c -FR $OPTIONS $F
+  end
+  f90  -c $OPTIONS $LIST
+  f90 *.o
+endif
+ 
+echo "=> running...results are being written to results_tmngr"
+a.out > $OUTPUT/results_tmngr
+ 
+cd $OUTPUT
+/bin/rm -r $WORK
+
+echo " "
+echo "=> Done"

@@ -1,0 +1,47 @@
+			    read_me for MOM_3
+
+=======================================================================
+ALL FILES IN THIS FTP DIRECTORY ARE PRE-RELEASE VERSIONS. WHEN THIS 
+MESSAGE IS REMOVED, THE FILES WILL BE THE FINAL VERSIONS.
+=======================================================================
+
+
+
+* The basic run_script included with MOM_3 is "run_mom" which is
+  specific for a CRAY T90. Since we do not have access to all platforms at
+  GFDL, we cannot offer advice on making scripts work on other 
+  platforms.
+
+* To compile correctly, it is necessary to have option -F on the
+  list of compiler options in all Cray run scripts. On SGI with MipsPro
+  compilers, use -ftpp -macro_expand. On other systems use the
+  equivalent compiler flags for global macro expansions.
+
+
+* For details about mpp modules, look at Balaji's web site:
+  www.gfdl.gov/~vb
+
+* OS dependent ifdefs have been converted to cpp macros that are
+  guaranteed by the compiler. Refer to www/gfdl.gov/~vb/os.html
+  for more details.
+
+* If there are problems with NetCDF, then make sure that the
+  "udunits.dat" and "netcdf.inc" files are copied into the working
+  directory (before compiling) as is done in the run_mom script.
+
+* For NetCDF output, NetCDF library v3.4 or later is required
+
+* A user has reported that MOM 3 runs on a DEC Alpha Workstation
+   with DEC F90 compiler after making the following changes:
+   
+ 
+    1)  Add " convert='big_endian' " to "open" statement in files iomngr.F, 
+        sbc.F and ic.F
+     
+    2)  Change .F90 extensions to .F and compile these files with
+        COMPILE_OPTION -free -w -c
+        Compile all other files with options: -c
+     
+    
+     link
+     

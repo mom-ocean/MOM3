@@ -1,0 +1,137 @@
+#! /bin/csh -f
+#   CRAY T90 script to prepare montlhy hellerman wind stress and
+#   oort air temperature for MOM_3
+#    authors:  R.C. Pacanowski   e-mail: rcp@gfdl.gov
+#              S.M. Griffies     e-mail: smg@gfdl.gov
+
+set echo
+
+set CASE         = ""
+set myEXP        = TEST_CASE 
+set datainpath   = /archive/rcp/MOM_2/DATABASE
+set MOMpath      = /net/rcp/MOM_3
+
+set MOMupdates   = $MOMpath/EXP/$myEXP/MOM_UPDATES/$CASE
+set PREPupdates  = $MOMpath/EXP/$myEXP/PREP_UPDATES/$CASE
+set PREPpath     = $MOMpath/PREP_DATA
+set printoutpath = $PREPupdates
+set dataoutpath  = /archive/rcp/MOM_3/EXP/$myEXP/$CASE
+set WORKDIR      = $FTMPDIR
+
+# save output for visualization
+set OUTPUT = " "
+set OUTPUT = "$OUTPUT -Dsave_SBC"
+set OUTPUT = "$OUTPUT -Duse_netCDF"
+
+if ("$OUTPUT" == " ") then
+ set NETCDFlib = ""
+else
+ set NETCDFlib    = "-L/usr/local/lib -ludunits -L/usr/local/lib -lnetcdf"
+endif
+
+cd $WORKDIR   # change to a working directory
+/bin/rm $WORKDIR/*.[Ffh]
+/bin/rm $WORKDIR/sbc.dta.nc
+
+echo " "
+echo " preparing Hellerman climatological monthly stress for MOM"
+echo " (also Oort monthly air temperature files)"
+echo " "
+
+echo "=>Grabbing source files from $MOMpath"
+set list = (stdunits.h coord.h diag.h grids.F size.h derived_options.h util.F)
+set list = ($list iomngr.F iomngr.h size_check.F tmngr.h vers.h index.h)
+set list = ($list taskrows.h param.h pconst.h)
+set listF90 = (mpp.F90 mpp_domains.F90 mpp_io.F90 datamod.F90 mom3mpp.F90)
+
+foreach file ($list)
+  cp $MOMpath/$file .
+end
+foreach file ($listF90)
+  echo $file
+  cp "$MOMpath/$file" .
+end
+
+/bin/cp $MOMupdates/*.[Ffh] .
+/bin/cp $PREPpath/sbc.F .
+/bin/cp $PREPupdates/*.[Ffh]  .
+
+setenv NPROC 1
+
+echo " ==> compiling ... "
+
+# USER INPUT: set OPTIONS
+
+#
+#     options: (must choose only one of these)
+#       -Dread_my_grid    : read in your own grid definition
+#       -Dgenerate_a_grid : generate a grid based on USER INPUT
+#                           in grids.F
+#     optional options:
+#
+#       -Drectangular_box : sets "kmt" to a flat bottom rectangular box
+#       -Dflat_bottom     : sets "kmt" over ocean to maximum levels (km)
+#       -Dcyclic          : sets cyclic conditons in zonal direction
+#
+set OPTIONS = "-Dmakesbc -Dcray_t90 -Dgenerate_a_grid -Dcyclic"
+set COMPILER_OPTIONS  = "-F -I. -O 0 -g -ei"
+#set COMPILER_OPTIONS  = "-F -I. -O 0 -ei"
+set ALL_OPTIONS = ($OPTIONS $COMPILER_OPTIONS $OUTPUT -I/usr/local/include/)
+echo OPTION LIST: $ALL_OPTIONS
+
+source /local/f90/3.1.0.0
+foreach file ($listF90)
+  f90 -F -c -g $ALL_OPTIONS  $file
+end
+f90 -F -g $ALL_OPTIONS $NETCDFlib sbc.F
+mv a.out sbc.out
+ 
+echo " ==> getting data from $datainpath "
+if (!(-r hellerman.tau && -r oorts.air)) then
+ dmget $datainpath/hellerman.tau $datainpath/oorts.air
+ /bin/cp $datainpath/hellerman.tau .
+ /bin/cp $datainpath/oorts.air .
+else
+ echo "data is assumed to be in $WORKDIR"
+endif
+
+
+# USER INPUT: choose the type of interpolation based on resolution
+
+# intrph = 1 when model resolution is coarser than Hellerman 2 deg 
+# intrph = 2 when model resolution is finer than Hellerman 2 deg 
+# intrpo = 1 when model resolution is coarser than Oort 5 deg 
+# intrpo = 2 when model resolution is finer than Oort 5 deg  
+  
+set NAMELIST_EOF = "/"
+cat > sbc.in << NAMELIST
+ &input  name='MOM climatological S.B.C.',
+   intrph=1, intrpo=2,
+ $NAMELIST_EOF
+NAMELIST
+
+/bin/rm .assign
+
+echo " ==> executing sbc ... "
+(sbc.out < sbc.in) > printout
+
+/bin/cp printout $printoutpath/sbc.prn
+echo  " ==> copied printout to $printoutpath/sbc.prn"
+
+if (! (-d $dataoutpath)) then
+  mkdir $dataoutpath
+endif
+
+echo " ===> copying data files to $dataoutpath..."
+ls -l *.mom sbc.dta*
+
+/bin/cp taux.mom $dataoutpath/taux.mom
+echo  " ==> copied taux.mom to $dataoutpath/taux.mom"
+/bin/cp tauy.mom $dataoutpath/tauy.mom
+echo  " ==> copied tauy.mom to $dataoutpath/tauy.mom"
+/bin/cp airtemp.mom $dataoutpath/airtemp.mom
+echo  " ==> copied airtemp.mom to $dataoutpath/airtemp.mom"
+
+/bin/cp sbc.dta* $dataoutpath
+
+echo  " ==> all done "

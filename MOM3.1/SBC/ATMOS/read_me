@@ -1,0 +1,12 @@
+                                MOMDATA.3
+
+     this "atmos" model is an EXAMPLE of how to supply surface
+     boundary conditions which are a function of latitude, longitude
+     and time to MOM. The "atmos" model grid is assumed to be of
+     different resolution from MOM so interpolations of S.B.C. are
+     needed. This is accomplished by specifying the "-Dcoupled" option
+     when compiling MOM.
+
+     This model is for illustrative purposes only but could be replaced
+     by an atmospheric GCM, intermediate, or anomoly model. 
+

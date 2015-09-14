@@ -1,0 +1,63 @@
+#! /bin/csh -f
+echo " "
+echo " =>executing: run_convect"
+echo " "
+#
+# script for testing the "convect.F" module
+#
+#     options: (must choose only one of these)
+#       -Dread_my_grid    : read in your own grid definition
+#       -Dgenerate_a_grid : generate a grid based on USER INPUT
+#                           in grids.F
+#
+
+set OPTIONS = '-Dtest_convect -Dgenerate_a_grid'
+
+set MOMpath = /net/rcp/MOM_3        # base model code
+set WORK = TEMP_DIR                 # temp directory
+set OUTPUT = `pwd`                  # directory holding run script
+                                    # and output files
+
+set error = false
+if (! -r convect.F) then
+  echo '=>Error: "convect.F" is not in this UPDATES directory'
+  set error = true
+endif
+
+if (! -r grids.F) then
+  echo '=>Error: "grids.F" is not in this UPDATES directory'
+  set error = true
+endif
+
+if (! -r size.h) then
+  echo '=>Error: "size.h" is not in this UPDATES directory'
+  set error = true
+endif
+
+if ("$error" == "true") then
+  exit
+endif
+
+echo "=>Grabbing sources from $MOMpath"
+mkdir $WORK
+set list = (util.F derived_options.h iomngr.F size_check.F state.F denscoef.F)
+foreach file ($list)
+  cp $MOMpath/$file $WORK
+end
+cp $MOMpath/*.h $WORK
+cp convect.F $WORK
+cp grids.F $WORK
+cp size.h $WORK
+cd $WORK
+
+echo "=>compiling..."
+f90 $OPTIONS convect.F
+
+echo "=> running...results are being written to results_convect"
+a.out > $OUTPUT/results_convect
+
+cd $OUTPUT
+/bin/rm -r $WORK
+
+echo " "
+echo "=> Done"

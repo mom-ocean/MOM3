@@ -1,0 +1,105 @@
+#! /bin/csh -f
+echo " "
+echo " =>executing: run_vmix1d"
+echo " "
+#
+#    script for testing vertical mixing modules "ppvmix" or "kppvmix"
+#    in a 1-D framework
+#
+set MOMpath = /net/rcp/MOM_3        # base model code
+set WORK = TEMP_DIR                 # temp directory
+set OUTPUT = `pwd`                  # directory holding run script
+                                          # and output files
+#set PARAMETERIZATION = "-Dppvmix"
+set PARAMETERIZATION = "-Dkppvmix -Dkmixcheckekmo "
+#set COMPILE_OPTIONS = " -ei -R b -O 0 -g "
+set COMPILE_OPTIONS = " -O 2 "
+set USER_OPTIONS = " -Dresolution_3x3 -Dncar_kpp_test_case_pure_convection "
+set OPTIONS    = " $COMPILE_OPTIONS $PARAMETERIZATION -Dtest_vmix -Dgenerate_a_grid  $USER_OPTIONS "
+
+set COMPILE_LIST = "all"          # "all" compiles everything
+#set COMPILE_LIST = " vmix1d.F kppmix.F "    # will compile just these
+
+
+if ("$PARAMETERIZATION" == "-Dppvmix") then
+  set FILE = ppmix.F
+else
+  set FILE = kppmix.F
+endif
+
+set error = false
+if (! -r $FILE) then
+  echo "=>Error: need to have $FILE in this UPDATES directory"
+  echo "         copy $FILE to this directory and make modifications"
+  set error = true
+endif
+
+if (! -r vmix1d.F) then
+  echo '=>Error: need to have "vmix1d.F" in this UPDATES directory'
+  echo '         copy "vmix1d.F" to this directory'
+  set error = true
+endif
+
+if ("$error" == "true") then
+  exit
+endif
+
+echo "=>Grabbing sources from $MOMpath"
+mkdir $WORK
+set list = (sbcmod.F90 tmngr_mod.F90 datamod.F90 grids.F util.F iomngr.F size_check.F state.F tmngr.F switch.F denscoef.F vmix1d.F rinum.F statekpp.F diagvmix.F)
+
+cp $MOMpath/*.h $WORK
+\cp *.h $WORK            # copy from updates directory
+cp $FILE $WORK
+
+foreach file ($list)
+  echo $file  
+  cp $MOMpath/$file $WORK
+  if ( -e $file) then
+    \cp $file $WORK      # copy from updates directory
+  endif
+end
+
+cd $WORK
+
+echo "=>compiling..."
+if ("$COMPILE_LIST" == "all") then
+  f90 $OPTIONS -c *.F90
+  f90 $OPTIONS -c *.F
+else
+  set list = ($COMPILE_LIST)
+  foreach file ($list)
+    echo $file
+    f90 $OPTIONS -c $file
+  end
+endif
+
+echo "=> linking ..."
+f90 -Wl"-S 250000 -D preset=nan " *.o
+echo "           ... done linking"
+
+set NAMELIST_EOF = "/"
+cat > namelist.kppmix << ENDNAMELIST
+ &kppmix
+  lri=.true., ldd=.false.,
+  visc_con_limit=50.0, diff_con_limit=1000.0,
+  visc_cbu_iw=20.0, diff_cbt_iw=0.3,
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.ppmix << ENDNAMELIST
+ &ppmix
+  fricmx = 50.0,
+ $NAMELIST_EOF
+ENDNAMELIST
+
+echo " work directory is $WORK"
+echo "=> running...results are being written to results_vmix1d"
+a.out > $OUTPUT/results_vmix1d
+
+cd $OUTPUT
+# dont delete, to allow a partial compile list next time:
+#/bin/rm -r $WORK
+
+echo " "
+echo "=> Done"

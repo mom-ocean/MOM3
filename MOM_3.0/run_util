@@ -1,0 +1,42 @@
+#! /bin/csh -f
+#
+echo " "
+echo " =>executing: run_util"
+echo " "
+#
+#
+# run script for testing the "util.F" module
+#
+
+set OPTIONS = '-Dtest_util'
+
+set MOMpath = /net/rcp/MOM_3        # base model code
+set WORK = TEMP_DIR                 # temp directory
+set OUTPUT = `pwd`                  # directory holding run script
+                                    # and output files
+
+if (! -r util.F) then
+  echo '=>Error: "util.F" is not in this UPDATES directory'
+  exit
+endif
+
+echo "=>Grabbing sources from $MOMpath"
+mkdir $WORK
+set list = (stdunits.h)
+foreach file ($list)
+  cp $MOMpath/$file $WORK
+end
+cp util.F $WORK
+cd $WORK
+
+echo "=>compiling..."
+f90 $OPTIONS util.F
+
+echo "=> running...results are being written to results_util"
+a.out > $OUTPUT/results_util
+ 
+cd $OUTPUT
+/bin/rm -r $WORK
+
+echo " "
+echo "=> Done"

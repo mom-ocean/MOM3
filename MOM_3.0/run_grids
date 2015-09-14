@@ -1,0 +1,67 @@
+#! /bin/csh -f
+echo " "
+echo "=>executing: run_grids"
+echo " "
+#
+# script for running the "grids.F" module to generate a grid
+#
+#
+#     Consult the manual for other options
+#
+
+
+set OPTIONS = '-Ddrive_grids -Dgenerate_a_grid -Dcyclic'
+#set OTHER_OPTIONS = '-Disotropic_grid'
+#set OTHER_OPTIONS = '-Dsymmetry -Disotropic_grid'
+#set OTHER_OPTIONS = '-Disotropic_grid -Dextend_isotropic_grid'
+#set OTHER_OPTIONS = '-Dbbl_ag '
+set OTHER_OPTIONS = ' '
+
+set ALL_OPTIONS = ($OPTIONS $OTHER_OPTIONS)
+echo OPTION LIST: $ALL_OPTIONS
+echo " "
+
+set MOMpath = /net/rcp/MOM_3        # base model code
+set WORK = TEMP_DIR                 # temp directory
+set OUTPUT = `pwd`                  # directory holding run script
+
+if (! -r grids.F) then
+  echo '=>Error: need to have "grids.F" in this UPDATES directory'
+  echo '         copy "grids.F" to this directory and make modifications here'
+  exit
+endif
+
+echo "=>Grabbing sources from $MOMpath"
+mkdir $WORK
+set list = (stdunits.h util.F iomngr.F iomngr.h derived_options.h)
+foreach file ($list)
+  echo $file
+  cp $MOMpath/$file $WORK
+end
+cp grids.F $WORK
+
+if (-r grid.dta) then
+  echo copying grid.dta.out
+  cp grid.dta.out $WORK/grid.dta
+endif
+cd $WORK
+
+echo "=>compiling..."
+f90 $ALL_OPTIONS grids.F
+
+echo "=> running...results are being written to results_grids"
+a.out > $OUTPUT/results_grids
+
+if (-r grid.dta.out) then
+ echo " "
+ echo "=> Constructed: grid.dta.out"
+ mv grid.dta.out $OUTPUT
+endif
+cd $OUTPUT
+/bin/rm -r $WORK
+
+echo " "
+tail results_grids
+
+echo " "
+echo "=> Done"

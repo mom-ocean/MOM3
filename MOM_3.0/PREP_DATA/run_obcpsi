@@ -1,0 +1,136 @@
+#!/bin/csh
+#QSUB -lT 500
+#QSUB -lM 2Mw 
+#QSUB -x
+#QSUB -eo
+#QSUB -o run_obcpsi.log
+#
+#  Cray script for creating stream function files for open boundaries
+#
+#  Arne Biastoch, 22/07/97
+#
+#
+
+set myEXP  = testcase
+set HOME   = ~/MOM
+
+set MOMpath     = $MOM/Modules 
+set MOMupdates  = $MOM/Updates
+set PREPupdates = $MOM/PREP/obc
+set datainpath  = $HOME/EXP/$myEXP/obc
+set dtain       = $HOME/EXP/$myEXP
+set dataout     = $HOME/EXP/$myEXP/obc
+set CDFout      = $HOME/EXP/$myEXP/cdf
+set NETCDF      = $HOME/NETCDF
+
+set tmpdir      = $HOME/tmp
+
+
+cd $tmpdir   # change to a working directory
+rm *
+
+echo " "
+echo " "
+
+echo " ==> getting sources for run_obcpsi..."
+cp $MOMpath/iomngr.F .
+cp $MOMpath/iomngr.h .
+cp $MOMpath/stdunits.h .
+cp $MOMpath/switch.h .
+cp $MOMpath/tmngr.h .
+cp $MOMpath/size_check.F .
+cp $MOMpath/pconst.h .
+cp $MOMpath/derived_options.h .
+cp $MOMpath/util.F . 
+
+chmod a+w *
+#
+cp $MOMupdates/size.h .
+#cp $MOMupdates/util.F .
+cp $MOMupdates/grids.F .
+cp $MOMupdates/topog.F .
+#
+cp $dtain/grid.dta .
+cp $dtain/kmt.dta .
+#
+cp $PREPupdates/obcpsi.F  .
+
+cp $NETCDF/netcdf.inc .
+
+set DELTAS = `ls $dtain/delta*.h`
+if  ("$DELTAS" == "") then
+  echo ' no topographic "delta" files were found... So none to copy'
+else
+  echo ' copying existing topographic "delta" files from directory $dtain'
+  cp $dtain/delta*.h .
+endif
+
+setenv NPROC 1
+
+echo " ==> compiling ..."
+
+# USER INPUT: set OPTIONS
+
+#
+#     options: (must choose only one of these)
+#       -Dread_my_grid    : read in your own grid definition
+#       -Dgenerate_a_grid : generate a grid based on USER INPUT
+#                           in grids.F
+#     optional options:
+#
+#       -Drectangular_box : sets "kmt" to a flat bottom rectangular box
+#       -Dflat_bottom     : sets "kmt" over ocean to maximum levels (km)
+#       -Dcyclic          : sets cyclic conditons in zonal direction
+#
+#     optional choices:
+#
+#       -Dmakeobcpsi      : generate obc data
+#       -Dobc_south       : southern obc
+#       -Dobc_north       : northern obc
+#       -Dobc_east        : eastern  obc
+#       -Dobc_west        : western  obc
+#
+#
+#set opt1 = '-Dmakeobcpsi -Dcray_ymp -Dread_my_grid '
+#set opt2 = '-Dwrite_netcdf '
+#set opt3 = '-Dobc_west  -Dobc_east'
+set opt1 = '-Dmakeobcpsi -Dsgi -Dgenerate_a_grid -Dread_my_kmt '
+#set opt1 = '-Dmakeobc  -Dsgi -Dgenerate_a_grid'
+#set opt2 = '-Dwrite_netcdf '
+set opt2=''
+set opt3 = '-Dobc_west  -Dobc_east'
+
+set OPTIONS = "$opt1 $opt2 $opt3 "
+echo "Options = "$OPTIONS
+#
+#cf77 -Zv -P $OPTIONS obcpsi.F  
+#cf77 -Zv -c obcpsi.i
+#segldr -f zeros -V  -o obcpsi.x -l /usr/local/lib/libnetcdf.a obcpsi.o
+
+f90 -P  $OPTIONS obcpsi.F
+f90 -r8 -convert big_endian -c *.i
+f90 *.o -o obcpsi.x
+
+
+ /bin/cp $datainpath/*.dat .
+
+ echo "getting data"
+ 
+rm .assign
+
+echo " ==> executing obcpsi ... "
+obcpsi.x >&  obcpsi.prn
+
+echo " ===> copying results (obcpsi.prn) to $dataout "
+/bin/cp obcpsi*.prn $dataout/.       
+
+echo " ===> copying data files to $dataout "
+/bin/cp obcpsi*.mom $dataout/.
+
+echo " ===> copying netCDF files to $CDFout "
+/bin/cp obcpsi.cdf $CDFout/.
+
+
+echo  " ==> all done == "
+echo ""
+exit

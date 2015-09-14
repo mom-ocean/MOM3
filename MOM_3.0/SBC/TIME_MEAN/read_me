@@ -1,0 +1,10 @@
+                               TIME_MEAN
+
+     This "atmos" model is an EXAMPLE of how to supply surface boundary
+     conditions which are a function of latitude and longitude but not
+     of time to MOM. The data it uses must be prepared using the
+     run scripts in PREP_DATA. Refer to the manual.
+
+
+
+			 

@@ -1,0 +1,337 @@
+#! /bin/csh -f
+# ===============================================================
+#  run script for MOM_3 on CRAY T90 at GFDL
+#  author:  r.c.pacanowski   e-mail: rcp@gfdl.gov
+#  Modified by s.m. griffies e-mail: smg@gfdl.gov
+# ===============================================================
+
+# Set some misc shell variables
+
+# shell variable which is >1 only if there are problems
+set bomb = 0
+
+# expt name and case 
+set myCASE  = CASE2
+set myEXP   = BOX_noeddyF
+
+# Set number of processors 
+setenv NPES 2
+
+# Number days to integrate the model
+set NDAYS  = 20
+
+# ===============================================================
+# Specify some directories
+if( ! $?FTMPDIR )setenv FTMPDIR /tmp
+
+# directory where model will be run
+set WORKDIR        = $FTMPDIR/$myEXP/$myCASE
+if ( ! -d $WORKDIR) mkdir -p $WORKDIR
+
+# directory where model diagnostic files are placed
+set archive_path   = /archive/$USER/MOM_3/EXP/$myEXP/$myCASE
+if ( ! -d $archive_path) mkdir -p $archive_path
+
+# directory where model printout file is placed
+set printpath          = /t90/$USER/MOM_3/$myEXP/$myCASE
+if ( ! -d $printpath ) mkdir -p $printpath 
+
+# directory where source code is located
+set MOMsource = /net/rcp/MOM_3
+
+# ===============================================================
+# Set general model options
+
+set OPTS = " "
+set OPTS = " $OPTS -Didealized_ic"
+set OPTS = " $OPTS -Didealized_kmt"
+set OPTS = " $OPTS -Dgenerate_a_grid"
+set OPTS = " $OPTS -Dsimple_sbc"
+set OPTS = " $OPTS -Drestorst"
+set OPTS = " $OPTS -Dramdrive"
+set OPTS = " $OPTS -Dcyclic"
+set OPTS = " $OPTS -Dfirfil"
+set OPTS = " $OPTS -Dpartial_cell"
+set OPTS = " $OPTS -Dexplicit_free_surface -Dexplicit_free_surface_nonlinear"
+set OPTS = " $OPTS -Dsalinity_psu"
+set OPTS = " $OPTS -Dexplicit_eta_laplacian"
+set OPTS  = "$OPTS -Dfill_perimeter_violations -Dfill_isolated_cells"
+set OPTS = " $OPTS -Dconstvmix"
+set OPTS = " $OPTS -Dtracer_horz_mix_const -Dtracer_horz_laplacian"
+set OPTS = " $OPTS -Dredi_diffusion -Dgent_mcwilliams"
+set OPTS = " $OPTS -Dbbl_ag -Ddetrain -Dbbl_mask"
+set OPTS = " $OPTS -Dvelocity_horz_mix_smag -Dvelocity_horz_biharmonic"
+set OPTS = " $OPTS -Drobert_time_filter"
+set OPTS = " $OPTS -Dquicker"
+set OPTS = " $OPTS -Denergy_analysis"
+
+# ===============================================================
+# computational environment
+
+# set compiler version
+source /local/f90/3.1.0.0
+
+# Set parallel options
+set PARALLEL_OPTIONS = " "
+set PARALLEL_OPTIONS = "$PARALLEL_OPTIONS -Dparallel_1d"
+set PARALLEL_OPTIONS = "$PARALLEL_OPTIONS -Duse_libSMA"  #SHMEM library
+#set PARALLEL_OPTIONS = "$PARALLEL_OPTIONS -Duse_libMPI" #MPI library
+module load mpt.1.2.1.0 #message passing toolkit library
+
+# Set compiler options:
+set COMPILER_OPTIONS = " "
+# -F applies cpp procesing to every line of code
+set COMPILER_OPTIONS = "$COMPILER_OPTIONS -F -O2"
+set COMPILER_OPTIONS = "$COMPILER_OPTIONS -ataskcommon"
+
+# ======================================================================
+# Copy all code to the working directory
+
+cd $WORKDIR
+/bin/rm *
+echo "==> copying files from $MOMsource"
+rcp "$MOMsource/*.F90" . 
+rcp "$MOMsource/*.[Ffh]" .
+rcp "$MOMsource/*.inc" .
+
+# ======================================================================
+# Compile and link
+
+# Gather options
+set OPTIONS  = "$OPTS $PARALLEL_OPTIONS $COMPILER_OPTIONS"
+
+# Compile F90 modules: order of compilation is important 
+set list90 = (mpp.F90 mpp_domains.F90 mpp_io.F90 datamod.F90)
+set list90 = ($list90 mom3mpp.F90 sbcmod.F90 tmngr_mod.F90 xsponge_mod.F90)
+foreach file ($list90)
+  echo $file
+  f90 $OPTIONS -c $file
+end
+
+# Compile F77 code 
+set list = `ls  *.[Ff] `
+foreach file ($list)
+  echo $file
+  f90 $OPTIONS -c $file
+end
+
+# Link 
+echo "=> linking code"
+f90  -Wl"-D preset=nan"  *.o  || set bomb = 1
+echo "=> done linking"
+
+# ======================================================================
+# Set up the namelist variables
+
+set diag  = 0.0
+set create_restart = 'true'    
+set RESTART = 'true'
+ 
+set NAMELIST_EOF = "/"
+
+cat > namelist.procs << ENDNAMELIST
+ &procs  NPES = $NPES 
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.contrl << ENDNAMELIST
+ &contrl
+  init=.$RESTART., runlen=$NDAYS.0, rununits='days',
+         restrt=.true., initpt=.true., 
+         taux0=0.0, tauy0=0.0
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.mbcin << ENDNAMELIST
+ &mbcin $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.tsteps << ENDNAMELIST
+ &tsteps dtts=86400., dtuv=3600.0, dtsf=30.0,
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.riglid << ENDNAMELIST
+ &riglid mxscan=2000, tolrsf=1.0e1, tolrsp=1.0e-4,
+         tolrfs=1.0e-4,
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.mixing << ENDNAMELIST
+ &mixing am=1.42e9, ah=1.e7, ambi=1.e22, ahbi=1.e21,
+         kappa_m=10.0, kappa_h=0.50, aidif=1.0,
+         nmix=17, eb=.true.,  ncon=0, cdbot=0.0,
+         acor=0.0, dampts=35.0, 35.0, 
+         rjfrst=-81.0, filter_reflat_n=70.0, filter_reflat_s=-70.0,
+         smooth=0.01, eta_mix=1.e7
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.isopyc << ENDNAMELIST
+ &isopyc ahisop=1.e7, slmx=0.01, athkdf=1.e7, abihrm=1.e20, ahsteep=1.e7  
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.bbl << ENDNAMELIST
+ &bbl raydrag=0.0e-5, cdbotbbl=3.0e-3, kvbbltop=200.0, entrain_kbbl=0.0, 
+      entrain_kbbl_constant=0.0,
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.blmix << ENDNAMELIST
+ &blmix   afkph=0.69, dfkph=1.25, sfkph=4.5e-5, zfkph=2500.0e2 
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.smagnl << ENDNAMELIST
+ &smagnl k_smag=6.0, diff_c_back=0.0, visc_c_back=0.0, prandtl=100.0
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.ncdiff << ENDNAMELIST
+ &ncdiff depthbot=1000.e2, depthtop=50.e2,
+         diffmin=1.e6, diffmax=1.e7,  
+         vmhs_alpha=0.015, vmhs_rate2_limit=1.96e-12,
+         ijvmhs_maxlen=10,diffint=2.0, diffsnapint=$diag 
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.kppmix << ENDNAMELIST
+ &kppmix
+  lri=.true., ldd=.false.,
+  visc_con_limit=1000.0, diff_con_limit=1000.0,
+  visc_cbu_iw=20.0, diff_cbt_iw=0.5,
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.ppmix << ENDNAMELIST
+ &ppmix wndmix=10.0,  
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.diagn << ENDNAMELIST
+ &diagn  tsiint=$diag, 
+         tavgint=$diag,  itavg=.true.,
+         tmbint=$diag,   itmb=.true., tmbper=$diag,
+         trmbint=$diag,  itrmb=.true., 
+         gyreint=$diag,  igyre=.true., 
+	 snapint=$diag,
+	 timavgint=$diag, timavgper=$diag,
+         glenint=$diag,  vmsfint=$diag, stabint=$diag, zmbcint=$diag,
+         extint=$diag,   prxzint=$diag, dspint=$diag, dspper=$diag,
+         trajint=$diag,  xbtint=$diag, xbtper=$diag, exconvint=$diag, cmixint=$diag,
+         crossint=$diag, pressint=$diag, fctint=$diag, tyzint=$diag, rhoint=$diag
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.io << ENDNAMELIST
+ &io     iotavg=-1, iotmb=-1,  iotrmb=-1, iozmbc=-1,
+         ioglen=-1, iovmsf=-1, iogyre=-1,
+         ioprxz=-1, ioext=-1,  iodsp=-1,
+         iotsi=-1,  iotraj=-1, ioxbt=-1,
+ $NAMELIST_EOF         
+ENDNAMELIST
+
+cat > namelist.ictime << ENDNAMELIST
+ &ictime eqyear=.true., eqmon=.false., refinit=.true., 
+         year0=1, month0=1, day0=1, hour0=0, min0=0, sec0=0,
+ $NAMELIST_EOF         
+ENDNAMELIST
+
+# ======================================================================
+# All assigns are done from fortran
+# Remove file environment variable
+rm .assign
+setenv FILENV .assign
+
+# ======================================================================
+# Get the restart file unless starting from time=0 conditions
+
+if ( $RESTART == 'false') then
+  cp     $printpath/archive.time archive.time    
+  set time_stamp_initial = `tail -1 archive.time`
+  tail -1 archive.time > initial_stamp   
+  set time_step_initial = `awk '{print $1}' initial_stamp`
+  dmcopy $archive_path/restart.last restart.dta
+  echo
+  echo "initial time stamp = " $time_stamp_initial
+  echo "initial time step  = " $time_step_initial
+  echo
+else
+  set time_stamp_initial = '0 m/d/y= 0/0/0, h:m:s= 0: 0: 00/00/00'
+  set time_step_initial  = 0
+endif
+
+# ======================================================================
+# Run the model
+
+echo "==> Running with $NPES processor(s)"
+echo '==>'MOM_3 $myEXP
+
+echo
+echo "The WORKDIR is" $WORKDIR
+echo "The archive_path is " $archive_path
+echo "The printpath is " $printpath 
+echo
+
+a.out > $printpath/printout || set bomb = 2
+
+set normal = `grep 'M.O.M. integration is complete' $printpath/printout`
+if ("$normal" == "") then
+  set bomb = 10000
+endif
+
+echo "Data files that have been written "
+echo "to $WORKDIR are the following:"
+/bin/ls -laF *.dta *.nc date.suffix archive.time 
+
+# ======================================================================
+# Get ending date suffix for identifying files with data_suffix 
+set data_suffix = `cat date.suffix`
+
+# ======================================================================
+# Get ending time stamp
+
+set time_stamp_final = `tail -1 archive.time` 
+tail -1 archive.time > final_stamp
+set time_step_final  = `awk '{print $1}' final_stamp`
+echo
+echo 'final time stamp = ' $time_stamp_final
+echo 'final time step  = ' $time_step_final
+echo
+
+# ======================================================================
+# Manipulate printout file
+
+cat > time_step_file << endcat
+///////////////////////////////////////////
+Initial time stamp = $time_stamp_initial
+Final   time stamp = $time_stamp_final
+///////////////////////////////////////////
+endcat
+set printout_save = $printpath/printout$data_suffix.${NPES}pes
+cat time_step_file $printpath/printout >> $printout_save
+echo Printout saved to file $printout_save
+
+# ======================================================================
+# Manipulate restart file
+rm restart.dta
+mv archive.time  $printpath
+set FILE = restart$data_suffix.dta
+echo "=>Saving restart file: $FILE"
+mv $FILE $archive_path/$FILE                    # for archiving
+cp $archive_path/$FILE $archive_path/restart.last # for restarting
+
+
+# ======================================================================
+# Move the remaining output files to archive 
+mv *.nc  $archive_path
+mv *.dta $archive_path
+
+# ======================================================================
+echo " "
+echo "==>Finished integrating MOM experiment $myEXP" 
+
+
+
+

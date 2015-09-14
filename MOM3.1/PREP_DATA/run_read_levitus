@@ -1,0 +1,408 @@
+#
+# simple script to read the levitus IEEE 32bit unformatted data
+# on a workstation and produce netcdf formatted levitus data as output
+# 
+# author:  R.C.Pacanowski      e-mail: rcp@gfdl.gov
+#
+
+set MOMpath      = $WHOME/MOM_2
+set datainpath   = /net/rcp/DATABASE
+set dataoutpath  = $datainpath
+set WORKDIR      = FTMPDIR
+set NETCDFlib    = "-L/usr/local/lib -ludunits -L/usr/local/lib -lnetcdf"
+set FILENAME     = $dataoutpath/levitus.dta.nc
+set PLATFORM_OPTION = "-Dsgi -DHOST_SGI"
+
+mkdir $WORKDIR
+""cd $WORKDIR   # change to a working directory
+/bin/rm $WORKDIR/*.[Ffh]
+/bin/rm $FILENAME
+
+set SKIP = "no"
+if ("$SKIP" != "yes") then
+ echo "=>Grabbing source files from $MOMpath/NETCDF"
+ /bin/cp $MOMpath/NETCDF/* .
+ if (-r /usr/local/include/netcdf.inc) then
+  /bin/cp /usr/local/include/netcdf.inc .
+ else
+  echo "Error: file /usr/local/include/netcdf.inc is missing."
+  exit
+ endif
+ set list = (stdunits.h size.h diago_netcdf.F util_netcdf.F vers.h nc_mom.h tmngr.h)
+ foreach file ($list)
+   cp $MOMpath/$file .
+ end
+endif
+
+cat > rlevitus.F << CODE
+
+#include "diago_netcdf.F"
+#include "util_netcdf.F"
+#include "id_fill.F"
+#include "ncirblkd.F"
+#include "ncstore.F"
+#include "ncsetup.F"
+#include "ncdone.F"
+#include "ncextend.F"
+#include "clen.f"
+#include "pack.F"
+#include "sincestr.F"
+
+      program levitus
+      parameter (imd=362, jmd=180, kd=33)
+# include "tmngr.h"
+# include "vers.h"
+      character*80 iotext
+c
+c     lons = number of longitudes
+c     lats = number of latitudes
+c     cx = longitude coordinates
+c     cy = latitude coordinates
+c     depth = depth of level
+c     dd  = depths of all levels
+c     data = the data
+c
+      dimension cx(imd), cy(jmd), dd(kd)
+      dimension data(imd,jmd)
+      dimension dmask(imd,jmd)
+c
+      character*26 tempin, saltin
+      character*40 levmask
+      character*60 fname
+      dimension tempin(13), saltin(13)
+      dimension iotin(13), iosin(13)
+c
+c     ndimsout = total number of axes
+c     nvarsout = total number of variables
+c     mxdimout = size of longest axis
+c
+      parameter (ndimsout=6, nvarsout = 5, mxdimout = imd)
+# include "nc_mom.h"
+c
+      data tempin /
+     &               '/net/rcp/DATABASE/jan.temp'
+     &,              '/net/rcp/DATABASE/feb.temp'
+     &,              '/net/rcp/DATABASE/mar.temp'
+     &,              '/net/rcp/DATABASE/apr.temp'
+     &,              '/net/rcp/DATABASE/may.temp'
+     &,              '/net/rcp/DATABASE/jun.temp'
+     &,              '/net/rcp/DATABASE/jul.temp'
+     &,              '/net/rcp/DATABASE/aug.temp'
+     &,              '/net/rcp/DATABASE/sep.temp'
+     &,              '/net/rcp/DATABASE/oct.temp'
+     &,              '/net/rcp/DATABASE/nov.temp'
+     &,              '/net/rcp/DATABASE/dec.temp'
+     &,              '/net/rcp/DATABASE/ann.temp' /
+c
+      data saltin /
+     &               '/net/rcp/DATABASE/jan.salt'
+     &,              '/net/rcp/DATABASE/feb.salt'
+     &,              '/net/rcp/DATABASE/mar.salt'
+     &,              '/net/rcp/DATABASE/apr.salt'
+     &,              '/net/rcp/DATABASE/may.salt'
+     &,              '/net/rcp/DATABASE/jun.salt'
+     &,              '/net/rcp/DATABASE/jul.salt'
+     &,              '/net/rcp/DATABASE/aug.salt'
+     &,              '/net/rcp/DATABASE/sep.salt'
+     &,              '/net/rcp/DATABASE/oct.salt'
+     &,              '/net/rcp/DATABASE/nov.salt'
+     &,              '/net/rcp/DATABASE/dec.salt'
+     &,              '/net/rcp/DATABASE/ann.salt' /
+      data levmask /'/net/rcp/DATABASE/levitus.mask' /
+c
+      fname = "$FILENAME"
+c
+c     open file for levitus land sea mask for the levitus
+c     There are "kd" levels for the land sea mask, where
+c     sea = 1.0, land = 0.0
+c
+c     author: land mask by Bonnie Samuels    bls@gfdl.gov
+c
+      open (10,file=levmask, FORM='unformatted'
+     &,       access='sequential')
+      rewind 10
+c
+c     read the land/sea mask to get axis information for netcdf
+c
+      read(10) iotext
+      read(10) lons, lats, kk, k, cx, cy, dd, dmask
+c
+      momver = ' {MOM 2 v2.3 beta}'
+c
+c     initialize quantities to define an initial condition time
+c     for timestr_netcdf to yield points at center of months
+c
+      eqyear = .true.
+      eqmon  = .false.
+      year0  = 1899
+      month0 = 12
+      day0   = 30
+      hour0  = 0
+      min0   = 0
+      sec0   = 0
+c
+      lclobber = .false.
+      gtitle   = 'Initial Conditions from Levitus'
+c
+c     define axes attributes (points, names, and units) for netcdf
+c
+c     args: axis number, counter, cart_axis, ipositive, cdimnam,
+c           cdimlnam, cdimunits, coordinates, number of coordinates,
+c           dimvals, lendims, max axis length, max number of axes
+c
+c     grep *.h files for definitions of netcdf items
+c
+      num  = 0
+      call caller_id ('rlevitus')
+      call def_axis (1, num, 'X', +1, 'cx_i', 'Longitude of points'
+     &,     'degrees_E', cx, imd, dimvals, lendims, mxdimout, ndimsout)
+c
+      call def_axis(2, num, 'Y', +1, 'cy_j', 'Latitude of points'
+     &,    'degrees_N', cy, jmd, dimvals, lendims, mxdimout
+     &,       ndimsout)
+c
+      call def_axis (3, num, 'Z', -1, 'za_k', 'Depth of  T points'
+     &,     'cm', dd, 19, dimvals, lendims, mxdimout, ndimsout)
+c
+      call def_axis (4, num, 'Z', -1, 'zb_k', 'Depth of S points'
+     &,     'cm', dd, 24, dimvals, lendims, mxdimout, ndimsout)
+c
+      call def_axis (5, num, 'Z', -1, 'zc_k', 'Depth of all points'
+     &,     'cm', dd, kd, dimvals, lendims, mxdimout, ndimsout)
+c
+      call timestr_netcdf (time_since)
+      call def_axis (6, num, 'T', +1,'Time','Time since initial cond'
+     &,   time_since, 0.0, 0, dimvals, lendims, mxdimout, ndimsout)
+c
+c     finish by getting definition of axes
+c
+      do n=1,num
+	call get_axis (n, cart_axis(n), ipositive(n)
+     &,                cdimnam(n), cdimlnam(n), cdimunits(n))
+      enddo
+c
+c     Define data attributes for each variable
+c
+c     args: number of the variable, cvarnam, cvarlnam, cvarunits
+c           axes for data layout, min val, max val, bits of precision,
+c           max allowable variables
+c
+c     grep *.h files for definitions of netcdf items
+c
+      num = 0
+      call def_var (num, 'levitus_t', 'Levitus potential T', 'deg C'
+     &,            '1236',  -1.0e6, 1.e6, 32, nvarsout)
+      call def_var (num, 'levitus_s', 'Levitus salinity', 'ppt'
+     &,            '1246',  -1.0e6, 1.e6, 32, nvarsout)
+      call def_var (num, 'period','Averaging period','days'
+     &,            '6', 0.0, 1.e20, 32, nvarsout)
+      call def_var (num, 'levitus_t_ann', 'Annual Levitus potential T'
+     &,            'deg C', '125',  -1.0e6, 1.e6, 32, nvarsout)
+      call def_var (num, 'levitus_s_ann', 'Annual Levitus salinity'
+     &,            'ppt', '125',  -1.0e6, 1.e6, 32, nvarsout)
+c
+c     finish  by getting definition of all variables for netcdf
+c
+      do n=1,num
+	call get_def (n, cvarnam(n), cvarlnam(n)
+     &,                cvarunits(n),  nvdims(n), idimindx(1,n)
+     &,                validr(1,n), nbits(n))
+      enddo
+c
+c     Setup the NetCDF specifications 
+c
+      iverbose = 0
+      icaltype = 0
+      call  ncseti (fname, lclobber, gtitle
+     &,              ndimsout, lendims, cdimnam, cdimlnam
+     &,              cdimunits, cart_axis, ipositive 
+     &,              dimvals, mxdimout, time, icaltype, icalaux 
+     &,              nvarsout, cvarnam, cvarlnam, cvarunits, nbits 
+     &,              nvdims, idimindx, ndimsout, maxnitems
+     &,              validr, iverbose)
+c
+c     there are 19 levels for monthly temperatures
+c     there are "kd" levels for annual temperatures
+c     month = 1 is january...month = 12 is december, 13=annual mean
+c
+c
+      nummon = 13
+c
+      do n=1,nummon
+        iotin(n) = 10+n
+        open (iotin(n), file=tempin(n), FORM='unformatted'
+     &,       access='sequential')
+      enddo
+c
+      sumday = 0.0
+      do n=1,nummon
+        if (n .le. 12) then
+          numlev = 19
+          print *,'Reading ',numlev,' levels of Levitus T: month=',n
+        else
+          numlev = kd
+          print *,'Reading ',numlev,' levels of annual mean Levitus T'
+        endif
+c
+        rewind iotin(n)
+        rewind 10
+        do k=1,numlev
+c
+c         set the starting indices and length for netcdf
+c
+          istart(1) = 1
+          icount(1) = imd
+          istart(2) = 1
+          icount(2) = jmd
+          istart(3) = k
+          icount(3) = 1
+	  if (n .le. 12) then
+            istart(4) = n
+	  else
+            istart(4) = 1
+	  endif
+          icount(4) = 1
+c
+c         read the land/sea mask
+c
+          read(10) iotext
+          read(10) lons, lats, kk, k2, cx, cy, dd, dmask
+c
+c         read in Levitus data at standard level k:
+c         (the first record is a character stating what data is) 
+c           
+          read (iotin(n)) iotext
+          read (iotin(n)) stamp, dpm, lons, lats, kk, kl, nn, cx
+     &,                   cy, dd, data
+c
+c         set land values to zero. they will be reset to flag value
+c         for netcdf
+c          
+          do j=1,jmd
+	    do i=1,imd
+	      if (dmask(i,j) .eq. 0.0) then
+	        data(i,j) = 0.0 
+	      endif
+	    enddo
+	  enddo
+c
+	  period = dpm
+          if (k .eq. 1) sumday = sumday + dpm
+	  if (n .le. 12) then
+            num_var = 0
+	    timrec  = (sumday-0.5*dpm)/365.0
+	  else
+            num_var = 3
+	    timrec = 1.5
+	  endif
+          call ncput (num_var, istart, icount, data(1,1), timrec)
+        enddo
+	if (n .le. 12) then
+          istart(1) = n
+          icount(1) = 1
+          istart(2) = 1
+          icount(2) = 1
+          istart(3) = 1
+          icount(3) = 1
+          istart(4) = 1
+          icount(4) = 1
+          call ncput (num_var, istart, icount, period, timrec)
+	endif
+      enddo
+c
+c     there are 24 levels for monthly salinity
+c     there are "kd" levels for annual salinity
+c     month = 1 is january...month = 12 is december, 13=annual mean
+c     read it similarly to temperature
+c
+      do n=1,nummon
+        iosin(n) = 40+n
+        open (iosin(n), file=saltin(n), FORM='unformatted'
+     &,       access='sequential')
+      enddo
+      sumday = 0.0
+      do n=1,nummon
+        if (n .le. 12) then
+          numlev = 24
+          print *,'Reading ',numlev,' levels of Levitus S: month=',n
+        else
+          numlev = kd
+          print *,'Reading ',numlev,' levels of annual mean Levitus S'
+        endif
+c
+        rewind iosin(n)
+        rewind 10
+        do k=1,numlev
+c
+c         set the starting indices and length
+c
+          istart(1) = 1
+          icount(1) = imd
+          istart(2) = 1
+          icount(2) = jmd
+          istart(3) = k
+          icount(3) = 1
+	  if (n .le. 12) then
+            istart(4) = n
+	  else
+            istart(4) = 1
+	  endif
+          icount(4) = 1
+c
+c         read the land/sea mask
+c
+          read(10) iotext
+          read(10) lons, lats, kk, k2, cx, cy, dd, dmask
+c
+c         read in Levitus data at standard level k:
+c         (the first record is a character stating what data is) 
+c           
+          read (iosin(n)) iotext
+          read (iosin(n)) stamp, dpm, lons, lats, kk, kl, nn, cx
+     &,                   cy, dd, data
+c
+c         set land values to zero. they will be reset to flag value
+c         for netcdf
+c          
+          do j=1,jmd
+	    do i=1,imd
+	      if (dmask(i,j) .eq. 0.0) then
+	        data(i,j) = 0.0 
+	      endif
+	    enddo
+	  enddo
+c
+	  period = dpm
+          if (k .eq. 1) sumday = sumday + dpm
+	  if (n .le. 12) then
+            num_var = 1
+	    timrec  = (sumday-0.5*dpm)/365.0
+	  else
+            num_var = 4
+	    timrec = 1.5
+	  endif
+          call ncput (num_var, istart, icount, data(1,1), timrec)
+        enddo
+      enddo
+c     needed if not doing all months and annual means
+      if (nummon .ne. 13) num_var = 5
+c
+c     release file. verify number of variables defined = number saved
+c
+      call release_netcdf ('rlevitus', num, num_var)
+c
+      print '(a,a)'
+     &,  ' => Levitus data written in NetCDF format to file ', fname
+      stop
+      end
+CODE
+
+echo "Compiling..."
+f90 $PLATFORM_OPTION -Dnetcdf rlevitus.F $NETCDFlib
+echo Executing ...
+a.out > ../levitus_results
+
+
+echo " "
+echo "Done. output written to file: levitus_results"
+

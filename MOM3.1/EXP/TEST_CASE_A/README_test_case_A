@@ -1,0 +1,115 @@
+This is test_case_A: A global climate-model like configuration for
+MOM3 to be used only locally within GFDL.  The test case has 25
+levels, and uses a 3x3 degree horizontal resolution, going to 1 degree
+in latitude near the equator.  The run_mom_caseA script runs the model
+for one year, using restoring to monthly Levitus data and monthly wind
+stress.  The test case's main objectives are:
+
+1) To be used for testing new updates to the code.  Each such update
+   must be tested and shown to run in test_case_A before being
+   accepted into the standard MOM3 distribution.
+
+2) To make sure that the model solution remains the same with all
+   physics options during the transition from MOM3 to MOM4.  
+
+
+To run test_case_A on the t90:
+------------------------------
+
+    1) mkdir -p $HOME/MOM_3/EXP/TEST_CASE_A
+    
+    2) copy the run script to your run directory
+
+       cp /net/rcp/MOM_3/EXP/TEST_CASE_A/run_mom_caseA $HOME/MOM_3/EXP/TEST_CASE_A/
+
+       and change in run_mom_caseA the lines
+    
+       #QSUB -Gp oa1       # project 
+       #QSUB -o /t90/ett/MOM_3/EXP/TEST_CASE_A/run_printout
+    
+       from oa1 and ett to your group project and to your userid.
+    
+    3) Finally, submit as a batch job:
+
+       cd $HOME/MOM_3/EXP/TEST_CASE_A/
+       gsub run_mom_caseA
+
+    Note: the script uses rsh and rcp to get files from the archive,
+          make sure you have .rhosts files on the t90/ t3e/
+          workstation home directories giving permissions to the t90
+          and t3e to do rsh and rcp.  That is, if your user id is ett,
+          for example, you want to have .rhosts files on your
+          /home/ett/, /t90/ett/ and /t3e/ett/ that have the following
+          lines in them:
+	  	  ett ett
+		  t90 ett
+		  t90-out ett
+		  t94 ett
+		  t94-out ett
+		  t3e ett
+		  t3e-out ett
+
+    output will be found in the directory created by the script at
+    $HOME/MOM_3/EXP/TEST_CASE_A/OUTPUT and it should agree with the
+    sample output in the directory
+    /net/rcp/MOM_3/EXP/TEST_CASE_A/OUTPUT.
+
+
+To run test_case_A on the t3e:
+------------------------------
+
+At the top of the script, replace QSUB by --QSUB in the t90 part and
+--QSUB by QSUB in the t90 part.  Then follow the t90 instructions
+above (where now $HOME refers to the t3e home).
+
+
+
+The options included in this test case are:
+-------------------------------------------
+
+explicit_free_surface 
+explicit_free_surface_nonlinear 
+explicit_eta_laplacian 
+test_case_A 
+restorst 
+firfil
+robert_time_filter
+salinity_psu
+velocity_horz_laplacian 
+tracer_horz_laplacian
+velocity_horz_mix_smag 
+tracer_horz_mix_const
+quicker 
+redi_diffusion
+gent_mcwilliams 
+kppvmix 
+kpp_nonlocal_transport_no_match 
+kpp_cstar_5 
+bryan_lewis_vertical
+xlandmix 
+xlandmix_eta 
+xland_eta_double_med 
+bbl_ag 
+bbl_never_detrain 
+bbl_mask
+partial_cell
+
+The diagnostic option included are
+
+show_zonal_mean_of_sbc 
+gyre_components 
+tracer_averages 
+energy_analysis 
+time_step_monitor 
+matrix_sections 
+trajectories 
+stability_tests 
+save_convection 
+snapshots 
+time_averages 
+save_mixing_coeff 
+save_pressure 
+meridional_overturning_basin 
+meridional_tracer_budget 
+readrmsk 
+show_details 

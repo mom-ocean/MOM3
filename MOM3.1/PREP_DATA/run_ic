@@ -1,0 +1,140 @@
+#! /bin/csh -f
+# CRAY T90 script to create monthly climatological initial conditons
+# for MOM_3  
+#    authors:  R.C. Pacanowski   e-mail: rcp@gfdl.gov
+#              S.M. Griffies     e-mail: smg@gfdl.gov
+
+set echo
+
+set CASE         = ""
+set myEXP        = TEST_CASE 
+set datainpath   = /archive/rcp/MOM_2/DATABASE
+set MOMpath      = /net/rcp/MOM_3
+
+#set MOMupdates   = $MOMpath/EXP/$myEXP/MOM_UPDATES/$CASE
+#set PREPupdates  = $MOMpath/EXP/$myEXP/PREP_UPDATES/$CASE
+#set PREPpath     = $MOMpath/PREP_DATA
+#set printoutpath = $PREPupdates
+#set dataoutpath  = /archive/rcp/MOM_3/EXP/$myEXP/$CASE
+#set WORKDIR      = $FTMPDIR
+
+set MOMupdates   = $MOMpath/MOM_UPDATES
+set PREPupdates  = /home/smg/MOM/MOM_3/EXP/MESO/MOM_UPDATES/PREP_DATA/MODIFIED
+set PREPpath     = $MOMpath/MOM_UPDATES
+set printoutpath = /t90/smg/MOM_3
+set dataoutpath  = /archive/smg/MOM_3/EXP
+set WORKDIR      = $FTMPDIR/ic
+ mkdir $WORKDIR
+
+# save output for visualization
+set OUTPUT = " "
+set OUTPUT = "$OUTPUT -Dsave_IC"
+set OUTPUT = "$OUTPUT -Duse_netCDF"
+
+if ("$OUTPUT" == " ") then #no NETCDF library
+ set NETCDFlib = ""
+else
+ set NETCDFlib    = "-L/usr/local/lib -ludunits -L/usr/local/lib -lnetcdf"
+endif
+
+cd $WORKDIR   # change to a working directory
+/bin/rm $WORKDIR/*.[Ffh]
+/bin/rm $WORKDIR/ic.dta.nc
+
+echo " "
+echo " preparing Levitus 1982 climatological monthly T & S for MOM"
+echo " (also monthly SST and SSS files)"
+echo " "
+
+echo "=>Grabbing source files from $MOMpath"
+set list = (stdunits.h coord.h diag.h grids.F size.h derived_options.h util.F)
+set list = ($list iomngr.F iomngr.h size_check.F tmngr.h vers.h index.h)
+set list = ($list taskrows.h param.h pconst.h)
+set listF90 = (mpp.F90 mpp_domains.F90 mpp_io.F90 datamod.F90 mom3mpp.F90)
+
+foreach file ($list)
+  cp $MOMpath/$file .
+end
+foreach file ($listF90)
+  echo $file
+  cp "$MOMpath/$file" .
+end
+
+/bin/cp $MOMupdates/*.[Ffh] .
+/bin/cp $PREPpath/ic.F .
+/bin/cp $PREPupdates/*.[Ffh]  .
+
+setenv NPROC 1
+
+echo " ==> compiling ... "
+
+# USER INPUT: set OPTIONS
+#
+#     options: (must choose only one of these)
+#       -Dread_my_grid    : read in your own grid definition
+#       -Dgenerate_a_grid : generate a grid based on USER INPUT
+#                           in grids.F
+#     optional options:
+#
+#       -Drectangular_box : sets "kmt" to a flat bottom rectangular box
+#       -Dflat_bottom     : sets "kmt" over ocean to maximum levels (km)
+#       -Dcyclic          : sets cyclic conditons in zonal direction
+
+set OPTIONS = "$OUTPUT -Dmakeic -Dgenerate_a_grid -Dcyclic"
+set COMPILER_OPTIONS  = "-F -I. -O 0 -g -ei"
+#set COMPILER_OPTIONS  = "-F -I. -O 0 -ei"
+set ALL_OPTIONS = ($OPTIONS $COMPILER_OPTIONS $OUTPUT -I/usr/local/include/)
+echo OPTION LIST: $ALL_OPTIONS
+
+source /local/f90/3.1.0.0
+foreach file ($listF90)
+  f90 -F -c -g $ALL_OPTIONS  $file
+end
+f90 -F -g $ALL_OPTIONS $NETCDFlib ic.F
+mv a.out ic.out
+
+if (!(-r jan.temp && -r jan.salt)) then
+ echo "dmgetting data"
+ dmget $datainpath/*.temp $datainpath/*.salt
+ echo "copying data"
+ /bin/cp $datainpath/*.temp .
+ /bin/cp $datainpath/*.salt .
+else
+ echo "data is assumed to be in $WORKDIR"
+endif
+
+
+# USER INPUT: choose the type of interpolation based on resolution
+
+# intrp = 1 when model horizontal resolution is coarser than Levitus 1 deg 
+# intrp = 2 when model horizontal resolution is finer than Levitus 1 deg 
+# intrpv = 1 when model vertical resolution is coarser than Levitus 33 levels
+# intrpv = 2 when model vertical resolution is finer than Levitus 33 levels  
+ 
+set NAMELIST_EOF = "/"
+cat > ic.in << NAMELIST
+ &input  intrp=1, intrpv=1,
+ $NAMELIST_EOF
+NAMELIST
+
+/bin/rm .assign
+
+echo " ==> executing ic ... "
+(ic.out < ic.in) >& printout
+
+echo " ===> copying printout to $printoutpath/ic.prn"
+/bin/cp printout $printoutpath/ic.prn
+
+if (! (-d $dataoutpath)) then
+  mkdir $dataoutpath
+endif
+
+echo " ===> copying data files to $dataoutpath..."
+ls -l *.mom  ic.dta*
+/bin/cp *.mom $dataoutpath
+/bin/cp ic.dta* $dataoutpath 
+
+echo  " ==> all done == "
+
+
+

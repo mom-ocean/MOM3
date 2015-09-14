@@ -1,0 +1,61 @@
+#! /bin/csh -f
+echo " "
+echo " =>executing: run_timer"
+echo " "
+#
+#  script for testing the "timer.F" module
+#
+# if executing on SGI, use -Dsgi
+# if executing on CRAY T90, use -Dcray_t90 (use -Dcray_ymp on a YMP)
+
+
+set MOMpath = /net/rcp/MOM_3        # base model code
+set WORK = TEMP_DIR                 # temp directory
+set OUTPUT = `pwd`                  # directory holding run script
+                                    # and output files
+
+if (! -r timer.F) then
+  echo '=>Error: "timer.F" is not in this UPDATES directory'
+  exit
+endif
+
+echo "=>Grabbing sources from $MOMpath"
+mkdir $WORK
+set list = (stdunits.h derived_options.h timer.h util.F)
+foreach file ($list)
+  cp $MOMpath/$file $WORK
+end
+cp timer.F $WORK
+cd $WORK
+
+
+set case = 'sgi'
+#set case = 'cray'
+
+if ($case == 'sgi') then
+ echo 'running timer test on sgi'
+ 
+ set COMPILER_OPTIONS = "-O3 -mips2 -r8 -dalign"
+ set OPTIONS = '-Dtest_timer -Dsgi -Dtiming -Ddebug_timer -Dshow_tictocs'
+ echo "=>compiling..."
+ f90 $OPTIONS timer.F
+ echo "=> running...results are being written to results_sgi_timer"
+ a.out > $OUTPUT/results_sgi_timer
+endif
+
+if ($case == 'cray') then
+ echo 'running timer test on cray'
+
+ set OPTIONS = '-Dtest_timer -Dcray_t90 -Dtiming -Ddebug_timer -Dshow_tictocs'
+ echo "=>compiling..."
+ f90 -O 2 $OPTIONS timer.F
+ echo "=> running...results are being written to results_cray_timer"
+ a.out > $OUTPUT/results_cray_timer
+endif
+
+cd $OUTPUT
+/bin/rm -r $WORK
+
+echo " "
+echo "=> Done"
+

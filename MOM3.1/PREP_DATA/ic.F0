@@ -1,0 +1,555 @@
+#ifdef makeic
+# define driver_only
+# include "iomngr.F"
+# include "grids.F"
+# include "size_check.F"
+# include "util.F"
+# if defined netcdf
+#  include "diago_netcdf.F"
+#  include "util_netcdf.F"
+#  include "id_fill.F"
+#  include "ncirblkd.F"
+#  include "ncstore.F"
+#  include "ncsetup.F"
+#  include "ncdone.F"
+#  include "ncextend.F"
+#  include "clen.f"
+#  include "pack.F"
+#  include "sincestr.F"
+# endif
+
+      program ic
+c
+c-----------------------------------------------------------------------
+c     prepare initial temperature & salt for MOM based on
+c     monthly Levitus climatology from MOM database
+c
+c     author:      r. c. pacanowski      e-mail=> rcp@gfdl.gov
+c-----------------------------------------------------------------------
+c
+# include "size.h"
+# include "stdunits.h"
+c
+      character*12 tempin, tempout, saltin, saltout
+      dimension tempin(13), tempout(13), saltin(13), saltout(13)
+      dimension iotin(13), iotout(13), iosin(13), iosout(13)
+c
+      data tempout/
+     &               'jan.temp.mom', 'feb.temp.mom', 'mar.temp.mom'
+     &,              'apr.temp.mom', 'may.temp.mom', 'jun.temp.mom'
+     &,              'jul.temp.mom', 'aug.temp.mom', 'sep.temp.mom'
+     &,              'oct.temp.mom', 'nov.temp.mom', 'dec.temp.mom'
+     &,              'ann.temp.mom' /
+c
+      data saltout/
+     &               'jan.salt.mom', 'feb.salt.mom', 'mar.salt.mom'
+     &,              'apr.salt.mom', 'may.salt.mom', 'jun.salt.mom'
+     &,              'jul.salt.mom', 'aug.salt.mom', 'sep.salt.mom'
+     &,              'oct.salt.mom', 'nov.salt.mom', 'dec.salt.mom'
+     &,              'ann.salt.mom' /
+c
+c
+      data tempin /
+     &               'jan.temp', 'feb.temp', 'mar.temp'
+     &,              'apr.temp', 'may.temp', 'jun.temp'
+     &,              'jul.temp', 'aug.temp', 'sep.temp'
+     &,              'oct.temp', 'nov.temp', 'dec.temp'
+     &,              'ann.temp' /
+c
+      data saltin /
+     &               'jan.salt', 'feb.salt', 'mar.salt'
+     &,              'apr.salt', 'may.salt', 'jun.salt'
+     &,              'jul.salt', 'aug.salt', 'sep.salt'
+     &,              'oct.salt', 'nov.salt', 'dec.salt'
+     &,              'ann.salt' /
+c
+c     intrp  = 1 for model horizontal resolution coarser than Levitus
+c              2 for model horizontal resolution finer than Levitus
+c     intrpv = 1 for model vertical resolution coarser than Levitus
+c              2 for model vertical resolution finer than Levitus
+c
+      data intrp /1/, intrpv /1/
+c
+      namelist /input/   intrp, intrpv
+c
+      stdout = 6
+# ifdef cyclic
+      write (stdout,*) '  ==> cyclic option set'
+# else
+      write (stdout,*) '  ==> cyclic option NOT set'
+# endif
+# ifdef bbl_test
+      write (stdout,*) 
+     &  '=>Error: disable option "bbl_test" when constructing I.C.    '
+     &, '         (Only enable "bbl_test" when executing the model.)  '
+      if (imt .gt. 0) stop
+# endif 
+      read  (stdin, input)
+      write (stdout,input)
+c
+      if (intrp .eq. 1) then
+        write (stdout,*)
+     &   ' Assuming horizontal resolution coarser than Levitus'
+      elseif (intrp .eq. 2) then
+        write (stdout,*)
+     &   ' Assuming horizontal resolution finer than Levitus'
+      else
+        write (stdout,*) ' intrp must be 1 or 2'
+	stop
+      endif
+c
+      if (intrpv .eq. 1) then
+        write (stdout,*)
+     &    ' Assuming vertical resolution coarser than Levitus'
+      elseif (intrpv .eq. 2) then
+        write (stdout,*)
+     &    ' Assuming vertical resolution finer than Levitus'
+      else
+        write (stdout,*)
+     &    ' intrpv must be 1 or 2'
+	stop
+      endif
+c
+c-----------------------------------------------------------------------
+c     initialize the i/o units
+c-----------------------------------------------------------------------
+c
+      call ioinit
+      do n=1,13
+        call getunit (iotin(n), tempin(n)
+     &,               'unformatted sequential rewind ieee')
+        call getunit (iotout(n), tempout(n)
+     &,               'unformatted sequential rewind ieee')
+        call getunit (iosin(n), saltin(n)
+     &,               'unformatted sequential rewind ieee')
+        call getunit (iosout(n), saltout(n)
+     &,               'unformatted sequential rewind ieee')
+      enddo
+      call getunit (iosst, 'sst.mom'
+     &,               'unformatted sequential rewind ieee')
+      call getunit (iosss, 'sss.mom'
+     &,               'unformatted sequential rewind ieee')
+c
+c
+c-----------------------------------------------------------------------
+c     interpolate levitus data (T & S) to MOM "t" grid
+c     temperature varies monthly down to level 19
+c     salinity varies monthly down to level 24
+c-----------------------------------------------------------------------
+c
+      months = 13
+      lev = 19
+      it = 0
+      write (stdout,'(/a/)') 'Converting Levitus Temperature'
+      do n=1,months
+        call doit (lev, iotin, iotout, iosst, n, intrp, intrpv, it)
+      enddo
+c
+      lev = 24
+      write (stdout,'(/a/)') 'Converting Levitus Salinity'
+      do n=1,months
+        call doit (lev, iosin, iosout, iosss, n, intrp, intrpv, it)
+      enddo
+c
+# ifdef netcdf
+c
+c-----------------------------------------------------------------------
+c     save all data as a Netcdf File
+c-----------------------------------------------------------------------
+c
+      call ic_data ('ic.dta.nc', iotout, iosout, months)
+# endif
+      stop
+      end
+
+
+      subroutine doit (lev, ioin, ioout, iosurf, month, intrp, intrpv
+     &,                it)
+# include "size.h"
+# include "stdunits.h"
+      parameter (imd=362, jmd=180, kd=33, lenw=imd*20)
+      character*32 stamp, stamp2
+      character*80 iotext
+# include "coord.h"
+c
+      common /bigone/ lons, lats, depth, cx(imd), cy(jmd)
+      common /bigone/ dd(kd), data(imd,jmd), tdp(imd), cxt(imd)
+c
+      dimension block(imt,jmt,kd), tm(imt,km), tij(imt,jmt), tdv(imt,kd)
+      common /icwrk/ work1(lenw), work2(lenw)
+
+      dimension ioin(13), ioout(13)
+c
+      it = it + 1
+      if (it .eq. 1) then
+c
+c-----------------------------------------------------------------------
+c       construct the grid.
+c-----------------------------------------------------------------------
+c
+        write (stdout,'(//1x,a,//)') 'Construct the MOM grid'
+c
+        maxlen = max(imt,jmt,km)
+        call gcoord (maxlen, imt2, jmt2, km2, dxtdeg, dytdeg, dxudeg
+     &,              dyudeg, dzt, dzw, xt, xu, yt, yu, zt, zw)
+c
+        call size_check (imt2, jmt2, km2, 'ic', 'stop')
+c
+c-----------------------------------------------------------------------
+c       bring in the grid definition for levitus climatology
+c-----------------------------------------------------------------------
+c
+        read (ioin(13))
+        read (ioin(13)) stamp, dpm, lons, lats, kk, kl, n, cx
+     &,                  cy, dd, data
+# ifdef cyclic
+        call tranlon (data, imd, imd-2, jmd, tdp, cx, xt(2), imt-2, cxt)
+# else
+        call tranlon (data, imd, imd-2, jmd, tdp, cx, xt, imt, cxt)
+# endif
+c
+        write (stdout,'(///,1x, a,/)') 'Levitus grid definition:'
+        write (stdout,'(//,1x,a,/)') '            latitudes:'
+        write (stdout,'(1x,10f10.5)') cy
+        write (stdout,'(//,1x,a,/)') '  original longitudes:'
+        write (stdout,'(1x,10f10.5)') cx
+        write (stdout,'(//,1x,a,/)') 'translated longitudes:'
+        write (stdout,'(1x,10f10.5)') cxt
+        write (stdout,'(//,1x,a,/)') '               depths:'
+        write (stdout,'(1x,10g10.2)') dd
+        write (stdout,'(///)')
+      endif
+c
+      rewind ioin(13)
+      do k=1,kd
+c
+c       read in Levitus data at standard level k
+c
+        read (ioin(13))
+        read (ioin(13)) stamp2, dpm2, lons, lats, kk, kl, n, cx
+     &,                   cy, dd, data
+        if (month .ne. 13) then
+	  if (k .le. lev) then
+            read (ioin(month))
+            read (ioin(month)) stamp, dpm, lons, lats, kk, kl, n, cx
+     &,                        cy, dd, data
+          endif
+	else
+	  stamp = stamp2
+	  dpm   = dpm2
+	endif
+c
+c       translate levitus data on standard level k and interpolate 
+c       to MOM "t" grid
+c
+        if (month .eq. 1 .and. k .eq. 1) then
+	  nnn = 1 
+        else
+	  nnn = 2
+	endif
+# ifdef cyclic
+        call tranlon (data, imd, imd-2, jmd, tdp, cx, xt(2), imt-2
+     &,               cxt)
+        if (intrp .eq. 1) then
+          call ftc (data, imd, jmd, cxt, cy, block(1,1,k), imt, jmt, 2
+     &,         imt-1, 1, jmt, xt, yt, nnn, work1, lenw)
+        else if (intrp .eq. 2) then
+          call ctf (data, imd, jmd, cxt, cy, block(1,1,k), imt, jmt, 2
+     &,         imt-1, 1, jmt, xt, yt, nnn, work1, lenw)
+        else
+          write (stdout,*) ' Error: intrp must = 1 or 2'
+	 stop
+        endif
+c
+        do j=1,jmt
+          block(1,j,k)   = block(imt-1,j,k)
+          block(imt,j,k) = block(2,j,k)
+        enddo
+# else
+        call tranlon (data, imd, imd-2, jmd, tdp, cx, xt, imt, cxt)
+        if (intrp .eq. 1) then
+          call ftc (data, imd, jmd, cxt, cy, block(1,1,k), imt, jmt, 1
+     &,       imt, 1, jmt, xt, yt, nnn, work1, lenw)
+        else if (intrp .eq. 2) then
+          call ctf (data, imd, jmd, cxt, cy, block(1,1,k), imt, jmt, 1
+     &,       imt, 1, jmt, xt, yt, nnn, work1, lenw)
+        else
+          write (stdout,*) ' Error: intrp must = 1 or 2'
+	  stop
+        endif
+# endif
+c
+c       normalize salinity to model units
+c
+        if (lev .eq. 24) then
+          do j=1,jmt
+            do i=1,imt
+              block(i,j,k) = 1.e-3*block(i,j,k)-.035
+            enddo
+	  enddo
+        endif
+c
+      enddo
+c
+c-----------------------------------------------------------------------
+c    interpolate vertically to MOM levels for each latitude row
+c-----------------------------------------------------------------------
+c
+      do j=1,jmt
+        do k=1,kd
+          do i=1,imt
+            tdv(i,k) = block(i,j,k)
+          enddo
+	enddo
+c
+        if (intrpv .eq. 1) then
+          call ftc (tdv, imt, kd, xt, dd, tm, imt, km, 1
+     &,         imt, 1, km, xt, zt, j, work2, lenw)
+        else if (intrpv .eq. 2) then
+          call ctf (tdv, imt, kd, xt, dd, tm, imt, km, 1
+     &,         imt, 1, km, xt, zt, j, work2, lenw)
+        else
+          write (stdout,*) ' Error: intrp must = 1 or 2'
+	  stop
+        endif
+c
+c       save a slice of surface data
+c
+        do i=1,imt
+          tij(i,j) = tm(i,1)
+        enddo
+c
+        iotext =
+     &   'dim x(i),z(k),d(i,k);read(nu)stamp,avg,i,k,j,y,mon,x,z,d'
+        write (ioout(month)) iotext
+        write (ioout(month)) stamp, dpm, imt, km, j, yt(j), month
+     &, xt, zt, tm
+        write (stdout,*) ' ==> writing data(imt,km) for jrow =',j
+     &, ' at lat=', yt(j),' on ',stamp, ' averaged over preceding '
+     &, dpm,' days'
+c
+	if (j .eq. jmt/2) then
+	  write (stdout,'(//"j=",i2/10(1pe10.3,1x))')
+     &          j,(tm(i,1),i=1,imt)
+	  write (stdout,'(//)')
+	endif
+      enddo
+c
+c-----------------------------------------------------------------------
+c     store surface data on MOM "t" grid for each month (annual is 13)
+c-----------------------------------------------------------------------
+c
+      k = 1
+      iotext =
+     & 'dim x(i),y(j),d(i,j);read(nu)stamp,avg,i,j,k,z,mon,x,y,d'
+      write (iosurf) iotext
+      write (iosurf) stamp, dpm, imt, jmt, k, zt(1), month, xt, yt, tij 
+      write (stdout, '(/,a,a,a,g14.7,a,g14.7,a//,a,i3,a,//)')
+     & ' ==> writing surface data for ', stamp, ' at depth = ',zt(1)
+     &, 'cm,   averaged over previous ', dpm, ' days'
+     &,' ====    E N D   OF   M O N T H  ',month,'    ===='
+      return
+      end
+
+
+
+#if defined netcdf
+      subroutine ic_data (fname, iotout, iosout, months)
+c
+c-----------------------------------------------------------------------
+c     Saves a netcdf version of IC data
+c
+c     author: r. c. pacanowski            e-mail==>rcp@gfdl.gov
+c-----------------------------------------------------------------------
+c
+# include "size.h"
+# include "coord.h"
+# include "stdunits.h"
+# include "tmngr.h"
+#  include "vers.h"
+      character*(*) fname
+c
+c     ndimsout = total number of axes
+c     nvarsout = total number of variables
+c     mxdimout = size of longest axis
+c
+      parameter (ndimsout=4, nvarsout = 5, mxdimout = max(imt,jmt,km))
+# include "nc_mom.h"
+c
+      dimension buf(imt,km), xb(imt), zb(km)
+      dimension iotout(13), iosout(13)
+      character*80 iotext
+      save iverbose
+c
+      momver = ' {MOM 2 v2.3 beta}'
+c
+c     initialize quantities to define an initial condition time
+c     for timestr_netcdf to yield points at center of months
+c
+      eqyear = .true.
+      eqmon  = .false.
+      year0  = 1899
+      month0 = 12
+      day0   = 30
+      hour0  = 0
+      min0   = 0
+      sec0   = 0
+c
+      lclobber = .false.
+      gtitle   = 'Initial Conditions from Levitus'
+c
+c     define axes attributes (points, names, and units) for netcdf
+c
+c     args: axis number, counter, cart_axis, ipositive, cdimnam,
+c           cdimlnam, cdimunits, coordinates, number of coordinates,
+c           dimvals, lendims, max axis length, max number of axes
+c
+c     grep *.h files for definitions of netcdf items
+c
+      num  = 0
+      call caller_id ('ic_data')
+      call def_axis (1, num, 'X', +1, 'xt_i', 'Longitude of T points'
+     &,     'degrees_E', xt, imt, dimvals, lendims, mxdimout, ndimsout)
+c
+      call def_axis(2, num, 'Y', +1, 'yt_j', 'Latitude of T points'
+     &,    'degrees_N', yt, jmt, dimvals, lendims, mxdimout
+     &,       ndimsout)
+c
+      call def_axis (3, num, 'Z', -1, 'zt_k', 'Depth of T points'
+     &,     'cm', zt, km, dimvals, lendims, mxdimout, ndimsout)
+c
+      call timestr_netcdf (time_since)
+      call def_axis (4, num, 'T', +1,'Time','Time since initial cond'
+     &,   time_since, 0.0, 0, dimvals, lendims, mxdimout, ndimsout)
+c
+c     finish by getting definition of axes
+c
+      do n=1,num
+	call get_axis (n, cart_axis(n), ipositive(n)
+     &,                cdimnam(n), cdimlnam(n), cdimunits(n))
+      enddo
+c
+c     Define data attributes for each variable
+c
+c     args: number of the variable, cvarnam, cvarlnam, cvarunits
+c           axes for data layout, min val, max val, bits of precision,
+c           max allowable variables
+c
+c     grep *.h files for definitions of netcdf items
+c
+      num = 0
+      call def_var (num, 't_lev', 'Levitus potential T', 'deg C'
+     &,      '1234',  -1.0e6, 1.e6, 32, nvarsout)
+      call def_var (num, 's_lev', 'Levitus salinity', 'ppt'
+     &,      '1234',  -1.0e6, 1.e6,  32, nvarsout)
+      call def_var (num, 'period','Averaging period','days'
+     &,          '4', 0.0, 1.e20, 32, nvarsout)
+      call def_var (num, 'ann_t_lev', 'Annual Levitus potential T'
+     &, 'deg C'
+     &,      '123',  -1.0e6, 1.e6,  32, nvarsout)
+      call def_var (num, 'ann_s_lev', 'Annual Levitus salinity', 'ppt'
+     &,      '123',  -1.0e6, 1.e6,  32, nvarsout)
+c
+c     finish  by getting definition of all variables for netcdf
+c
+      do n=1,num
+	call get_def (n, cvarnam(n), cvarlnam(n)
+     &,                cvarunits(n),  nvdims(n), idimindx(1,n)
+     &,                validr(1,n), nbits(n))
+      enddo
+c
+c     Setup the NetCDF specifications 
+c
+      iverbose = 10
+      icaltype = 0
+      call  ncseti (fname, lclobber, gtitle
+     &,              ndimsout, lendims, cdimnam, cdimlnam
+     &,              cdimunits, cart_axis, ipositive 
+     &,              dimvals, mxdimout, time, icaltype, icalaux 
+     &,              nvarsout, cvarnam, cvarlnam, cvarunits, nbits 
+     &,              nvdims, idimindx, ndimsout, maxnitems
+     &,              validr, iverbose)
+c
+c     save variables in the same order as they were defined
+c     note variables are saved as if dimensioned (x,y)
+c
+      sumday = 0.0
+      do n=1,months
+        rewind iotout(n)
+        rewind iosout(n)
+c
+        do jrow=1,jmt
+c
+c         set the starting indices and length
+c
+          istart(1) = 1
+          icount(1) = imt
+          istart(2) = jrow
+          icount(2) = 1
+          istart(3) = 1
+          icount(3) = km
+	  if (n .le. 12) then
+            istart(4) = n
+	  else
+            istart(4) = 1
+	  endif
+          icount(4) = 1
+c
+          read (iotout(n)) iotext
+          read (iotout(n)) stamp, dpm, iimt, ikm, jj, ytj, imo
+     &,   xb, zb, buf
+	  period = dpm
+          if (jrow .eq. 1) sumday = sumday + dpm
+	  if (n .le. 12) then
+            num_var = 0
+	    timrec  = (sumday-0.5*dpm)/365.0
+	  else
+            num_var = 3
+	    timrec = 1.5
+	  endif
+          call ncput (num_var, istart, icount, buf(1,1), timrec)
+c
+c
+          write (stdout,*) 'tp salt: n=',n,' jrow=',jrow
+          read (iosout(n)) iotext
+          read (iosout(n)) stamp, dpm, iimt, ikm, jj, ytj, imo
+     &,   xb, zb, buf
+          do k=1,km
+            do i=1,imt
+	      buf(i,k) = (buf(i,k) + 0.035)*1000.0
+	    enddo
+	  enddo
+          call ncput (num_var, istart, icount, buf(1,1), timrec)
+        enddo
+	if (n .le. 12) then
+          istart(1) = n
+          icount(1) = 1
+          istart(2) = 1
+          icount(2) = 1
+          istart(3) = 1
+          icount(3) = 1
+          istart(4) = 1
+          icount(4) = 1
+          call ncput (num_var, istart, icount, period, timrec)
+	endif
+      enddo
+c     needed if not doing all months and annual means
+      if (months .ne. 13) num_var = 5
+c
+c     release file. verify number of variables defined = number saved
+c
+      call release_netcdf ('ic_data', num, num_var)
+c
+      write (stdout,'(a,a)')
+     &   ' => IC data written in NetCDF format to file ', fname
+      return
+      end
+#endif
+
+
+
+#else
+      subroutine ic
+      return
+      end
+#endif

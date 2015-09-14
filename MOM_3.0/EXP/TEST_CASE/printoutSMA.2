@@ -1,0 +1,1850 @@
+
+MPP module $Id: mpp.F90,v 4.9 1999/08/06 20:10:43 vb Exp $
+ NPES= 2
+ Using SMA (shmem) library for message passing...
+
+MPP_DOMAINS module $Id: mpp_domains.F90,v 4.10 1999/07/26 19:09:59 vb Exp $
+ MPP_DOMAINS: size of buffer arrays for halo regions= 32768
+
+MPP_IO module $Id: mpp_io.F90,v 4.22 1999/07/26 19:09:36 vb Exp $
+
+                                                ====  Driving MOM  ====
+
+
+ (Executing on     2 processor(s): this processor number {pn} =    1 )
+
+           Assigning tasks for   2 processor(s) as follows:
+ Processor #       jstask         jetask         jscomp         jecomp     computed rows        jmw           MW loads
+       1              1             35              2             33             32              5             32
+       2             32             66             34             65             32              5             32
+  
+  Surface Boundary Conditions are defined as follows:
+  
+  for the ocean (comming from the atmos):
+  S.B.C. #  1  is  taux               , MOM expects units of  dynes/cm**2        
+  S.B.C. #  2  is  tauy               , MOM expects units of  dynes/cm**2        
+  S.B.C. #  3  is  heatflux           , MOM expects units of  cal/cm**2/sec      
+  S.B.C. #  4  is  saltflux           , MOM expects units of  gm/cm**2/sec       
+  
+  for the atmosphere (comming from MOM):
+  S.B.C. #  5  is  sst                , atmos expects units of  deg C              
+  S.B.C. #  6  is  sss                , atmos expects units of  (S-35.0)/1000      
+
+ GFDL MOM version =  {MOM 3.0 alpha}         
+
+
+ Experiment name =  MOM test case                                              
+
+ &CONTRL  INIT = T, RUNLEN = 20., RUNUNITS = days    , SEGTIM = 1., RESTRT = T, INITPT = T, TAUX0 = 0.E+0, TAUY0 = 0.E+0 /
+ &TSTEPS  DTTS = 86400., DTUV = 3600., DTSF = 30. /
+ &RIGLID  MXSCAN = 2000, TOLRSF = 10., TOLRSP = 1.00000000000000005E-4, TOLRFS = 1.00000000000000005E-4, LAND_MASS_A = 0, LAND_MASS_B
+  = 0 /
+ &MIXING  AM = 1420000000., AH = 10000000., AMBI = 1.E+22, AHBI = 1.E+21, KAPPA_M = 10., KAPPA_H = 0.5, CDBOT = 0.E+0, SPNEP = 0.E+0
+  SENEP = 0.E+0, AIDIF = 1., NCON = 0, NMIX = 17, EB = T, ACOR = 0.E+0, DAMPTS = 2*35., ANNLEV = F, SMOOTH = 1.00000000000000002E-2, 
+  RJFRST = -81., FILTER_REFLAT_N = 70., FILTER_REFLAT_S = -70., ETA_MIX = 10000000. /
+ &DIAGN  TSIINT = 0.E+0, TAVGINT = 0.E+0, ITAVG = T, TMBINT = 0.E+0, TMBPER = 0.E+0, ITMB = T, STABINT = 0.E+0, ZMBCINT = 0.E+0, 
+  GLENINT = 0.E+0, TRMBINT = 0.E+0, ITRMB = T, VMSFINT = 0.E+0, GYREINT = 0.E+0, IGYRE = T, EXTINT = 0.E+0, PRXZINT = 0.E+0, TRAJINT
+  = 0.E+0, EXCONVINT = 0.E+0, DSPINT = 0.E+0, DSPPER = 0.E+0, SNAPINT = 0.E+0, TIMAVGINT = 0.E+0, TIMAVGPER = 0.E+0, CMIXINT = 0.E+0
+  PRLAT = -60.,  0.E+0,  27.,  55.,  6*100., PRSLON = 4*180.,  6*0.E+0, PRELON = 4*230.,  6*0.E+0, PRSDPT = 10*0.E+0, PREDPT = 
+ 10*600000., SLATXY = -90., ELATXY = 90., SLONXY = 1.5, ELONXY = 358.5, CFLONS = 0.E+0, CFLONE = 360., CFLATS = -90., CFLATE = 90., 
+  CFLDPS = 0.E+0, CFLDPE = 600000., MAXCFL = 3, XBTINT = 0.E+0, XBTPER = 0.E+0, CROSSINT = 0.E+0, PRESSINT = 0.E+0, FCTINT = 0.E+0, 
+  TYZINT = 0.E+0, RHOINT = 0.E+0 /
+ &IO  EXPNAM =  MOM test case                                              , IOTAVG = -1, IOTMB = -1, IOTRMB = -1, IOGLEN = -1, 
+  IOVMSF = -1, IOGYRE = -1, IOPRXZ = -1, IOEXT = -1, IODSP = -1, IOTSI = -1, IOZMBC = -1, IOTRAJ = -1, IOXBT = -1 /
+ &ICTIME  YEAR0 = 1, MONTH0 = 1, DAY0 = 1, HOUR0 = 0, MIN0 = 0, SEC0 = 0, RYEAR = 1900, RMONTH = 1, RDAY = 1, RHOUR = 0, RMIN = 0, 
+  RSEC = 0, REFRUN = F, REFINIT = T, REFUSER = F, EQYEAR = T, EQMON = F /
+ &BBL  RAYDRAG = 0.E+0, KVBBLTOP = 200., CDBOTBBL = 3.00000000000000006E-3, ENTRAIN_KBBL = 0.E+0, ENTRAIN_KBBL_CONSTANT = 0.E+0 /
+
+ Memory resource for file kflds =  1.610E-02 (MW)
+
+ Memory resource for file latdisk1 =  0.515     (MW)
+
+ Memory resource for file latdisk2 =  0.515     (MW)
+
+The following grid options have been selected:
+
+-Dgenerate_a_grid
+
+
+                                    G R I D   G E N E R A T I O N
+
+
+                                           Grid resolution:
+
+
+ Generating the longitudinal resolution ( 2 extra boundary points will be used).
+   region #  1  going from   0.000000     (res=  3.000000    ) to   360.0000     (res=  3.000000    )
+    constructed   120.0000     grid cells for this region
+
+ Generating the latitudinal resolution ( 2 extra boundary points will be used).
+   region #  1  going from  -90.00000     (res=  2.812500    ) to   90.00000     (res=  2.812500    )
+    constructed   64.00000     grid cells for this region
+
+ Generating the vertical resolution ( 0 extra boundary points will be used).
+   region #  1  going from   0.000000     (res=  2500.000    ) to   10000.00     (res=  2500.000    )
+    constructed   4.000000     grid cells for this region
+   region #  2  going from   10000.00     (res=  2500.000    ) to   560000.0     (res=  97500.00    )
+    constructed   11.00000     grid cells for this region
+
+Adding one level for BBL: new km=  16
+
+
+Vertical resolution of cells "dzw(k)" k=0,  16 in units of cm as follows:
+    1250.00   2500.00   2500.00   2500.00   2500.00   4424.08  10040.46  18894.12  30267.79  43240.05
+   56759.95  69732.21  81105.88  89959.54  95575.92  51250.00   2500.00
+
+Vertical resolution of cells "dzt(k)" k=1,  16 in units of cm as follows:
+    2500.00   2500.00   2500.00   2500.00   3462.04   7232.27  14467.29  24580.95  36753.92  50000.00
+   63246.08  75419.05  85532.71  92767.73  96537.96   5000.00
+
+Longitudinal resolution of cells "dxtdeg(i)" i=1, 122 in units of deg as follows:
+     3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000
+     3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000
+     3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000
+     3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000
+     3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000
+     3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000
+     3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000
+     3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000
+     3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000
+     3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000
+     3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000
+     3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000    3.0000
+     3.0000    3.0000
+
+Latitudinal resolution of cells "dytdeg(jrow)" jrow=1,  66 in units of deg as follows:
+     2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125
+     2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125
+     2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125
+     2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125
+     2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125
+     2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125    2.8125
+     2.8125    2.8125    2.8125    2.8125    2.8125    2.8125
+
+
+=>Warning: T cell delta z at k=   15 is not an average of adjacent W cell delta z`s
+
+
+                                         Grid Point Coordinate details: 
+
+ The western edge of the T-cell at i=2 is at:  0.000000     (deg) longitude
+ (the 1st T-cell is a boundary cell)
+ The southern edge of the T-cell at jrow=2 is at: -90.00000     (deg) latitude
+ (the 1st T-cell is a boundary cell)
+ The top edge of the T-cell at k=1 is at z =  0.000000     (cm)
+
+ The eastern edge of the T-cell at i= 121 is at:  360.0000     (deg) longitude
+ (the last T-cell (imt= 122) is a boundary cell)
+ The northern edge of the T-cell at jrow=  65 is at:  90.00000     (deg) latitude
+ (the last T-cell (jmt=  66) is a boundary cell)
+ The bottom edge of T-cell at k=  16 is at z =  565000.0     (cm)
+
+
+ The western edge of the U-cell at i=2 is at: -1.500000     (deg) longitude
+ (the 1st U-cell is a boundary point)
+ The southern edge of the U cell at jrow=1 is at: -91.40625     (deg) latitude
+ (the 1st U cell is a boundary point)
+ The top edge of the W-cell at k=1 is at z =  1250.000     (cm)
+
+ The eastern edge of the U-cell at i= 121 is at:  361.5000     (deg) longitude
+ (the last U-cell (imt= 122) is a boundary cell)
+ The northern edge of the U-cell at jrow=  65 is at:  91.40625     (deg) latitude
+ (the last U-cell (jmt=  66) is a boundary cell)
+ The bottom edge of W-cell at k=  16 is at z =  565000.0     (cm)
+
+
+ Depth to T & U grid points (cm): zt(k) k=1, 16
+    1250.00   3750.00   6250.00   8750.00  11250.00  15674.08  25714.54  44608.66  74876.44 118116.49
+  174876.44 244608.66 325714.54 415674.08 511250.00 562500.00
+
+ Depth to W grid points (cm): zw(k) k=1, 16
+    2500.00   5000.00   7500.00  10000.00  13462.04  20694.31  35161.60  59742.55  96496.47 146496.47
+  209742.55 285161.60 370694.31 463462.04 560000.00 565000.00
+
+ Latitude of T points (deg): yt(j) j=1,  66
+   -91.4063  -88.5938  -85.7813  -82.9688  -80.1563  -77.3438  -74.5313  -71.7188  -68.9063  -66.0938
+   -63.2813  -60.4688  -57.6563  -54.8438  -52.0313  -49.2188  -46.4063  -43.5938  -40.7813  -37.9688
+   -35.1563  -32.3438  -29.5313  -26.7188  -23.9063  -21.0938  -18.2813  -15.4688  -12.6563   -9.8437
+    -7.0312   -4.2187   -1.4062    1.4062    4.2187    7.0312    9.8437   12.6563   15.4688   18.2813
+    21.0938   23.9063   26.7188   29.5313   32.3438   35.1563   37.9688   40.7813   43.5938   46.4063
+    49.2188   52.0313   54.8438   57.6563   60.4688   63.2813   66.0938   68.9063   71.7188   74.5313
+    77.3438   80.1563   82.9688   85.7813   88.5938   91.4063
+
+ Latitude of U points (deg): yu(j) j=1,  66
+   -90.0000  -87.1875  -84.3750  -81.5625  -78.7500  -75.9375  -73.1250  -70.3125  -67.5000  -64.6875
+   -61.8750  -59.0625  -56.2500  -53.4375  -50.6250  -47.8125  -45.0000  -42.1875  -39.3750  -36.5625
+   -33.7500  -30.9375  -28.1250  -25.3125  -22.5000  -19.6875  -16.8750  -14.0625  -11.2500   -8.4375
+    -5.6250   -2.8125    0.0000    2.8125    5.6250    8.4375   11.2500   14.0625   16.8750   19.6875
+    22.5000   25.3125   28.1250   30.9375   33.7500   36.5625   39.3750   42.1875   45.0000   47.8125
+    50.6250   53.4375   56.2500   59.0625   61.8750   64.6875   67.5000   70.3125   73.1250   75.9375
+    78.7500   81.5625   84.3750   87.1875   90.0000   92.8125
+
+ Longitude of T points (deg): xt(i) i=1, 122
+    -1.5000    1.5000    4.5000    7.5000   10.5000   13.5000   16.5000   19.5000   22.5000   25.5000
+    28.5000   31.5000   34.5000   37.5000   40.5000   43.5000   46.5000   49.5000   52.5000   55.5000
+    58.5000   61.5000   64.5000   67.5000   70.5000   73.5000   76.5000   79.5000   82.5000   85.5000
+    88.5000   91.5000   94.5000   97.5000  100.5000  103.5000  106.5000  109.5000  112.5000  115.5000
+   118.5000  121.5000  124.5000  127.5000  130.5000  133.5000  136.5000  139.5000  142.5000  145.5000
+   148.5000  151.5000  154.5000  157.5000  160.5000  163.5000  166.5000  169.5000  172.5000  175.5000
+   178.5000  181.5000  184.5000  187.5000  190.5000  193.5000  196.5000  199.5000  202.5000  205.5000
+   208.5000  211.5000  214.5000  217.5000  220.5000  223.5000  226.5000  229.5000  232.5000  235.5000
+   238.5000  241.5000  244.5000  247.5000  250.5000  253.5000  256.5000  259.5000  262.5000  265.5000
+   268.5000  271.5000  274.5000  277.5000  280.5000  283.5000  286.5000  289.5000  292.5000  295.5000
+   298.5000  301.5000  304.5000  307.5000  310.5000  313.5000  316.5000  319.5000  322.5000  325.5000
+   328.5000  331.5000  334.5000  337.5000  340.5000  343.5000  346.5000  349.5000  352.5000  355.5000
+   358.5000  361.5000
+
+ Longitude of U points (deg): xu(i) i=1, 122
+     0.0000    3.0000    6.0000    9.0000   12.0000   15.0000   18.0000   21.0000   24.0000   27.0000
+    30.0000   33.0000   36.0000   39.0000   42.0000   45.0000   48.0000   51.0000   54.0000   57.0000
+    60.0000   63.0000   66.0000   69.0000   72.0000   75.0000   78.0000   81.0000   84.0000   87.0000
+    90.0000   93.0000   96.0000   99.0000  102.0000  105.0000  108.0000  111.0000  114.0000  117.0000
+   120.0000  123.0000  126.0000  129.0000  132.0000  135.0000  138.0000  141.0000  144.0000  147.0000
+   150.0000  153.0000  156.0000  159.0000  162.0000  165.0000  168.0000  171.0000  174.0000  177.0000
+   180.0000  183.0000  186.0000  189.0000  192.0000  195.0000  198.0000  201.0000  204.0000  207.0000
+   210.0000  213.0000  216.0000  219.0000  222.0000  225.0000  228.0000  231.0000  234.0000  237.0000
+   240.0000  243.0000  246.0000  249.0000  252.0000  255.0000  258.0000  261.0000  264.0000  267.0000
+   270.0000  273.0000  276.0000  279.0000  282.0000  285.0000  288.0000  291.0000  294.0000  297.0000
+   300.0000  303.0000  306.0000  309.0000  312.0000  315.0000  318.0000  321.0000  324.0000  327.0000
+   330.0000  333.0000  336.0000  339.0000  342.0000  345.0000  348.0000  351.0000  354.0000  357.0000
+   360.0000  363.0000
+
+
+ Grid checksum =  6577312.7462613583
+
+
+    density coefficients were calculated  
+    (employing the UNESCO equation of state)
+    and are valid for the following depths and both INSITU and POTENTIAL T and S ranges
+      k      depth        tmin      tmax           smin      smax    Pot tmin  Pot tmax
+      1      12.50e2     -2.000    29.000        28.5000   37.0000    -2.000    28.997
+      2      37.50e2     -2.000    29.000        28.5000   37.0000    -2.000    28.990
+      3      62.50e2     -2.000    29.000        28.5000   37.0000    -2.000    28.984
+      4      87.50e2     -2.000    29.000        28.5000   37.0000    -2.001    28.977
+      5     112.50e2     -2.000    29.000        28.5000   37.0000    -2.001    28.970
+      6     156.74e2     -2.000    29.000        28.5000   37.0000    -2.001    28.959
+      7     257.15e2     -2.000    19.000        33.7000   36.6000    -2.004    18.952
+      8     446.09e2     -2.000    19.000        33.7000   36.6000    -2.008    18.917
+      9     748.76e2     -2.000    14.000        34.0000   35.8000    -2.016    13.886
+     10    1181.16e2     -1.000     9.000        34.2000   35.3000    -1.042     8.860
+     11    1748.76e2     -1.000     7.000        34.5000   35.1000    -1.072     6.813
+     12    2446.09e2     -1.000     7.000        34.6000   35.0000    -1.116     6.728
+     13    3257.15e2     -1.000     7.000        34.6000   35.0000    -1.177     6.621
+     14    4156.74e2     -1.000     7.000        34.6000   35.0000    -1.257     6.493
+     15    5112.50e2      0.000     7.000        34.6000   35.0000    -0.395     6.348
+     16    5625.00e2      0.000     7.000        34.6000   35.0000    -0.456     6.267
+
+Note: density coefficients were calculated using the UNESCO
+      formulation.
+
+       Checksum for density coefficients =  1.54926270406077291E-2
+
+
+                                    T O P O G R A P H Y    G E N E R A T I O N
+
+kmt_min =    2
+
+
+           The following "ifdef" options have been enabled:
+            (Consult the manual for their meaning)
+
+ idealized_kmt                  cyclic                         fill_isolated_cells            partial_cell                  
+ bbl_ag                        
+
+ END OF ENABLED OPTIONS LIST
+
+
+=>Warning: roughness will be zero unless option "etopo_kmt" or option read_my_roughness is used.
+
+
+ Constructing an idealized test case "kmt" which only crudely
+ approximates world geometry. Topography is unrealistic.
+
+
+ ==> Warning: Partial-cells are being set to full-cell thickness
+            for the option idealized_kmt
+
+
+Use -Ddebug_kmt to show the first kmt map
+
+ Original "kmt" checksum = 157219374.
+
+
+number of ocean T cells =  67007.
+surface area (T cells)  =   0.343189E+19 cm**2
+ocean volume (T cells)  =   0.166646E+25 cm**3
+
+
+  Note: ifdef bbl_mask is used.  Can specify ocean
+  grid points where the bbl is inactive by setting
+  mask_t_bbl(i,j) to zero (land) at these points.
+
+USER MODIFICATIONS to "kmt" follow:
+
+
+Searching for and correcting minimum level violations
+
+->No modifications needed
+
+
+Searching for isolated T cells...
+ -> Found  20  and filled them in.
+
+Finding perimeters of all land masses
+
+Exploring land mass   1
+number of island perimeter points: nippts( 1)= 120
+Exploring land mass   2
+number of island perimeter points: nippts( 2)= 252
+Exploring land mass   3
+number of island perimeter points: nippts( 3)= 219
+Exploring land mass   4
+number of island perimeter points: nippts( 4)=  38
+Exploring land mass   5
+number of island perimeter points: nippts( 5)=  58
+Exploring land mass   6
+number of island perimeter points: nippts( 6)= 130
+  Island perimeter statistics:
+ maximum queue size was  490
+ number of land masses is  6
+ number of island perimeter points is  817
+
+
+number of ocean T cells =  66935.
+surface area (T cells)  =   0.342967E+19 cm**2
+ocean volume (T cells)  =   0.166421E+25 cm**3
+
+
+
+Use -Dskip_island_map to eliminate the following map
+
+
+                                      Land Masses and Perimeters
+  
+         5   10   15   20   25   30   35   40   45   50   55   60   65   70   75   80   85   90   95  100  105  110  115  120  125
+  66 11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+  65 **************************************************************************************************************************
+  64 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  63 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  62 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  61 000000000000000000000000000***********************0000000000000000000000000000********************000*************00000000
+  60 00000000000000000000000*****222222222222222222222**************000*************333333333333333333**00*44444444444*00000000
+  59 0000********************22222222222222222222222222222222222222***0*33333333**333333333333333333333*****444444444**00000000
+  58 000**22222222222222222222222222222222222222222222222222222222222*0*333333333333333333333333333333333*0**444444***000000000
+  57 00**222222222222222222222222222222222222222222222222222222222222***333333333333333333333333333333333*00**4444**00000000000
+  56 00*22222222222222222222222222222222222222222222222222222**********3333333333333333333333333333333333**00**4***000000000000
+  55 0**22222222222222222222222222222222222222222222222222222*00000000*33333333333333333333333333333333333**00*4*0000000000000*
+  54 0*2222222222222222222222222222222222222222222222*********00000000************3333333333333333333333333*00***0000000000000*
+  53 **2222222222222222222222222222222222222222222222*000000000000000000000000000**333333333333333333333333**0000000000000000**
+  52 *22222222222222222222222222222222222222222222222*0000000000000000000000000000**333333333333333333333333*000000000000000**2
+  51 222222222222222222222222222222222222222222222222*00000000000000000000000000000*333333333333333333333333*00000000000000**22
+  50 2222222222222222222222222222222222222222222222***00000000000000000000000000000*33333333333333333333*****0000000000000**222
+  49 222222222222222222222222222222222222222222222**0000000000000000000000000000000*333333333333333333***00000000000000000*2222
+  48 222222222222222222222222222222222222222222222*00000000000000000000000000000000*333333333333333333*000000000000000000**2222
+  47 2222222222222222222222222222222222222222222***00000000000000000000000000000000***333333333333333**000000000000000000*22222
+  46 2222222222222222222222222222222222222222222**00000000000000000000000000000000000*333333333333333*000000000000000000**22222
+  45 22222222222222222222222222222222222222222222*00000000000000000000000000000000000**3333333333333**000000000000000000*222222
+  44 22222222222222222222222222222222222222222222*000000000000000000000000000000000000*3333333333333*0000000000000000000*222222
+  43 22222222222222222222222222222222222222222222*000000000000000000000000000000000000****3333****33*000000000000000000**222222
+  42 22222222222222222222***2222222222222222******000000000000000000000000000000000000000**333****33*000000000000000000*2222222
+  41 22222222222222222222*0**222222**222222**000000000000000000000000000000000000000000000*33333*****000000000000000000*2222222
+  40 22222222222222222222*00*222222***22222*0000000000000000000000000000000000000000000000*****33***0000000000000000000*2222222
+  39 2222222222222222222**00**2222**0*2222**00000000000000000000000000000000000000000000000000**333**000000000000000000**222222
+  38 2222222222222222222*0000*2222*00*222**0000000000000000000000000000000000000000000000000000***33*********00000000000**22222
+  37 222222222222222222**0000**22**00**22*0000000000000000000000000000000000000000000000000000000***33333333**00000000000*22222
+  36 222222222222222222*000000*22*0000*2**00000000000000000000000000000000000000000000000000000000**333333333**0000000000*22222
+  35 ****2222222222222**000000****0000*2*000000000000000000000000000000000000000000000000000000000*33333333333**000000000******
+  34 000*2222222222222*000000000000000***000000000000000000000000000000000000000000000000000000000*333333333333**00000000000000
+  33 000*222222222222**000000000000000000000000000000000000000000000000000000000000000000000000000*3333333333333**0000000000000
+  32 000*222222222222*0000000000000000000000000000000000000000000000000000000000000000000000000000*33333333333333*0000000000000
+  31 000**2222222222**0000000000000000000000000*********000000000000000000000000000000000000000000*33333333333333**000000000000
+  30 0000*2222222222*000000000000000000000000***5555555*000000000000000000000000000000000000000000*333333333333333**00000000000
+  29 0000*222222222**00000000000000000000000**555555555**00000000000000000000000000000000000000000*3333333333333333*00000000000
+  28 0000*222222222*0000000000000000000000***55555555555*00000000000000000000000000000000000000000*3333333333333333*00000000000
+  27 0000**2222222**0000000000000000000000*5555555555555**0000000000000000000000000000000000000000****33333333333***00000000000
+  26 00000*2222222*00000000000000000000000*55555555555555*0000000000000000000000000000000000000000000*33333333333*0000000000000
+  25 00000*222222**00000000000000000000000**5555555555555**000000000000000000000000000000000000000000*333333333***0000000000000
+  24 00000*222222*0000000000000000000000000*55555555555555*00000000000000000000000000000000000000000**33333333**000000000000000
+  23 00000**2222**0000000000000000000000000*55555555555555*00000000000000000000000000000000000000000*33333333**0000000000000000
+  22 000000*2222*00000000000000000000000000*55555555555555*00000000000000000000000000000000000000000*3333333**00000000000000000
+  21 000000*2222*00000000000000000000000000*555*****55555**00000000000000000000000000000000000000000*333333**000000000000000000
+  20 000000******00000000000000000000000000*****000*55555*000000000000000000000000000000000000000000*33333**0000000000000000000
+  19 0000000000000000000000000000000000000000000000*******000000000000000000000000000000000000000000*33333*00000000000000000000
+  18 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000*3333**00000000000000000000
+  17 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000*333**000000000000000000000
+  16 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000*333*0000000000000000000000
+  15 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000*****0000000000000000000000
+  14 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  13 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  12 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  11 ******************************************************000000000000000000000000000000000000000000000000000000000000000000**
+  10 *6666666666666666666666666666666666666666666666666666**********************000000000000000*************000000000000000***6
+   9 66666666666666666666666666666666666666666666666666666666666666666666666666*****************66666666666*0000000000000***666
+   8 666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666*****000000****66666
+   7 6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666********66666666
+   6 66666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
+   5 66666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
+   4 66666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
+   3 66666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
+   2 66666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
+   1 66666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
+         5   10   15   20   25   30   35   40   45   50   55   60   65   70   75   80   85   90   95  100  105  110  115  120  125
+  
+
+Use -Dshow_perimeter_details to show perimeter indices
+
+
+Use -Dskip_kmt_map to eliminate the following map
+
+
+                     The final "kmt" field follows:
+
+  
+  
+  "iplot" mapping of integers to characters is as follows:
+      0 is printed as .         1 is printed as +         2 is printed as *
+      3 is printed as A         4 is printed as B         5 is printed as C
+      6 is printed as D         7 is printed as E         8 is printed as F
+      9 is printed as G        10 is printed as H        11 is printed as I
+     12 is printed as J        13 is printed as K        14 is printed as L
+     15 is printed as M
+  
+
+     1   5   9  13  17  21  25  29  33  37  41  45  49  53  57  61  65  69  73  77  81  85  89  93  97 101 105 109 113 117 121
+  66 ..........................................................................................................................
+  65 MMMMLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLMMMMMMMMMLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLMMMMM
+  64 MMMMLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLMMMMMMMMMLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLMMMMM
+  63 MMMMLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLMMMMMMMMMLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLMMMMM
+  62 MMMMLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLMMMMMMMMMLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLMMMMM
+  61 MMMMLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLMMMMMMMMMLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLMMMMM
+  60 MMMMLLLLLLLLLLKKKKKKKKKKKKKK.....................LLLLLLLMMMMMMMMMLLLLLLLLLKKKKK..................KKKKK...........LLLLMMMMM
+  59 MMMMLLLLLLLLLLKKKKKKKKKK......................................MMMLL........KK.....................KKKKK.........LLLLLMMMMM
+  58 MMMML...........................................................LLL.................................KKKK......LLLLLLLMMMMM
+  57 MMMM............................................................LLL.................................KKKKK....LLLLLLLLMMMMM
+  56 MMM.....................................................MMMMMMMMML..................................KKKKKK.LLLLLLLLLLMMMMM
+  55 MMM.....................................................MMMMMMMMML...................................KKKKK.LLLLKKKKLLMMMMM
+  54 MM..............................................LLLLLLLMMMMMMMMMMMLLLLLLLLLLL.........................KKKLLLLLKKKKLLMMMMMM
+  53 MM..............................................LLLLLLLMMMMMMMMMMMLLLLLLLLLLLL........................KKLLLLLLKKKKLLMMMMMM
+  52 M...............................................LLLLLLLMMMMMMMMMMMLLLLLLLLLLLLL........................LLLLLLKKKKLLLMMMMM.
+  51 ................................................LLLLLLLMMMMMMMMMMMLLLLLLLLLLLLL........................LLLLLLKKKKLLLMMMM..
+  50 ..............................................LLLLLLLLLMMMMMMMMMMMLLLLLLLLLLLLL....................KKLLLLLLLKKKKLLLLMMM...
+  49 .............................................LLLLLLLLLMMMMMMMMMMMMLLLLLLLLLLLLL..................KKLLLLLLLLLKKKKLLLMMM....
+  48 .............................................LLLLLLLLLMMMMMMMKKKKKKKKLLLLLLLLLL..................LLLLLLLLLLKKKKLLLLMMM....
+  47 ...........................................LLLLLLLLLLLMMMMMMMMKKKKKKKLLLLLLLLLLLL...............LLLLLLLLLLLKKKKLLLLMM.....
+  46 ...........................................LLLLLLLLLLMMMMMMMMMKKKKKKKKLLLLLLLLLLL...............LLLLLLLLLLKKKKLLLLMMM.....
+  45 ............................................LLLLLLLLLMMMMMMMMMMKKKKKKKLLLLLLLLLLLL.............LLLLLLLLLLLKKKKLLLLMM......
+  44 ............................................LLLLLLLLMMMMMMMMMMMKKJKKKKKLLLLLLLLLLL.............LLLLLLLLLLLKKKKLLLMMM......
+  43 ............................................LLLLLLLMMMMMMMMMMMMMKJKKKKKLLLLLLLLLLLLLL....LLLL..LLLLLLLLLLLLKKKKLMMMM......
+  42 ....................LLL................LLLLLLLLLLLMMMMMMMMMMMMMMKKJKKKKKLLLLLLLLLLLLLL...LLLL..LLLLLLLLLLLLKKKKLMMM.......
+  41 ....................LLLL......LL......LLLLLLLLLLMMMMMMMMMMMMMMMMMKJKKKKKLLLLLLLLLLLLLL.....LLLLLLLLLLLLLLLLLKKKKMMM.......
+  40 ....................LLLL......LLL.....LLLLLLLLLMMMMMMMMMMMMMMMMMMKKJKKKKKLLLLLLLLLLLLLLLLL..LLLLLLLLLLLLLLLLKKKKMMM.......
+  39 ...................LLLLLL....LLLL....LLLLLLLMMMMMMMMMMMMMMMMMMMMMKKKJKKKKKMMMLLLLLLLLLLLLLL...LLLLLLLLLLLMMMMKKKKMMM......
+  38 ...................MMMLLL....LLLL...LLMMMMMMMMMMMMMMMMMMMMMMMMMMMMKKJKKKKKMMMMMMMMMLLLLLLLLLL..LLLLLLLLMMMMMMKKKKMMMM.....
+  37 ..................MMMMMMMM..MMMMMM..MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMKKKJKKKKKMMMMMMMMMMMMMMMMMMMM........MMMMMMMKKKKMMM.....
+  36 ..................MMMMMMMM..MMMMMM.MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMKKJKKKKKMMMMMMMMMMMMMMMMMMMM.........MMMMMMKKKKMMM.....
+  35 MMMM.............MMMMMMMMMMMMMMMMM.MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMKKKJKKKKKMMMMMMMMMMMMMMMMMM...........MMMMMKKKKMMMMMMMM
+  34 MMMM.............MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMKKKJKKKKMMMMMMMMMMMMMMMMMM............MMMMMKKKKMMMMMMM
+  33 MMMM............MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMKKKJKKKKKMMMMMMMMMMMMMMMMM.............MMMMKKKKMMMMMMM
+  32 MMMM............MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMKKKJKKKKMMMMMMMMMMMMMMMMM..............MMMMKKKKMMMMMM
+  31 MMMMM..........MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMKKKKJKKKKMMMMMMMMMMMMMMMM..............MMMMKKKKMMMMMM
+  30 MMMMM..........MMMMMMMMMMMMMMMMMMMMMMMMMMMM.......MMMMMMMMMMMMMMMMMMMKKKKJKKKKKMMMMMMMMMMMMMMM...............MMMMKKKKMMMMM
+  29 MMMMM.........MMMMMMMMMMMMMMMMMMMMMMMMMMM.........MMMMMMMMMMMMMMMMMMMMKKKKJKKKKMMMMMMMMMMMMMMM................MMMKKKKMMMMM
+  28 MMMMM.........MMMMMMMMLLLLLLLLLLLLLLLLMM...........MMMMMMMMMMMMMMMMMMMKKKKJKKKKKMMMLLLLLLLLLLL................MMMMKKKKMMMM
+  27 MMMMMM.......LMMLLLLLLLLLLLLLLLLLLLLLL.............MMMMMMMMMMMMMMMMMMMMKKKKJKKKKLLLLLLLLLLLLLLLLL...........MMMMMMKKKKMMMM
+  26 MMMMMM.......LLLLLLLLLLLLLLLLLLLLLLLLL..............MMMMMMMMMMMMMMMMMMMKKKKKJKKKKLLLLLLLLLLLLLLLL...........MMMMMMKKKKMMMM
+  25 MMMMMM......LLLLLLLLLLLLLLLLLLLLLLLLLLL.............MMMMMMMMMMMMMMMMMMMLKKKKJKKKKLLLLLLLLLLLLLLLL.........LLLMMMMMMMMMMMMM
+  24 MMMMMM......LLLLLLLLLLLLLLLLLLLLLLLLLLL..............MMMMMMMMMMMMMMMMMMLKKKKKJKKKKLLLLLLLLLLLLLLL........LLLLLLMMMMMMMMMMM
+  23 MMMMMMM....LLLLLLLLLLLLLLLLLLLLLLLLLLLL..............MMMMMMMMMMMMMMMMMLLLKKKKJKKKKLLLLLLLLLLLLLL........LLLLLLLLMMMMMMMMMM
+  22 MMMMMMM....LLLLLLLLLLLLLLLLLLLLLLLLLLLL..............MMMMMMMMMMMMMMMMLLLLKKKKKJKKKKLLLLLLLLLLLLL.......LLLLLLLLLLMMMMMMMMM
+  21 MMMMMMM....LLLLLLLLLLLLLLLLLLLLLLLLLLLL...LLLLL.....LMMMMMMMMMMMMMMMLLLLLKKKKKKJKKKKLLLLLLLLLLLL......LLLLLLLLLLLLMMMMMMMM
+  20 MMMMMMMLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL.....LMMMMMMMMMMMMMMMLLLLLLKKKKKJKKKKLLLLLLLLLLLL.....LLLLLLLLLLLLLMMMMMMMM
+  19 MMMMMMLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLMMMMMMMMMMMMMLLLLLLLKKKKKKJKKKKLLLLLLLLLLL.....LLLLLLLLLLLLLLMMMMMMM
+  18 MMMMMMLLLLLLLLLLLLLLLLLLLLKKKKKKKKLLLLLLLLLLLLLLLLLLLLMMMMMMMMMMMMMLLLLLLLLKKKKKJKKKKLLKKKKKKKKK....LLLLLLLLLLLLLLLMMMMMMM
+  17 MMMMMMLLLLLLLLLLLLLLLLKKKKKKKKKKKKKKKKLLLLLLLLLLLLLLLLMMMMMMMMMMMMMLLLLLLLLKKKKKKJKKKKKKKKKKKKKK...KLLLLLLLLLLLLLLLMMMMMMM
+  16 MMMMMLLLLLLLLLLLLLLLKKKKKKKKKKKKKKKKKKKKLLLLLLLLLLLLLLLMMMMMMMMMMMLLLLLLLLLLKKKKKJKKKKKKKKKKKKKK...KKLLLLLLLLLLLLLLLMMMMMM
+  15 MMMMMLLLLLLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLLLLLLMMMMMMMMMMMLLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLLLLLLMMMMMM
+  14 MMMMMLLLLLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLLLLLMMMMMMMMMMMLLLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLLLLLMMMMMM
+  13 MMMMMLLLLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLLLLMMMMMMMMMMMLLLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLLLLMMMMMM
+  12 MMMMMLLLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLLLMMMMMMMMMMMLLLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLLLMMMMMM
+  11 MMMMLLLLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLLLLMMMMMMMMMLLLLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLLLLMMMMM
+  10 M....................................................LLLMMMMMMMMMLLLLLLLLLLLKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKLLLLLLLLLLLMMMM.
+   9 ..........................................................................LLKKKKKKKKKKKKKKK...........KKKKLLLLLLLLLLLMM...
+   8 ......................................................................................................KKKKKLLLLLLLLLL.....
+   7 ..........................................................................................................KLLLLLLL........
+   6 ..........................................................................................................................
+   5 ..........................................................................................................................
+   4 ..........................................................................................................................
+   3 ..........................................................................................................................
+   2 ..........................................................................................................................
+   1 ..........................................................................................................................
+
+
+number of ocean T cells =  66935.
+surface area (T cells)  =   0.342967E+19 cm**2
+ocean volume (T cells)  =   0.166421E+25 cm**3
+
+
+
+
+          Topographic slope analysis
+
+  95.781% of slopes are GE 0 and LE 0.00001
+   0.000% of slopes are GT 0.00001 and LE 0.0001
+   0.000% of slopes are GT 0.0001 and LE 0.001
+   3.665% of slopes are GT 0.001 and LE 0.01
+   0.553% of slopes are GT 0.01 and LE 0.1
+   0.000% of slopes are GT 0.1 and LE 1.0
+   0.000% of slopes are GT 1.0 
+ Final "kmt" checksum = 156982593.
+
+Restoring coefficient for surface tracers
+
+
+  Surface tracer # 1 will be damped back to data using a Newtonian restoring time scale of 
+  3.5000000E+01 days. and a level thickness = 2.5000000E+03 cm.
+  resulting in a damping coefficient of  3.4606481E+01 Watts/M**2/tracer unit
+
+  Surface tracer # 2 will be damped back to data using a Newtonian restoring time scale of 
+  3.5000000E+01 days. and a level thickness = 2.5000000E+03 cm.
+  resulting in a damping coefficient of  8.2671958E-03 kg/M**2/sec/psu
+
+
+  Global ocean statistics:
+ the total ocean surface area (t cells)  = 3.42966629E+18cm**2
+ the total resting ocean volume (t cells)= 1.68135537E+24cm**3
+ the total ocean surface area (u cells)  = 3.19845362E+18cm**2
+ the total resting ocean volume (u cells)= 1.53906029E+24cm**3
+
+
+Finding perimeters of all land masses
+
+Exploring land mass   1
+number of island perimeter points: nippts( 1)= 120
+Exploring land mass   2
+number of island perimeter points: nippts( 2)= 252
+Exploring land mass   3
+number of island perimeter points: nippts( 3)= 219
+Exploring land mass   4
+number of island perimeter points: nippts( 4)=  38
+Exploring land mass   5
+number of island perimeter points: nippts( 5)=  58
+Exploring land mass   6
+number of island perimeter points: nippts( 6)= 130
+  Island perimeter statistics:
+ maximum queue size was  490
+ number of land masses is  6
+ number of island perimeter points is  817
+=> calculations enabled for mid ocean points
+=> calculations enabled for ocean perimeter of land mass  1
+=> calculations enabled for ocean perimeter of land mass  2
+=> calculations enabled for ocean perimeter of land mass  3
+=> calculations enabled for ocean perimeter of land mass  4
+=> calculations enabled for ocean perimeter of land mass  5
+=> calculations enabled for ocean perimeter of land mass  6
+dpsi normalized to zero on land mass   2
+  ( "imain" to any valid land mass number)
+  
+  density coefficient checksum =  1.54926270406077291E-2
+
+Filtering details for latitudes
+
+
+ southern reference latitude =-70.000 deg.   northern reference latitude = 70.000 deg.
+ T-cell jrow  numflt  latitude
+          5       2      -80.156
+          6       1      -77.344
+          7       1      -74.531
+          8       1      -71.719
+         59       1       71.719
+         60       1       74.531
+         61       1       77.344
+         62       2       80.156
+         63       2       82.969
+         64       4       85.781
+         65      13       88.594
+         66       0       91.406
+
+
+ U-cell jrow  numflu  latitude
+          5       1      -78.750
+          6       1      -75.938
+          7       1      -73.125
+         59       1       73.125
+         60       1       75.938
+         61       1       78.750
+         62       2       81.563
+         63       3       84.375
+         64       6       87.188
+         65       0       90.000
+         66       0       92.813
+
+ ==== start and end indices for fourier filtering ====
+
+ == filtering indices for t,s ==
+
+ Note: enable -Dshow_details to see filtering indices
+
+
+ == filtering indices for u,v ==
+
+ Note: enable -Dshow_details to see filtering indices
+
+
+ == filtering indices for stream function ==
+
+ Note: enable -Dshow_details to see filtering indices
+
+
+ "dtxcel(km)" tracer timestep multipliers:
+    1.000    1.000    1.000    1.000    1.000    1.000    1.000    1.000    1.000    1.000
+    1.000    1.000    1.000    1.000    1.000    1.000
+ => Note: filtering I.C. on jrow = 5  (lat= -80.15625 ) using  4  passes of fast_fir.
+ => Note: filtering I.C. on jrow = 6  (lat= -77.34375 ) using  4  passes of fast_fir.
+ => Note: filtering I.C. on jrow = 7  (lat= -74.53125 ) using  4  passes of fast_fir.
+ => Note: filtering I.C. on jrow = 8  (lat= -71.71875 ) using  4  passes of fast_fir.
+=> Note: initialized T & S to internally generated idealized values for a test case.
+ => Note: filtering I.C. on jrow = 59  (lat= 71.71875 ) using  4  passes of fast_fir.
+ => Note: filtering I.C. on jrow = 60  (lat= 74.53125 ) using  4  passes of fast_fir.
+ => Note: filtering I.C. on jrow = 61  (lat= 77.34375 ) using  4  passes of fast_fir.
+ => Note: filtering I.C. on jrow = 62  (lat= 80.15625 ) using  4  passes of fast_fir.
+ => Note: filtering I.C. on jrow = 63  (lat= 82.96875 ) using  4  passes of fast_fir.
+ => Note: filtering I.C. on jrow = 64  (lat= 85.78125 ) using  4  passes of fast_fir.
+ => Note: filtering I.C. on jrow = 65  (lat= 88.59375 ) using  4  passes of fast_fir.
+  I.C. checksum for t = 306060.36345561175
+  I.C. checksum for s = 1335122.8799999976
+  I.C. checksum for u = 0.E+0
+  I.C. checksum for v = 0.E+0
+
+
+          Time manager initialization
+
+Initial Condition time stamp = m/d/y= 1/ 1/   1, h:m:s= 0: 0: 0
+
+ Time step (itt) =         0, time stamp=m/d/y= 1/ 1/   1, h:m:s= 0: 0: 0, days since IC= 0.0000000E+00, years since IC= 0.0000000E+00
+ model will stop on m/d/y= 1/21/   1, h:m:s= 0: 0: 0
+
+
+ "refinit = .true." was specified: =>logical switch calculations will be referenced to the Initial Condition time.
+
+ &SMAGNL  K_SMAG = 6., DIFF_C_BACK = 0.E+0, VISC_C_BACK = 0.E+0, PRANDTL = 100. /
+  
+ I S O N E U T R A L M I X   I N I T I A L I Z A T I O N
+ &ISOPYC  SLMX = 1.00000000000000002E-2, AHISOP = 10000000., ATHKDF = 10000000., DEL_DM = 4.00000000000000008E-3, S_DM = 
+ 1.00000000000000002E-3, ABIHRM = 1.E+20, AHSTEEP = 10000000. /
+ ==> Note: Small angle Redi tensor is used.
+ ==> Note: Gerdes, Koberle, and Willebrand taper is used.
+ ==> Note: GM90 is enabled with skew-fluxes.
+ ah(cm2/sec)     = 0.100000E+08 Constant horizontal background diffusivity 
+ ahisop(cm2/sec) = 0.100000E+08 Constant Redi isoneutral diffusivity
+ athkdf(cm2/sec) = 0.100000E+08 Constant GM diffusivity
+ ahsteep(cm2/sec) = 0.100000E+08 Constant horz diffusivity in steep sloped regions
+ abihrm(cm4/sec) = 0.100000E+21 Constant RM biharmonic diffusivity
+ dtts(sec)       = 0.864000E+05 Tracer time step
+
+The diffusion grid factor delta_iso1 = 0.5922005E-03
+was determined at the grid point
+dxt( 121) =  0.3335848E+08
+dyt(   2) =  0.3127357E+08
+dzt(   4) =  0.2500000E+04
+cst(   2) =  0.2454123E-01
+ Without latitudinal filtering, delta_iso1 is the steepest
+ isoneutral slope available for linear stab of Redi and GM.
+
+Maximum allowable isoneutral slope is specified as slmx =  0.1000000E-01
+
+ Acceleration with depth "dtxsqr(k)"=
+ 0.100000E+01 0.100000E+01 0.100000E+01 0.100000E+01 0.100000E+01
+ 0.100000E+01 0.100000E+01 0.100000E+01 0.100000E+01 0.100000E+01
+ 0.100000E+01 0.100000E+01 0.100000E+01 0.100000E+01 0.100000E+01
+ 0.100000E+01
+  
+ Vertical structure function "fzisop(k)"=
+ 0.100000E+01 0.100000E+01 0.100000E+01 0.100000E+01 0.100000E+01
+ 0.100000E+01 0.100000E+01 0.100000E+01 0.100000E+01 0.100000E+01
+ 0.100000E+01 0.100000E+01 0.100000E+01 0.100000E+01 0.100000E+01
+ 0.000000E+00
+---------------------------------------------------------------
+  
+ The Redi/GM algorithm coefficients are:
+ redi_gm( 1 ) =  1.
+ redi_gm( 2 ) =  1.
+ redi_gm( 3 ) =  0.E+0
+ redi_gm( 4 ) =  1.
+ redi_gm( 5 ) =  0.E+0
+ redi_gm( 6 ) =  1.
+
+                    G E N E R A L    C O N S I S T E N C Y    C H E C K S
+        (A "rudimentary intelligence" analysis of all specifications and their interactions)
+
+
+ ==> Warning: Option explicit_free_surface_nonlinear is enabled.
+              dzt(k=1)+eta must be positive in order to       
+              preclude vanishingly small top cell thicknesses.
+              If dzt(k=1)+eta < 0, the model will not conserve
+              first moments and may blow-up.                  
+
+ ==> Warning: Option explicit_free_surface_nonlinear is enabled
+              yet dtts is not equal to dtuv.  In order to      
+              have a conservative model, set dtts=dtuv.        
+
+ ==> Warning: because options explicit_eb or explicit_efb have 
+              not been enabled, the explicit free surface 
+              solution will be time averaged over two baroclinic
+              timesteps to keep the barotropic solution defined
+              at the same time as the baroclinic solution. This
+              will allow stretching of tracer timesteps relative
+              to baroclinic timesteps.
+
+ ==> Warning:  "num_processors" =   2 implies multi-tasking (parallel processing)
+
+ ==> Warning: option partial_cell uses the UNESCO equation of 
+              state for hydrostatic pressure gradients.       
+
+ ==> Warning: option bbl_ag uses the UNESCO equation of       
+              state for hydrostatic pressure gradients.       
+
+ ==> Note: "diagnostics_himem" is enabled.                    
+           Diagnostics of 3d fields will be buffered over the 
+           full model.   This approach requires much memory,  
+           but is considerably faster than diagnostics_lomem. 
+
+ ==> Warning:  "parallel_1d" is enabled.                        
+               Note: 2  processors were requested.
+
+ ==> Note: a fourth_order_window is being used.
+
+ ==> Note: since redi_diffusion was specified for tracers,     
+     kappa_h and Ah will be used as background mixing coeffs   
+
+ ==> Note: 6 timesteps/(min inertial period) implies a maximum
+           dtuv of    7503. sec.
+ ==> Note: based on a maximum internal gravity wavespeed of 3  m/sec,
+           the CFL restriction implies a maximum dtuv = 16139.  sec
+           at (i,jrow) = ( 107 , 7 ) on the U grid where
+           the minimum grid spacing = ~ 97  km.
+           The specified dtuv =  3600 sec.
+    (since polar filtering with option fourfil or firfil is
+     enabled, the maximum dtuv can be extended to ~ 19015.  sec)
+ 
+ ==> Note: based on a minimum T-cell grid length of approx 89  km
+           at the (i,j) grid point ( 107 , 7 ) and a tracer timestep dtts = 86400  sec,
+           the CFL restriction implies a maximum horizontal 
+           advection velocity of  51  cm/sec.
+           advection velocity greater than this is unstable
+    (since polar filtering with option fourfil or firfil is
+     enabled the maximum advective velocity is ~ 66.  cm/sec.)
+ 
+ ==> Note: based on a minimum T-cell grid thickness of approx 25  m
+           and a tracer timestep dtts = 86400  sec,
+           the CFL restriction implies a maximum vertical 
+          advection velocity of  1.447E-02 cm/sec.
+           advection velocity greater than this is unstable
+
+ ==> Note: for the explicit free surface.
+           The fastest gravity wave speed =   21318. cm/sec at i= 108  and jrow= 7  on the U grid.
+           where the grid length = ~ 97  km.
+           For stability, dtsf must be less than  227.  sec
+           The specified dtuv =   3600.  sec and dtsf =  30.  sec. 
+           This implies  240  (due to averaging) barotropic time steps
+           per baroclinic time step.
+
+ ==> Note: No polar filtering applied to barotropic fields.   
+           enable option "explicit_polar_filter" to do so. But
+           note that for many configurations, polar filtering 
+           of these fields can be more expensive than         
+           resolving the dynamics.                            
+
+ ==> Warning: "itmb" is set to "true". set it to "false" in    
+             subsequent runs to prevent the time independent   
+             basin mask from being written more than once. This
+             reduces the size of the diagnostic file.          
+
+ ==> Warning: "itrmb" is set to "true". set it to "false" in   
+             subsequent runs to prevent the time independent   
+             region masks from being written more than once.   
+             This reduces the size of the diagnostic file.     
+
+ ==> Warning: "itavg" is set to "true". set it to "false" in   
+             subsequent runs to prevent the time independent   
+             region masks from being written more than once.   
+             This reduces the size of the diagnostic file.     
+
+ ==> Warning: use of unequal time steps implies the transient  
+              response may be inaccurate.                      
+
+ ==> Warning: the full convective scheme is enabled.           
+              it will ignore "ncon" and remove all instability 
+
+                     E N D    C O N S I S T E N C Y    C H E C K S
+
+
+           For available options ---- consult the manual
+
+
+ THE FOLLOWING "IFDEF" OPTIONS HAVE BEEN ENABLED (TURNED ON):
+
+ Note ==> MOM S.B.C. are internally generated idealized zonal means.
+
+ parallel_1d                    use_libSMA                     partial_cell                   bbl_ag                        
+ detrain                        simple_sbc                     idealized_kmt                  generate_a_grid               
+ cray_t3e                       cyclic                         robert_time_filter             quicker                       
+ firfil                         explicit_free_surface          explicit_free_surface_nonlinea time_averaged_surface         
+ salinity_psu                   explicit_eta_laplacian         redi_diffusion                 small_tensor                  
+ gkw_taper                      gent_mcwilliams                gm_skew                        velocity_horz_biharmonic      
+ velocity_horz_mix_var          velocity_horz_mix_smag         tracer_horz_laplacian          tracer_horz_mix_const         
+ constvmix                      restorst                       constvmix                      energy_analysis               
+ idealized_ic                   ramdrive                                                                                    
+
+ END OF ENABLED OPTIONS LIST
+
+
+  ==> Note: the atmos setup follows:
+
+
+==> Note: Simple S.B.C. are implemented in setvbc.F
+
+
+
+ The model has been configured to run for  20.00000     days in     20 segments of   1.000000     days each.
+ There will be      1 ocean time steps per segment.
+  The ocean "dtts" =  86400.00     seconds
+
+
+  
+     (checking MOM S.B.C. setup)
+     (End of MOM S.B.C. checks) 
+  
+
+
+
+                                        E N E R G Y    A N A L Y S I S
+
+
+
+
+
+ Globally averaged work done for ts =         1m/d/y= 1/ 2/   1, h:m:s= 0: 0: 0
+ ocean volume = 0.153906029E+25 cm**3, ocean surface area = 0.319845362E+19 cm**2
+
+ work by:              internal mode                         external mode
+
+ time rate of change    0.000000E+00 (               0 hex)   0.000000E+00 (               0 hex)
+ horizontal advection   0.000000E+00 (               0 hex)   0.000000E+00 (               0 hex)
+ vertical advection     0.000000E+00 (               0 hex)   0.000000E+00 (               0 hex)
+ horizontal friction    0.000000E+00 (               0 hex)   0.000000E+00 (               0 hex)
+ vertical friction      0.000000E+00 (               0 hex)   0.000000E+00 (               0 hex)
+ pressure forces        0.000000E+00 (               0 hex)   0.000000E+00 (               0 hex)
+ ficticious sources     0.000000E+00 (               0 hex)   0.000000E+00 (               0 hex)
+ work by wind           0.000000E+00 (               0 hex)   0.000000E+00 (               0 hex)
+ bottom drag            0.000000E+00 (               0 hex)   0.000000E+00 (               0 hex)
+
+ work by buoyancy forces   =  0.000000E+00 (               0 hex)
+ energy conversion error   =  0.000000E+00 (               0 hex)
+ nonlinear error           =  0.000000E+00 (               0 hex)
+
+
+Average vertical velocity through bottom of "T" and "u" cells at each level
+
+level   adv_vbt err   "T" cell area     adv_vbu err   "U" cell area
+ (Note: adv_vbu err only goes to zero when non-zero values on boundary cells are taken into account)
+   1   0.0000000E+00   0.3429666E+19   0.0000000E+00   0.3198454E+19
+   2   0.0000000E+00   0.3429666E+19   0.0000000E+00   0.3198454E+19
+   3   0.0000000E+00   0.3429666E+19   0.0000000E+00   0.3198454E+19
+   4   0.0000000E+00   0.3429666E+19   0.0000000E+00   0.3198454E+19
+   5   0.0000000E+00   0.3429666E+19   0.0000000E+00   0.3198454E+19
+   6   0.0000000E+00   0.3429666E+19   0.0000000E+00   0.3198454E+19
+   7   0.0000000E+00   0.3429666E+19   0.0000000E+00   0.3198454E+19
+   8   0.0000000E+00   0.3429666E+19   0.0000000E+00   0.3198454E+19
+   9   0.0000000E+00   0.3429666E+19   0.0000000E+00   0.3198454E+19
+  10   0.0000000E+00   0.3429666E+19   0.0000000E+00   0.3198454E+19
+  11   0.0000000E+00   0.3429666E+19   0.0000000E+00   0.3198454E+19
+  12   0.0000000E+00   0.3429666E+19   0.0000000E+00   0.3198454E+19
+  13   0.0000000E+00   0.3402309E+19   0.0000000E+00   0.3126838E+19
+  14   0.0000000E+00   0.2758187E+19   0.0000000E+00   0.2438683E+19
+  15   0.0000000E+00   0.1443147E+19   0.0000000E+00   0.1215209E+19
+  16   0.0000000E+00   0.3429666E+19   0.0000000E+00   0.3198454E+19
+  ==>  Global energy analysis written to file energy_int.000001.01.21.dta                                                                                                      on ts =          1 m/d/y= 1/ 2/   1, h:m:s= 0: 0: 0
+ between latitudes:       2 and       33
+
+
+
+                                        E N E R G Y    A N A L Y S I S
+
+
+
+
+
+ Globally averaged work done for ts =         2m/d/y= 1/ 3/   1, h:m:s= 0: 0: 0
+ ocean volume = 0.153906029E+25 cm**3, ocean surface area = 0.319845362E+19 cm**2
+
+ work by:              internal mode                         external mode
+
+ time rate of change    9.035499E-06 (3EE2F2E58A9448F2 hex)   4.565324E-05 (3F07EF7941523286 hex)
+ horizontal advection  -1.385885E-11 (BDAE79D77538030C hex)  -6.156343E-11 (BDD0EC2424D31572 hex)
+ vertical advection     1.546614E-09 (3E1A9214B6BAE4E4 hex)  -5.524555E-10 (BE02FB7316E01A32 hex)
+ horizontal friction   -2.500328E-15 (BCE6855D50ADE48E hex)   3.866632E-16 (3CBBDCAD5EBC04C3 hex)
+ vertical friction      2.314700E-06 (3EC36AC7BB9F5E89 hex)  -9.737097E-09 (BE44E90692F90589 hex)
+ pressure forces        6.719470E-06 (3EDC2EF9F03134B5 hex)   5.560106E-05 (3F0D26A5CB52F006 hex)
+ ficticious sources    -2.038793E-10 (BDEC055DE2310000 hex)  -9.937470E-06 (BEE4D7238283456C hex)
+ work by wind           2.314842E-06 (3EC36B15975720CA hex)  -9.737774E-09 (BE44E965DFF1A994 hex)
+ bottom drag            1.551685E-13 (3D45D688D9C0D5FA hex)   6.794832E-13 (3D67E83D8C0FDB9F hex)
+
+ work by buoyancy forces   =  7.308044E-05 (3F13285870C3B2E6 hex)
+ energy conversion error   =  1.075991E-05 (3EE690AF60B93CC0 hex)
+ nonlinear error           =  9.187364E-10 (3E0F914A74266CDC hex)
+
+
+Average vertical velocity through bottom of "T" and "u" cells at each level
+
+level   adv_vbt err   "T" cell area     adv_vbu err   "U" cell area
+ (Note: adv_vbu err only goes to zero when non-zero values on boundary cells are taken into account)
+   1  -0.4826340E-19   0.3429666E+19   0.2845859E-04   0.3198454E+19
+   2   0.4484652E-19   0.3429666E+19   0.2893710E-04   0.3198454E+19
+   3   0.7645264E-19   0.3429666E+19   0.2937320E-04   0.3198454E+19
+   4   0.6833755E-20   0.3429666E+19   0.2977049E-04   0.3198454E+19
+   5  -0.1736913E-19   0.3429666E+19   0.3027137E-04   0.3198454E+19
+   6  -0.6064958E-19   0.3429666E+19   0.3115519E-04   0.3198454E+19
+   7   0.3658906E-19   0.3429666E+19   0.3232919E-04   0.3198454E+19
+   8  -0.8399824E-20   0.3429666E+19   0.3290830E-04   0.3198454E+19
+   9  -0.7816108E-19   0.3429666E+19   0.3120663E-04   0.3198454E+19
+  10   0.4797866E-19   0.3429666E+19   0.2657219E-04   0.3198454E+19
+  11   0.7332050E-20   0.3429666E+19   0.2052561E-04   0.3198454E+19
+  12  -0.4612785E-19   0.3429666E+19   0.1345445E-04   0.3198454E+19
+  13  -0.1481789E-19   0.3402309E+19   0.5920809E-05   0.3126838E+19
+  14  -0.2613402E-19   0.2758187E+19   0.6226521E-06   0.2438683E+19
+  15  -0.1529424E-19   0.1443147E+19   0.7350924E-05   0.1215209E+19
+  16  -0.1643924E-19   0.3429666E+19  -0.3099756E-20   0.3198454E+19
+  ==>  Global energy analysis written to file energy_int.000001.01.21.dta                                                                                                      on ts =          2 m/d/y= 1/ 3/   1, h:m:s= 0: 0: 0
+ between latitudes:       2 and       33
+
+
+
+                                        E N E R G Y    A N A L Y S I S
+
+
+
+
+
+ Globally averaged work done for ts =         3m/d/y= 1/ 4/   1, h:m:s= 0: 0: 0
+ ocean volume = 0.153906029E+25 cm**3, ocean surface area = 0.319845362E+19 cm**2
+
+ work by:              internal mode                         external mode
+
+ time rate of change    8.957210E-06 (3EE2C8DD8A20EBAB hex)   5.921333E-05 (3F0F0B7A9F5B61C1 hex)
+ horizontal advection  -7.493297E-11 (BDD498F077B135CC hex)  -3.171464E-10 (BDF5CB4C7D1DF52A hex)
+ vertical advection     6.350990E-09 (3E3B46FCC88E4559 hex)  -7.736763E-10 (BE0A955439EDBA52 hex)
+ horizontal friction   -1.211644E-10 (BDE0A71848E0AE67 hex)  -5.104027E-10 (BE01898CB37EECDB hex)
+ vertical friction      2.805908E-06 (3EC789A457140494 hex)  -9.435353E-08 (BE7953ECDF3EC6A3 hex)
+ pressure forces        6.146307E-06 (3ED9C78BF48251B6 hex)   6.623209E-05 (3F115CC2A1CCC4CE hex)
+ ficticious sources    -1.160115E-09 (BE13EE3DB96C8000 hex)  -6.922802E-06 (BEDD094D4A3AE3D8 hex)
+ work by wind           2.834294E-06 (3EC7C699930EF4CC hex)  -9.457155E-08 (BE7962E84368C8FB hex)
+ bottom drag            2.257489E-11 (3DB8D24444DCC387 hex)   2.189737E-10 (3DEE1873C2122708 hex)
+
+ work by buoyancy forces   =  8.561948E-05 (3F1671D37071A558 hex)
+ energy conversion error   =  1.324108E-05 (3EEBC4C07AE5DB78 hex)
+ nonlinear error           =  5.185234E-09 (3E364539B79FE9E5 hex)
+
+
+Average vertical velocity through bottom of "T" and "u" cells at each level
+
+level   adv_vbt err   "T" cell area     adv_vbu err   "U" cell area
+ (Note: adv_vbu err only goes to zero when non-zero values on boundary cells are taken into account)
+   1   0.1457868E-18   0.3429666E+19   0.2316699E-04   0.3198454E+19
+   2  -0.5132435E-19   0.3429666E+19   0.2367168E-04   0.3198454E+19
+   3  -0.2534184E-19   0.3429666E+19   0.2413273E-04   0.3198454E+19
+   4  -0.1248584E-18   0.3429666E+19   0.2455435E-04   0.3198454E+19
+   5   0.8748630E-19   0.3429666E+19   0.2508819E-04   0.3198454E+19
+   6   0.9716746E-19   0.3429666E+19   0.2603880E-04   0.3198454E+19
+   7  -0.4100253E-19   0.3429666E+19   0.2734259E-04   0.3198454E+19
+   8   0.4577192E-19   0.3429666E+19   0.2814098E-04   0.3198454E+19
+   9   0.1352514E-19   0.3429666E+19   0.2676224E-04   0.3198454E+19
+  10  -0.2847398E-19   0.3429666E+19   0.2255896E-04   0.3198454E+19
+  11  -0.1110485E-19   0.3429666E+19   0.1706384E-04   0.3198454E+19
+  12  -0.2818924E-19   0.3429666E+19   0.1066234E-04   0.3198454E+19
+  13   0.1722176E-20   0.3402309E+19   0.3734462E-05   0.3126838E+19
+  14  -0.1082095E-19   0.2758187E+19   0.1677534E-06   0.2438683E+19
+  15  -0.4077715E-19   0.1443147E+19   0.9533883E-05   0.1215209E+19
+  16  -0.1235420E-19   0.3429666E+19  -0.5483140E-20   0.3198454E+19
+  ==>  Global energy analysis written to file energy_int.000001.01.21.dta                                                                                                      on ts =          3 m/d/y= 1/ 4/   1, h:m:s= 0: 0: 0
+ between latitudes:       2 and       33
+
+
+
+                                        E N E R G Y    A N A L Y S I S
+
+
+
+
+
+ Globally averaged work done for ts =         4m/d/y= 1/ 5/   1, h:m:s= 0: 0: 0
+ ocean volume = 0.153906029E+25 cm**3, ocean surface area = 0.319845362E+19 cm**2
+
+ work by:              internal mode                         external mode
+
+ time rate of change    1.338898E-05 (3EEC1427BC7560E8 hex)   4.865883E-05 (3F0982E099E7DE72 hex)
+ horizontal advection  -1.392106E-10 (BDE32209493E4179 hex)  -6.820011E-10 (BE076EF208F35741 hex)
+ vertical advection     9.334405E-09 (3E440BA4A9EAFF9C hex)  -3.633912E-09 (BE2F370EB85C2BD9 hex)
+ horizontal friction   -3.830029E-10 (BDFA51DB84FF6AF4 hex)  -2.923910E-09 (BE291DBEBFC7CD3C hex)
+ vertical friction      3.974786E-06 (3ED0ABE4B84D5389 hex)  -1.945214E-07 (BE8A1BB40FC10DA3 hex)
+ pressure forces        9.407998E-06 (3EE3BAE170B06769 hex)   5.574676E-05 (3F0D3A34376D9BFF hex)
+ ficticious sources    -2.613541E-09 (BE26733CBD7C9000 hex)  -6.886174E-06 (BEDCE1F93A7097E0 hex)
+ work by wind           4.031052E-06 (3ED0E84F0616D5A8 hex)  -1.948983E-07 (BE8A28A7894D6A7E hex)
+ bottom drag            6.606088E-11 (3DD2289F068C838D hex)   3.766946E-10 (3DF9E2E17055673C hex)
+
+ work by buoyancy forces   =  8.373204E-05 (3F15F3297A2F7526 hex)
+ energy conversion error   =  1.857728E-05 (3EF37ACCC18A68E4 hex)
+ nonlinear error           =  4.879281E-09 (3E34F4D36C3F8C57 hex)
+
+
+Average vertical velocity through bottom of "T" and "u" cells at each level
+
+level   adv_vbt err   "T" cell area     adv_vbu err   "U" cell area
+ (Note: adv_vbu err only goes to zero when non-zero values on boundary cells are taken into account)
+   1   0.5616493E-19   0.3429666E+19   0.7886298E-05   0.3198454E+19
+   2  -0.7545605E-19   0.3429666E+19   0.8575910E-05   0.3198454E+19
+   3  -0.1060656E-19   0.3429666E+19   0.9223170E-05   0.3198454E+19
+   4   0.1267092E-18   0.3429666E+19   0.9822434E-05   0.3198454E+19
+   5   0.6712741E-19   0.3429666E+19   0.1059151E-04   0.3198454E+19
+   6   0.1507697E-18   0.3429666E+19   0.1199804E-04   0.3198454E+19
+   7   0.7801871E-19   0.3429666E+19   0.1409037E-04   0.3198454E+19
+   8  -0.1017945E-19   0.3429666E+19   0.1598034E-04   0.3198454E+19
+   9   0.2021653E-19   0.3429666E+19   0.1588838E-04   0.3198454E+19
+  10  -0.2900787E-19   0.3429666E+19   0.1311045E-04   0.3198454E+19
+  11   0.5150231E-19   0.3429666E+19   0.9295919E-05   0.3198454E+19
+  12  -0.1193772E-18   0.3429666E+19   0.4885761E-05   0.3198454E+19
+  13   0.3117856E-19   0.3402309E+19   0.4485302E-06   0.3126838E+19
+  14  -0.1800172E-19   0.2758187E+19  -0.8926393E-06   0.2438683E+19
+  15  -0.4915515E-19   0.1443147E+19   0.1261692E-04   0.1215209E+19
+  16  -0.1806217E-19   0.3429666E+19   0.1248009E-19   0.3198454E+19
+  ==>  Global energy analysis written to file energy_int.000001.01.21.dta                                                                                                      on ts =          4 m/d/y= 1/ 5/   1, h:m:s= 0: 0: 0
+ between latitudes:       2 and       33
+
+
+
+                                        E N E R G Y    A N A L Y S I S
+
+
+
+
+
+ Globally averaged work done for ts =         5m/d/y= 1/ 6/   1, h:m:s= 0: 0: 0
+ ocean volume = 0.153906029E+25 cm**3, ocean surface area = 0.319845362E+19 cm**2
+
+ work by:              internal mode                         external mode
+
+ time rate of change    1.320723E-05 (3EEBB294096BA2C8 hex)   2.756320E-05 (3EFCE6F08DB6BA9B hex)
+ horizontal advection  -3.948042E-10 (BDFB21782AC2FCB6 hex)  -1.075012E-09 (BE1277F3B57D208B hex)
+ vertical advection     2.508558E-08 (3E5AEF78AAC8D6C8 hex)  -4.023483E-09 (BE3147DDD50F8432 hex)
+ horizontal friction   -9.347053E-10 (BE100EE09B59A202 hex)  -8.541315E-09 (BE4257A32E4B0577 hex)
+ vertical friction      4.590068E-06 (3ED3408C3B45A9C5 hex)  -2.732216E-07 (BE9255E956EE3FD2 hex)
+ pressure forces        8.598236E-06 (3EE208247EAB0187 hex)   3.325932E-05 (3F016FFD9E7A853E hex)
+ ficticious sources    -4.828202E-09 (BE34BCAA133DD000 hex)  -5.409263E-06 (BED6B026DF429A4C hex)
+ work by wind           4.688602E-06 (3ED3AA592B86D2EF hex)  -2.736634E-07 (BE925D808121A62B hex)
+ bottom drag            6.440723E-11 (3DD1B4417D767C91 hex)   4.084064E-10 (3DFC10C2DFD00D1B hex)
+
+ work by buoyancy forces   =  6.102268E-05 (3F0FFE53300CCAEB hex)
+ energy conversion error   =  1.916512E-05 (3EF41898E3CF0A96 hex)
+ nonlinear error           =  1.959228E-08 (3E55097C198217C0 hex)
+
+
+Average vertical velocity through bottom of "T" and "u" cells at each level
+
+level   adv_vbt err   "T" cell area     adv_vbu err   "U" cell area
+ (Note: adv_vbu err only goes to zero when non-zero values on boundary cells are taken into account)
+   1   0.1066351E-18   0.3429666E+19  -0.3316541E-05   0.3198454E+19
+   2   0.6492067E-19   0.3429666E+19  -0.2560021E-05   0.3198454E+19
+   3   0.1121875E-18   0.3429666E+19  -0.1834822E-05   0.3198454E+19
+   4   0.8841171E-19   0.3429666E+19  -0.1158874E-05   0.3198454E+19
+   5  -0.2078601E-19   0.3429666E+19  -0.2848787E-06   0.3198454E+19
+   6  -0.9510309E-19   0.3429666E+19   0.1337028E-05   0.3198454E+19
+   7   0.8456772E-19   0.3429666E+19   0.3844875E-05   0.3198454E+19
+   8  -0.1390954E-18   0.3429666E+19   0.6410141E-05   0.3198454E+19
+   9   0.7388998E-19   0.3429666E+19   0.7298945E-05   0.3198454E+19
+  10   0.1094825E-18   0.3429666E+19   0.5838066E-05   0.3198454E+19
+  11   0.7282220E-19   0.3429666E+19   0.3700384E-05   0.3198454E+19
+  12  -0.1701320E-19   0.3429666E+19   0.1308766E-05   0.3198454E+19
+  13  -0.5812344E-19   0.3402309E+19  -0.8368482E-06   0.3126838E+19
+  14  -0.1079882E-19   0.2758187E+19   0.7294230E-06   0.2438683E+19
+  15  -0.5876362E-19   0.1443147E+19   0.1307397E-04   0.1215209E+19
+  16  -0.9078727E-20   0.3429666E+19   0.1870301E-19   0.3198454E+19
+  ==>  Global energy analysis written to file energy_int.000001.01.21.dta                                                                                                      on ts =          5 m/d/y= 1/ 6/   1, h:m:s= 0: 0: 0
+ between latitudes:       2 and       33
+
+
+
+                                        E N E R G Y    A N A L Y S I S
+
+
+
+
+
+ Globally averaged work done for ts =         6m/d/y= 1/ 7/   1, h:m:s= 0: 0: 0
+ ocean volume = 0.153906029E+25 cm**3, ocean surface area = 0.319845362E+19 cm**2
+
+ work by:              internal mode                         external mode
+
+ time rate of change    1.160430E-05 (3EE8560357655060 hex)   7.193627E-06 (3EDE2C191B1F6A19 hex)
+ horizontal advection  -2.631925E-10 (BDF21621D2A2795F hex)  -1.238508E-09 (BE1547042593FF54 hex)
+ vertical advection     1.272011E-08 (3E4B50F4AD16C340 hex)  -3.309764E-09 (BE2C6E3F4E1F8117 hex)
+ horizontal friction   -1.576033E-09 (BE1B1377F03CC2E8 hex)  -1.767769E-08 (BE52FB350EE01A61 hex)
+ vertical friction      4.282699E-06 (3ED1F68361ABB111 hex)  -3.285942E-07 (BE960D34CAE6AA31 hex)
+ pressure forces        7.316447E-06 (3EDEAFF9BB8A6EC5 hex)   1.135637E-05 (3EE7D0E7A2C922CE hex)
+ ficticious sources    -5.723802E-09 (BE389562EEF08800 hex)  -3.811923E-06 (BECFFA0AE112E72A hex)
+ work by wind           4.422633E-06 (3ED28CC41BEEA8F4 hex)  -3.290026E-07 (BE96143885CD3980 hex)
+ bottom drag            4.126428E-11 (3DC6AF6E34C43AD1 hex)   2.973225E-10 (3DF46E8D60B52197 hex)
+
+ work by buoyancy forces   =  3.861742E-05 (3F043F24800AF5D4 hex)
+ energy conversion error   =  1.994460E-05 (3EF4E9D6BFCEBE90 hex)
+ nonlinear error           =  7.908648E-09 (3E40FBD346474F45 hex)
+
+
+Average vertical velocity through bottom of "T" and "u" cells at each level
+
+level   adv_vbt err   "T" cell area     adv_vbu err   "U" cell area
+ (Note: adv_vbu err only goes to zero when non-zero values on boundary cells are taken into account)
+   1   0.4413467E-19   0.3429666E+19  -0.1151655E-04   0.3198454E+19
+   2  -0.1850809E-19   0.3429666E+19  -0.1117409E-04   0.3198454E+19
+   3  -0.1110485E-19   0.3429666E+19  -0.1082640E-04   0.3198454E+19
+   4   0.0000000E+00   0.3429666E+19  -0.1050263E-04   0.3198454E+19
+   5  -0.1665728E-18   0.3429666E+19  -0.1008425E-04   0.3198454E+19
+   6   0.5837166E-19   0.3429666E+19  -0.9307906E-05   0.3198454E+19
+   7   0.3018242E-19   0.3429666E+19  -0.8091832E-05   0.3198454E+19
+   8  -0.8713038E-19   0.3429666E+19  -0.6698049E-05   0.3198454E+19
+   9  -0.6250039E-19   0.3429666E+19  -0.5553826E-05   0.3198454E+19
+  10  -0.2633843E-19   0.3429666E+19  -0.4908757E-05   0.3198454E+19
+  11   0.8556431E-19   0.3429666E+19  -0.4492972E-05   0.3198454E+19
+  12  -0.1025063E-19   0.3429666E+19  -0.4068779E-05   0.3198454E+19
+  13   0.2884645E-19   0.3402309E+19  -0.2651078E-05   0.3126838E+19
+  14  -0.2392115E-19   0.2758187E+19   0.9118290E-06   0.2438683E+19
+  15  -0.4631491E-19   0.1443147E+19   0.1321182E-04   0.1215209E+19
+  16  -0.1575851E-19   0.3429666E+19   0.7274401E-20   0.3198454E+19
+  ==>  Global energy analysis written to file energy_int.000001.01.21.dta                                                                                                      on ts =          6 m/d/y= 1/ 7/   1, h:m:s= 0: 0: 0
+ between latitudes:       2 and       33
+
+
+
+                                        E N E R G Y    A N A L Y S I S
+
+
+
+
+
+ Globally averaged work done for ts =         7m/d/y= 1/ 8/   1, h:m:s= 0: 0: 0
+ ocean volume = 0.153906029E+25 cm**3, ocean surface area = 0.319845362E+19 cm**2
+
+ work by:              internal mode                         external mode
+
+ time rate of change    1.127976E-05 (3EE7A7C617DDB10B hex)  -4.623483E-06 (BED3646D57225F5D hex)
+ horizontal advection  -3.728537E-10 (BDF99F5000F1C051 hex)  -1.188456E-09 (BE146AE2E4A7B1E3 hex)
+ vertical advection     1.721396E-08 (3E527BBCD0BA7381 hex)  -3.038839E-09 (BE2A1A7A611E4173 hex)
+ horizontal friction   -2.193273E-09 (BE22D70EEEFB6517 hex)  -3.058919E-08 (BE606C2546278F21 hex)
+ vertical friction      4.530844E-06 (3ED300F5050CDF34 hex)  -3.712973E-07 (BE98EAD703095CD9 hex)
+ pressure forces        6.740989E-06 (3EDC46150403DF39 hex)  -2.133512E-06 (BEC1E5AE7C8030E5 hex)
+ ficticious sources    -6.723767E-09 (BE3CE0DC20CE5800 hex)  -2.083857E-06 (BEC17B0CC155E777 hex)
+ work by wind           4.709272E-06 (3ED3C08AB91CD95B hex)  -3.713821E-07 (BE98EC4BC6A134CE hex)
+ bottom drag           -7.303950E-11 (BDD413B29F6895D9 hex)  -1.217583E-10 (BDE0BBFD30402972 hex)
+
+ work by buoyancy forces   =  2.415985E-05 (3EF9555C4F26AF45 hex)
+ energy conversion error   =  1.955237E-05 (3EF4808CDDB5BD94 hex)
+ nonlinear error           =  1.261381E-08 (3E4B16842C90D267 hex)
+
+
+Average vertical velocity through bottom of "T" and "u" cells at each level
+
+level   adv_vbt err   "T" cell area     adv_vbu err   "U" cell area
+ (Note: adv_vbu err only goes to zero when non-zero values on boundary cells are taken into account)
+   1   0.1628712E-18   0.3429666E+19  -0.1319815E-04   0.3198454E+19
+   2  -0.1708439E-19   0.3429666E+19  -0.1285792E-04   0.3198454E+19
+   3   0.1793861E-19   0.3429666E+19  -0.1250341E-04   0.3198454E+19
+   4   0.1779624E-18   0.3429666E+19  -0.1217240E-04   0.3198454E+19
+   5  -0.8342876E-19   0.3429666E+19  -0.1174344E-04   0.3198454E+19
+   6   0.1665728E-18   0.3429666E+19  -0.1094317E-04   0.3198454E+19
+   7  -0.6833755E-20   0.3429666E+19  -0.9677089E-05   0.3198454E+19
+   8   0.7659501E-19   0.3429666E+19  -0.8189250E-05   0.3198454E+19
+   9   0.1329735E-18   0.3429666E+19  -0.6852906E-05   0.3198454E+19
+  10  -0.5125316E-20   0.3429666E+19  -0.5875990E-05   0.3198454E+19
+  11   0.2420288E-19   0.3429666E+19  -0.4993656E-05   0.3198454E+19
+  12   0.5111079E-19   0.3429666E+19  -0.3991965E-05   0.3198454E+19
+  13  -0.3020984E-19   0.3402309E+19  -0.1715660E-05   0.3126838E+19
+  14  -0.1436154E-19   0.2758187E+19   0.3901749E-05   0.2438683E+19
+  15  -0.2130515E-19   0.1443147E+19   0.1256060E-04   0.1215209E+19
+  16   0.4516052E-20   0.3429666E+19   0.1994175E-19   0.3198454E+19
+  ==>  Global energy analysis written to file energy_int.000001.01.21.dta                                                                                                      on ts =          7 m/d/y= 1/ 8/   1, h:m:s= 0: 0: 0
+ between latitudes:       2 and       33
+
+
+
+                                        E N E R G Y    A N A L Y S I S
+
+
+
+
+
+ Globally averaged work done for ts =         8m/d/y= 1/ 9/   1, h:m:s= 0: 0: 0
+ ocean volume = 0.153906029E+25 cm**3, ocean surface area = 0.319845362E+19 cm**2
+
+ work by:              internal mode                         external mode
+
+ time rate of change    5.703825E-06 (3ED7EC6F766F5F7D hex)  -5.946787E-06 (BED8F1505E5C4B0B hex)
+ horizontal advection  -3.717036E-10 (BDF98B143A02AA53 hex)  -1.044811E-09 (BE11F320E68A5F64 hex)
+ vertical advection     7.335255E-09 (3E3F8132A4206B1D hex)  -7.717326E-10 (BE0A843B41511C76 hex)
+ horizontal friction   -2.852139E-09 (BE287FEBA79E66E9 hex)  -4.830950E-08 (BE69EF9B958D9697 hex)
+ vertical friction      3.296408E-06 (3ECBA6FBB9A9FBD4 hex)  -4.152388E-07 (BE9BDDBFA8C08510 hex)
+ pressure forces        2.409449E-06 (3EC43640C90B71D6 hex)  -3.803866E-06 (BECFE8BDA5B47514 hex)
+ ficticious sources    -6.144288E-09 (BE3A63B73A0E6C00 hex)  -1.677556E-06 (BEBC250C1789E750 hex)
+ work by wind           3.512182E-06 (3ECD765A50AEBDAF hex)  -4.150817E-07 (BE9BDB0CB489CE56 hex)
+ bottom drag           -2.019794E-10 (BDEBC284BA64D75A hex)  -4.452603E-10 (BDFE991A2216BD98 hex)
+
+ work by buoyancy forces   =  1.607526E-05 (3EF0DB2B894568CB hex)
+ energy conversion error   =  1.746968E-05 (3EF2517B24DA8933 hex)
+ nonlinear error           =  5.147007E-09 (3E361B31BEB38510 hex)
+
+
+Average vertical velocity through bottom of "T" and "u" cells at each level
+
+level   adv_vbt err   "T" cell area     adv_vbu err   "U" cell area
+ (Note: adv_vbu err only goes to zero when non-zero values on boundary cells are taken into account)
+   1   0.2050127E-19   0.3429666E+19  -0.1278104E-04   0.3198454E+19
+   2   0.4470415E-19   0.3429666E+19  -0.1300930E-04   0.3198454E+19
+   3   0.4384993E-19   0.3429666E+19  -0.1318792E-04   0.3198454E+19
+   4   0.4014831E-19   0.3429666E+19  -0.1335545E-04   0.3198454E+19
+   5   0.6748333E-19   0.3429666E+19  -0.1357306E-04   0.3198454E+19
+   6  -0.1258550E-18   0.3429666E+19  -0.1397857E-04   0.3198454E+19
+   7   0.7431709E-19   0.3429666E+19  -0.1458331E-04   0.3198454E+19
+   8   0.1324040E-18   0.3429666E+19  -0.1495227E-04   0.3198454E+19
+   9  -0.6833755E-20   0.3429666E+19  -0.1398369E-04   0.3198454E+19
+  10   0.4328045E-19   0.3429666E+19  -0.1146824E-04   0.3198454E+19
+  11   0.1936231E-19   0.3429666E+19  -0.8871168E-05   0.3198454E+19
+  12   0.3359930E-19   0.3429666E+19  -0.6210161E-05   0.3198454E+19
+  13   0.7175734E-21   0.3402309E+19  -0.1699122E-05   0.3126838E+19
+  14  -0.1637526E-19   0.2758187E+19   0.4614384E-05   0.2438683E+19
+  15  -0.3533853E-19   0.1443147E+19   0.1075197E-04   0.1215209E+19
+  16  -0.2130327E-20   0.3429666E+19   0.2306014E-19   0.3198454E+19
+  ==>  Global energy analysis written to file energy_int.000001.01.21.dta                                                                                                      on ts =          8 m/d/y= 1/ 9/   1, h:m:s= 0: 0: 0
+ between latitudes:       2 and       33
+
+
+
+                                        E N E R G Y    A N A L Y S I S
+
+
+
+
+
+ Globally averaged work done for ts =         9m/d/y= 1/10/   1, h:m:s= 0: 0: 0
+ ocean volume = 0.153906029E+25 cm**3, ocean surface area = 0.319845362E+19 cm**2
+
+ work by:              internal mode                         external mode
+
+ time rate of change    5.366255E-06 (3ED681F912AC8D14 hex)  -2.222231E-06 (BEC2A43429178252 hex)
+ horizontal advection  -1.748440E-10 (BDE807C68A318CA6 hex)  -8.650028E-10 (BE0DB8A519F3E216 hex)
+ vertical advection     2.556447E-09 (3E25F5AFA3C73F63 hex)  -3.042568E-11 (BDC0BA08C4815624 hex)
+ horizontal friction   -3.221917E-09 (BE2BAD11FB4686FE hex)  -7.007218E-08 (BE72CF52D398B24E hex)
+ vertical friction      2.933409E-06 (3EC89B72D59CBB95 hex)  -4.622384E-07 (BE9F0531D2D433B0 hex)
+ pressure forces        2.439099E-06 (3EC475ECECA3B3FD hex)   5.780362E-07 (3EA3654B0B3B58DB hex)
+ ficticious sources    -5.412667E-09 (BE373F4A6E99A400 hex)  -2.267061E-06 (BEC30479D694A8C1 hex)
+ work by wind           3.172443E-06 (3ECA9CC4DAAD951D hex)  -4.617264E-07 (BE9EFC6602249F2B hex)
+ bottom drag           -3.322280E-10 (BDF6D49DDA23DB4D hex)  -8.281852E-10 (BE0C74CB36CC14F4 hex)
+
+ work by buoyancy forces   =  1.843117E-05 (3EF3539409E3818C hex)
+ energy conversion error   =  1.541403E-05 (3EF029AC13F53046 hex)
+ nonlinear error           =  1.486174E-09 (3E198843A32A5176 hex)
+
+
+Average vertical velocity through bottom of "T" and "u" cells at each level
+
+level   adv_vbt err   "T" cell area     adv_vbu err   "U" cell area
+ (Note: adv_vbu err only goes to zero when non-zero values on boundary cells are taken into account)
+   1   0.6121906E-19   0.3429666E+19  -0.6536264E-05   0.3198454E+19
+   2   0.7431709E-19   0.3429666E+19  -0.6796771E-05   0.3198454E+19
+   3   0.5125316E-20   0.3429666E+19  -0.7037909E-05   0.3198454E+19
+   4  -0.1907757E-19   0.3429666E+19  -0.7266387E-05   0.3198454E+19
+   5   0.2021653E-19   0.3429666E+19  -0.7566218E-05   0.3198454E+19
+   6  -0.2448762E-19   0.3429666E+19  -0.8136176E-05   0.3198454E+19
+   7   0.6833755E-19   0.3429666E+19  -0.9044571E-05   0.3198454E+19
+   8  -0.3132138E-20   0.3429666E+19  -0.9860920E-05   0.3198454E+19
+   9  -0.3416878E-19   0.3429666E+19  -0.9419433E-05   0.3198454E+19
+  10   0.1850809E-19   0.3429666E+19  -0.7469776E-05   0.3198454E+19
+  11   0.4441941E-19   0.3429666E+19  -0.5516284E-05   0.3198454E+19
+  12   0.4683970E-19   0.3429666E+19  -0.3607064E-05   0.3198454E+19
+  13  -0.4592470E-20   0.3402309E+19   0.1215696E-06   0.3126838E+19
+  14  -0.2655447E-19   0.2758187E+19   0.5548338E-05   0.2438683E+19
+  15  -0.4655677E-19   0.1443147E+19   0.8682653E-05   0.1215209E+19
+  16  -0.1484265E-19   0.3429666E+19  -0.5378456E-20   0.3198454E+19
+  ==>  Global energy analysis written to file energy_int.000001.01.21.dta                                                                                                      on ts =          9 m/d/y= 1/10/   1, h:m:s= 0: 0: 0
+ between latitudes:       2 and       33
+
+
+
+                                        E N E R G Y    A N A L Y S I S
+
+
+
+
+
+ Globally averaged work done for ts =        10m/d/y= 1/11/   1, h:m:s= 0: 0: 0
+ ocean volume = 0.153906029E+25 cm**3, ocean surface area = 0.319845362E+19 cm**2
+
+ work by:              internal mode                         external mode
+
+ time rate of change   -2.822719E-07 (BE92F164D39F66C2 hex)  -2.303351E-09 (BE23C91F1872CFCA hex)
+ horizontal advection  -4.577863E-10 (BDFF75762FE9DD65 hex)  -7.106963E-10 (BE086B59D5A2C976 hex)
+ vertical advection    -1.037723E-10 (BDDC86546082FFA5 hex)  -7.474757E-11 (BDD48BE48523CE44 hex)
+ horizontal friction   -3.722499E-09 (BE2FF9DC92629817 hex)  -9.427767E-08 (BE794EB64E3A6E66 hex)
+ vertical friction      1.768396E-06 (3EBDAB33B7C348DC hex)  -5.096945E-07 (BEA11A3DF9EF3257 hex)
+ pressure forces       -2.041584E-06 (BEC12044BD7D70D2 hex)   3.238035E-06 (3ECB29A0CBE22226 hex)
+ ficticious sources    -4.799470E-09 (BE349D12B28EF280 hex)  -2.635581E-06 (BEC61BDE15543A5D hex)
+ work by wind           2.029739E-06 (3EC106D49E824B16 hex)  -5.089034E-07 (BEA113724FDBFDDD hex)
+ bottom drag           -4.891507E-10 (BE00CE9D8FB88C99 hex)  -1.116472E-09 (BE132E4BA70729F8 hex)
+
+ work by buoyancy forces   =  1.311220E-05 (3EEB7F8F217FA95C hex)
+ energy conversion error   =  1.191575E-05 (3EE8FD381DE67D07 hex)
+ nonlinear error           = -1.347003E-09 (BE17242E052648F2 hex)
+
+
+Average vertical velocity through bottom of "T" and "u" cells at each level
+
+level   adv_vbt err   "T" cell area     adv_vbu err   "U" cell area
+ (Note: adv_vbu err only goes to zero when non-zero values on boundary cells are taken into account)
+   1   0.6264276E-19   0.3429666E+19  -0.1227279E-05   0.3198454E+19
+   2   0.7090021E-19   0.3429666E+19  -0.1637022E-05   0.3198454E+19
+   3   0.6321224E-19   0.3429666E+19  -0.2026012E-05   0.3198454E+19
+   4  -0.2420288E-19   0.3429666E+19  -0.2392160E-05   0.3198454E+19
+   5   0.3075190E-19   0.3429666E+19  -0.2869349E-05   0.3198454E+19
+   6  -0.2562658E-19   0.3429666E+19  -0.3765761E-05   0.3198454E+19
+   7   0.5125316E-19   0.3429666E+19  -0.5155663E-05   0.3198454E+19
+   8   0.3843987E-19   0.3429666E+19  -0.6401317E-05   0.3198454E+19
+   9  -0.8143558E-19   0.3429666E+19  -0.6063637E-05   0.3198454E+19
+  10  -0.4869051E-19   0.3429666E+19  -0.3961574E-05   0.3198454E+19
+  11  -0.2363340E-19   0.3429666E+19  -0.2238204E-05   0.3198454E+19
+  12  -0.1509121E-19   0.3429666E+19  -0.9936592E-06   0.3198454E+19
+  13   0.1650419E-19   0.3402309E+19   0.2059333E-05   0.3126838E+19
+  14   0.8585945E-20   0.2758187E+19   0.4481073E-05   0.2438683E+19
+  15  -0.2326120E-21   0.1443147E+19   0.5843211E-05   0.1215209E+19
+  16   0.6775544E-21   0.3429666E+19   0.1051739E-19   0.3198454E+19
+  ==>  Global energy analysis written to file energy_int.000001.01.21.dta                                                                                                      on ts =         10 m/d/y= 1/11/   1, h:m:s= 0: 0: 0
+ between latitudes:       2 and       33
+
+
+
+                                        E N E R G Y    A N A L Y S I S
+
+
+
+
+
+ Globally averaged work done for ts =        11m/d/y= 1/12/   1, h:m:s= 0: 0: 0
+ ocean volume = 0.153906029E+25 cm**3, ocean surface area = 0.319845362E+19 cm**2
+
+ work by:              internal mode                         external mode
+
+ time rate of change   -4.780375E-07 (BEA00A4F9278B081 hex)  -1.594249E-06 (BEBABF3F2A38A339 hex)
+ horizontal advection  -4.437836E-10 (BDFE7F1FC0202F2F hex)  -4.169937E-10 (BDFCA7D4ADCF7E33 hex)
+ vertical advection    -1.242731E-09 (BE15599717BDE87F hex)  -7.004677E-10 (BE0811611EAEEF7D hex)
+ horizontal friction   -3.953428E-09 (BE30FAD6F879C393 hex)  -1.173429E-07 (BE7F7FBE95BBA5BB hex)
+ vertical friction      9.508785E-07 (3EAFE7FBE99D7CC8 hex)  -5.475788E-07 (BEA25FAA7F348331 hex)
+ pressure forces       -1.419139E-06 (BEB7CF284A0D7A0D hex)   1.687465E-06 (3EBC4F9AEB2C6F27 hex)
+ ficticious sources    -4.136628E-09 (BE31C445433156C0 hex)  -2.615674E-06 (BEC5F11E218031CA hex)
+ work by wind           1.220796E-06 (3EB47B472989988C hex)  -5.465890E-07 (BEA25729DF069380 hex)
+ bottom drag           -4.821354E-10 (BE0090E8813AB636 hex)  -1.292209E-09 (BE163331936C8E2E hex)
+
+ work by buoyancy forces   =  9.448358E-06 (3EE3D08C7132FE97 hex)
+ energy conversion error   =  9.180033E-06 (3EE3407E1D0F1FF4 hex)
+ nonlinear error           = -2.803976E-09 (BE2816026148A5CB hex)
+
+
+Average vertical velocity through bottom of "T" and "u" cells at each level
+
+level   adv_vbt err   "T" cell area     adv_vbu err   "U" cell area
+ (Note: adv_vbu err only goes to zero when non-zero values on boundary cells are taken into account)
+   1  -0.5751744E-19   0.3429666E+19   0.5289762E-05   0.3198454E+19
+   2   0.3758565E-19   0.3429666E+19   0.4897404E-05   0.3198454E+19
+   3  -0.4014831E-19   0.3429666E+19   0.4449380E-05   0.3198454E+19
+   4   0.2078601E-19   0.3429666E+19   0.4023504E-05   0.3198454E+19
+   5   0.4555837E-20   0.3429666E+19   0.3464676E-05   0.3198454E+19
+   6  -0.6520541E-19   0.3429666E+19   0.2402476E-05   0.3198454E+19
+   7   0.2306392E-19   0.3429666E+19   0.7032376E-06   0.3198454E+19
+   8   0.5182264E-19   0.3429666E+19  -0.1005114E-05   0.3198454E+19
+   9  -0.9111674E-20   0.3429666E+19  -0.1252793E-05   0.3198454E+19
+  10   0.2107075E-19   0.3429666E+19   0.1555707E-06   0.3198454E+19
+  11  -0.1993179E-20   0.3429666E+19   0.1049288E-05   0.3198454E+19
+  12   0.1879283E-19   0.3429666E+19   0.1313589E-05   0.3198454E+19
+  13  -0.2124017E-19   0.3402309E+19   0.3125362E-05   0.3126838E+19
+  14  -0.1460496E-19   0.2758187E+19   0.2204715E-05   0.2438683E+19
+  15  -0.3322652E-19   0.1443147E+19   0.3396110E-05   0.1215209E+19
+  16  -0.9878694E-20   0.3429666E+19  -0.1402882E-19   0.3198454E+19
+  ==>  Global energy analysis written to file energy_int.000001.01.21.dta                                                                                                      on ts =         11 m/d/y= 1/12/   1, h:m:s= 0: 0: 0
+ between latitudes:       2 and       33
+
+
+
+                                        E N E R G Y    A N A L Y S I S
+
+
+
+
+
+ Globally averaged work done for ts =        12m/d/y= 1/13/   1, h:m:s= 0: 0: 0
+ ocean volume = 0.153906029E+25 cm**3, ocean surface area = 0.319845362E+19 cm**2
+
+ work by:              internal mode                         external mode
+
+ time rate of change   -3.104565E-06 (BECA0B0081AAAB88 hex)  -5.109478E-06 (BED56E42BADDBFFB hex)
+ horizontal advection  -5.854583E-10 (BE041DBED5AA841C hex)  -8.329112E-11 (BDD6E517838772E8 hex)
+ vertical advection    -1.055292E-09 (BE12213982A258DF hex)  -1.628635E-09 (BE1BFAD061F6D5EF hex)
+ horizontal friction   -4.424778E-09 (BE330118509C405B hex)  -1.344436E-07 (BE820B72931D9BDD hex)
+ vertical friction      6.274107E-07 (3EA50D6AAE275A02 hex)  -5.714445E-07 (BEA32CABCEA6E777 hex)
+ pressure forces       -3.721389E-06 (BECF379F30D4B079 hex)  -2.193438E-06 (BEC2665F6F62577F hex)
+ ficticious sources    -4.520964E-09 (BE336ADA33A8F800 hex)  -2.208440E-06 (BEC28696C5424EF2 hex)
+ work by wind           9.052528E-07 (3EAE600FE9D3D5AB hex)  -5.703624E-07 (BEA3236039F83EE6 hex)
+ bottom drag           -5.568075E-10 (BE0321BAF0F0685F hex)  -1.361215E-09 (BE1762AFA892D8AB hex)
+
+ work by buoyancy forces   =  1.035582E-06 (3EB15FCAF265694D hex)
+ energy conversion error   =  6.950410E-06 (3EDD26F20CB4DE4F hex)
+ nonlinear error           = -3.352677E-09 (BE2CCC9D63D37406 hex)
+
+
+Average vertical velocity through bottom of "T" and "u" cells at each level
+
+level   adv_vbt err   "T" cell area     adv_vbu err   "U" cell area
+ (Note: adv_vbu err only goes to zero when non-zero values on boundary cells are taken into account)
+   1   0.1822335E-19   0.3429666E+19   0.1009701E-04   0.3198454E+19
+   2  -0.5865640E-19   0.3429666E+19   0.1016304E-04   0.3198454E+19
+   3  -0.1025063E-19   0.3429666E+19   0.1012956E-04   0.3198454E+19
+   4  -0.5125316E-20   0.3429666E+19   0.1009080E-04   0.3198454E+19
+   5  -0.3160612E-19   0.3429666E+19   0.1003402E-04   0.3198454E+19
+   6   0.5495478E-19   0.3429666E+19   0.9909231E-05   0.3198454E+19
+   7  -0.3103664E-19   0.3429666E+19   0.9693155E-05   0.3198454E+19
+   8  -0.1480647E-19   0.3429666E+19   0.9565936E-05   0.3198454E+19
+   9  -0.9396413E-20   0.3429666E+19   0.9833604E-05   0.3198454E+19
+  10   0.1082011E-19   0.3429666E+19   0.1014004E-04   0.3198454E+19
+  11   0.2135549E-19   0.3429666E+19   0.9173823E-05   0.3198454E+19
+  12   0.5694796E-21   0.3429666E+19   0.7000388E-05   0.3198454E+19
+  13  -0.2009205E-20   0.3402309E+19   0.5988982E-05   0.3126838E+19
+  14   0.1628674E-19   0.2758187E+19   0.5031197E-06   0.2438683E+19
+  15  -0.3123345E-19   0.1443147E+19   0.1569621E-05   0.1215209E+19
+  16   0.3163274E-20   0.3429666E+19  -0.7599799E-20   0.3198454E+19
+  ==>  Global energy analysis written to file energy_int.000001.01.21.dta                                                                                                      on ts =         12 m/d/y= 1/13/   1, h:m:s= 0: 0: 0
+ between latitudes:       2 and       33
+
+
+
+                                        E N E R G Y    A N A L Y S I S
+
+
+
+
+
+ Globally averaged work done for ts =        13m/d/y= 1/14/   1, h:m:s= 0: 0: 0
+ ocean volume = 0.153906029E+25 cm**3, ocean surface area = 0.319845362E+19 cm**2
+
+ work by:              internal mode                         external mode
+
+ time rate of change   -3.168043E-06 (BECA935244A1A893 hex)  -8.402542E-06 (BEE19F14A27A046C hex)
+ horizontal advection  -8.609054E-10 (BE0D949AA65E44A2 hex)   1.791038E-10 (3DE89DA7AF1BC092 hex)
+ vertical advection     1.895718E-09 (3E2048BA498E5A56 hex)  -2.437276E-09 (BE24EFA02C4D731D hex)
+ horizontal friction   -4.668023E-09 (BE340C8B90C558F2 hex)  -1.419463E-07 (BE830D3C797C6162 hex)
+ vertical friction     -2.059597E-07 (BE8BA4B86A607336 hex)  -5.786084E-07 (BEA36A3562922FFD hex)
+ pressure forces       -2.953428E-06 (BEC8C67052B6B490 hex)  -5.662547E-06 (BED7C01D02BA0D0D hex)
+ ficticious sources    -5.022304E-09 (BE359214C90FAC00 hex)  -2.017183E-06 (BEC0EBDDF2CB4E92 hex)
+ work by wind           7.547462E-08 (3E7442938515416B hex)  -5.775683E-07 (BEA36146324BD861 hex)
+ bottom drag           -4.451855E-10 (BDFE97C94EBA9B77 hex)  -1.288153E-09 (BE16215BB2554A1A hex)
+
+ work by buoyancy forces   = -2.908269E-06 (BEC86575BB10E069 hex)
+ energy conversion error   =  5.707706E-06 (3ED7F09A4E8CF720 hex)
+ nonlinear error           = -1.223359E-09 (BE15046422C9DBCD hex)
+
+
+Average vertical velocity through bottom of "T" and "u" cells at each level
+
+level   adv_vbt err   "T" cell area     adv_vbu err   "U" cell area
+ (Note: adv_vbu err only goes to zero when non-zero values on boundary cells are taken into account)
+   1  -0.2989768E-19   0.3429666E+19   0.1492016E-04   0.3198454E+19
+   2   0.3758565E-19   0.3429666E+19   0.1504983E-04   0.3198454E+19
+   3   0.3701617E-20   0.3429666E+19   0.1501217E-04   0.3198454E+19
+   4  -0.1708439E-19   0.3429666E+19   0.1496453E-04   0.3198454E+19
+   5  -0.3900935E-19   0.3429666E+19   0.1489264E-04   0.3198454E+19
+   6  -0.7033073E-19   0.3429666E+19   0.1472947E-04   0.3198454E+19
+   7   0.2363340E-19   0.3429666E+19   0.1441963E-04   0.3198454E+19
+   8  -0.5410056E-20   0.3429666E+19   0.1409725E-04   0.3198454E+19
+   9   0.4043305E-19   0.3429666E+19   0.1399916E-04   0.3198454E+19
+  10   0.6691385E-19   0.3429666E+19   0.1373328E-04   0.3198454E+19
+  11   0.1850809E-19   0.3429666E+19   0.1201898E-04   0.3198454E+19
+  12   0.3416878E-20   0.3429666E+19   0.8955389E-05   0.3198454E+19
+  13  -0.3444352E-20   0.3402309E+19   0.6870603E-05   0.3126838E+19
+  14   0.2124357E-20   0.2758187E+19  -0.1805392E-05   0.2438683E+19
+  15   0.1207997E-19   0.1443147E+19   0.7542774E-06   0.1215209E+19
+  16  -0.8669646E-22   0.3429666E+19  -0.3619641E-20   0.3198454E+19
+  ==>  Global energy analysis written to file energy_int.000001.01.21.dta                                                                                                      on ts =         13 m/d/y= 1/14/   1, h:m:s= 0: 0: 0
+ between latitudes:       2 and       33
+
+
+
+                                        E N E R G Y    A N A L Y S I S
+
+
+
+
+
+ Globally averaged work done for ts =        14m/d/y= 1/15/   1, h:m:s= 0: 0: 0
+ ocean volume = 0.153906029E+25 cm**3, ocean surface area = 0.319845362E+19 cm**2
+
+ work by:              internal mode                         external mode
+
+ time rate of change   -2.226392E-06 (BEC2AD23B57BCF0E hex)  -1.052791E-05 (BEE6142184E8A06A hex)
+ horizontal advection  -8.446579E-10 (BE0D05B0905DCCAA hex)   3.544222E-10 (3DF85B0FBFDFBF9E hex)
+ vertical advection     2.805520E-09 (3E2819678460F611 hex)  -2.181818E-09 (BE22BDDE15B1AC7A hex)
+ horizontal friction   -5.218699E-09 (BE366A05154E2920 hex)  -1.373143E-07 (BE826E159BB78432 hex)
+ vertical friction      4.080276E-07 (3E9B61DC62C50EB4 hex)  -5.738655E-07 (BEA34177A8FCBF61 hex)
+ pressure forces       -2.624776E-06 (BEC604A9EC658501 hex)  -8.109672E-06 (BEE101D8DB508A30 hex)
+ ficticious sources    -6.385234E-09 (BE3B6CA378AE6000 hex)  -1.705235E-06 (BEBC9BED86BC86C0 hex)
+ work by wind           6.926792E-07 (3EA73E11AB16BF2C hex)  -5.729985E-07 (BEA33A04FEBB0A9C hex)
+ bottom drag           -3.704582E-10 (BDF9752B81AA2175 hex)  -1.063522E-09 (BE12456AF86E861A hex)
+
+ work by buoyancy forces   = -4.984378E-06 (BED4E7EF75B76C36 hex)
+ energy conversion error   =  5.750070E-06 (3ED81E17371C6AAA hex)
+ nonlinear error           =  1.334670E-10 (3DE257F4293CE600 hex)
+
+
+Average vertical velocity through bottom of "T" and "u" cells at each level
+
+level   adv_vbt err   "T" cell area     adv_vbu err   "U" cell area
+ (Note: adv_vbu err only goes to zero when non-zero values on boundary cells are taken into account)
+   1   0.2847398E-21   0.3429666E+19   0.1944723E-04   0.3198454E+19
+   2  -0.3815513E-19   0.3429666E+19   0.2023961E-04   0.3198454E+19
+   3  -0.1025063E-19   0.3429666E+19   0.2080598E-04   0.3198454E+19
+   4   0.2676554E-19   0.3429666E+19   0.2131754E-04   0.3198454E+19
+   5  -0.2847398E-20   0.3429666E+19   0.2196390E-04   0.3198454E+19
+   6  -0.9681153E-20   0.3429666E+19   0.2311869E-04   0.3198454E+19
+   7  -0.7972714E-20   0.3429666E+19   0.2480482E-04   0.3198454E+19
+   8  -0.3359930E-19   0.3429666E+19   0.2643351E-04   0.3198454E+19
+   9   0.6264276E-20   0.3429666E+19   0.2673788E-04   0.3198454E+19
+  10   0.9396413E-20   0.3429666E+19   0.2478764E-04   0.3198454E+19
+  11   0.5210738E-19   0.3429666E+19   0.2076531E-04   0.3198454E+19
+  12  -0.3331456E-19   0.3429666E+19   0.1501244E-04   0.3198454E+19
+  13  -0.9041424E-20   0.3402309E+19   0.9863616E-05   0.3126838E+19
+  14  -0.1124139E-19   0.2758187E+19  -0.1694655E-05   0.2438683E+19
+  15   0.2172808E-20   0.1443147E+19   0.8478655E-06   0.1215209E+19
+  16  -0.3565529E-20   0.3429666E+19  -0.1256251E-19   0.3198454E+19
+  ==>  Global energy analysis written to file energy_int.000001.01.21.dta                                                                                                      on ts =         14 m/d/y= 1/15/   1, h:m:s= 0: 0: 0
+ between latitudes:       2 and       33
+
+
+
+                                        E N E R G Y    A N A L Y S I S
+
+
+
+
+
+ Globally averaged work done for ts =        15m/d/y= 1/16/   1, h:m:s= 0: 0: 0
+ ocean volume = 0.153906029E+25 cm**3, ocean surface area = 0.319845362E+19 cm**2
+
+ work by:              internal mode                         external mode
+
+ time rate of change   -2.211728E-06 (BEC28DA61E16618E hex)  -1.083307E-05 (BEE6B7F54C510F61 hex)
+ horizontal advection  -1.124641E-09 (BE13523949E17199 hex)   3.121380E-10 (3DF57330BA6130DF hex)
+ vertical advection     4.187456E-09 (3E31FC2804904CF2 hex)  -1.890254E-09 (BE203CB677D599CC hex)
+ horizontal friction   -5.483555E-09 (BE378D3BA0497EF1 hex)  -1.218123E-07 (BE80597010655CC7 hex)
+ vertical friction     -1.842976E-08 (BE53C9EF43E3970A hex)  -5.630583E-07 (BEA2E4A25551BD22 hex)
+ pressure forces       -2.183256E-06 (BEC25081ADB6CF9C hex)  -8.743910E-06 (BEE25659D0EB19D0 hex)
+ ficticious sources    -7.621117E-09 (BE405DC0E0B1FD00 hex)  -1.402708E-06 (BEB788958649DDA8 hex)
+ work by wind           2.753824E-07 (3E927B0890659384 hex)  -5.623716E-07 (BEA2DEBC23538F06 hex)
+ bottom drag           -2.622575E-10 (BDF205AEBDBE0C42 hex)  -8.449043E-10 (BE0D07DB4E50AED7 hex)
+
+ work by buoyancy forces   = -4.654951E-06 (BED3863747B872CD hex)
+ energy conversion error   =  6.272214E-06 (3EDA4EBD30F928A1 hex)
+ nonlinear error           =  1.484699E-09 (3E1981C6074CDAD0 hex)
+
+
+Average vertical velocity through bottom of "T" and "u" cells at each level
+
+level   adv_vbt err   "T" cell area     adv_vbu err   "U" cell area
+ (Note: adv_vbu err only goes to zero when non-zero values on boundary cells are taken into account)
+   1   0.2847398E-19   0.3429666E+19   0.2214887E-04   0.3198454E+19
+   2   0.1167433E-19   0.3429666E+19   0.2298653E-04   0.3198454E+19
+   3   0.7374761E-19   0.3429666E+19   0.2360609E-04   0.3198454E+19
+   4   0.1281329E-19   0.3429666E+19   0.2416510E-04   0.3198454E+19
+   5   0.3018242E-19   0.3429666E+19   0.2487103E-04   0.3198454E+19
+   6   0.1765387E-19   0.3429666E+19   0.2613268E-04   0.3198454E+19
+   7   0.1765387E-19   0.3429666E+19   0.2797290E-04   0.3198454E+19
+   8   0.2363340E-19   0.3429666E+19   0.2971876E-04   0.3198454E+19
+   9  -0.6264276E-20   0.3429666E+19   0.2995943E-04   0.3198454E+19
+  10  -0.3758565E-19   0.3429666E+19   0.2770412E-04   0.3198454E+19
+  11   0.1623017E-19   0.3429666E+19   0.2321124E-04   0.3198454E+19
+  12   0.0000000E+00   0.3429666E+19   0.1689239E-04   0.3198454E+19
+  13   0.1593013E-19   0.3402309E+19   0.1118960E-04   0.3126838E+19
+  14   0.3106873E-19   0.2758187E+19  -0.1222370E-05   0.2438683E+19
+  15   0.3792634E-19   0.1443147E+19   0.1764903E-05   0.1215209E+19
+  16   0.7724729E-20   0.3429666E+19  -0.1019860E-20   0.3198454E+19
+  ==>  Global energy analysis written to file energy_int.000001.01.21.dta                                                                                                      on ts =         15 m/d/y= 1/16/   1, h:m:s= 0: 0: 0
+ between latitudes:       2 and       33
+
+
+
+                                        E N E R G Y    A N A L Y S I S
+
+
+
+
+
+ Globally averaged work done for ts =        16m/d/y= 1/17/   1, h:m:s= 0: 0: 0
+ ocean volume = 0.153906029E+25 cm**3, ocean surface area = 0.319845362E+19 cm**2
+
+ work by:              internal mode                         external mode
+
+ time rate of change    6.080414E-07 (3EA467093B729A20 hex)  -8.574049E-06 (BEE1FB285A70B4B0 hex)
+ horizontal advection  -1.114654E-09 (BE13264C64BFFB45 hex)   2.929986E-10 (3DF4227C844FDB36 hex)
+ vertical advection     3.510541E-09 (3E2E27C31E371150 hex)  -4.128111E-10 (BDFC5E40153ACF67 hex)
+ horizontal friction   -5.993308E-09 (BE39BDB650D2E906 hex)  -9.842577E-08 (BE7A6BC45F6B94D9 hex)
+ vertical friction      9.794409E-07 (3EB06EAAADF6AEB9 hex)  -5.513880E-07 (BEA2806317E5CD1A hex)
+ pressure forces       -3.587032E-07 (BE981279342EE1DE hex)  -6.841681E-06 (BEDCB232E94C2AFC hex)
+ ficticious sources    -9.098909E-09 (BE438A2DAB60E940 hex)  -1.082435E-06 (BEB22905A0324B08 hex)
+ work by wind           1.282403E-06 (3EB583E0AA387B88 hex)  -5.510225E-07 (BEA27D3F4FFFAD08 hex)
+ bottom drag           -1.058493E-10 (BDDD187B897B7082 hex)  -4.607955E-10 (BDFFAA666AF4661E hex)
+
+ work by buoyancy forces   =  1.748130E-07 (3E8776872328E99D hex)
+ energy conversion error   =  7.375197E-06 (3EDEEF0EB5A86067 hex)
+ nonlinear error           =  2.276075E-09 (3E238D2479B9B528 hex)
+
+
+Average vertical velocity through bottom of "T" and "u" cells at each level
+
+level   adv_vbt err   "T" cell area     adv_vbu err   "U" cell area
+ (Note: adv_vbu err only goes to zero when non-zero values on boundary cells are taken into account)
+   1   0.9681153E-20   0.3429666E+19   0.2246932E-04   0.3198454E+19
+   2   0.4299571E-19   0.3429666E+19   0.2355542E-04   0.3198454E+19
+   3   0.7431709E-19   0.3429666E+19   0.2439931E-04   0.3198454E+19
+   4  -0.8115084E-19   0.3429666E+19   0.2515928E-04   0.3198454E+19
+   5  -0.1082011E-19   0.3429666E+19   0.2611430E-04   0.3198454E+19
+   6  -0.5922588E-19   0.3429666E+19   0.2780443E-04   0.3198454E+19
+   7   0.1736913E-19   0.3429666E+19   0.3019975E-04   0.3198454E+19
+   8  -0.3673143E-19   0.3429666E+19   0.3232019E-04   0.3198454E+19
+   9  -0.2363340E-19   0.3429666E+19   0.3236755E-04   0.3198454E+19
+  10   0.9965893E-20   0.3429666E+19   0.2937286E-04   0.3198454E+19
+  11  -0.3530774E-19   0.3429666E+19   0.2433133E-04   0.3198454E+19
+  12   0.3701617E-19   0.3429666E+19   0.1769380E-04   0.3198454E+19
+  13  -0.1722176E-19   0.3402309E+19   0.1163216E-04   0.3126838E+19
+  14   0.2646595E-19   0.2758187E+19   0.1218462E-05   0.2438683E+19
+  15  -0.1850323E-20   0.1443147E+19   0.2579699E-05   0.1215209E+19
+  16   0.5302012E-20   0.3429666E+19   0.5071173E-21   0.3198454E+19
+  ==>  Global energy analysis written to file energy_int.000001.01.21.dta                                                                                                      on ts =         16 m/d/y= 1/17/   1, h:m:s= 0: 0: 0
+ between latitudes:       2 and       33
+
+
+
+                                        E N E R G Y    A N A L Y S I S
+
+
+
+
+
+ Globally averaged work done for ts =        17m/d/y= 1/18/   1, h:m:s= 0: 0: 0
+ ocean volume = 0.153906029E+25 cm**3, ocean surface area = 0.319845362E+19 cm**2
+
+ work by:              internal mode                         external mode
+
+ time rate of change    6.922011E-07 (3EA739F653628D2F hex)  -3.907939E-06 (BED0641DFBBA7CDB hex)
+ horizontal advection  -1.352378E-09 (BE173BD24E06C170 hex)   2.187810E-10 (3DEE11ABCAE48AF9 hex)
+ vertical advection     3.275067E-09 (3E2C21F2F4C46A6C hex)   4.598332E-10 (3DFF9978C0F47B31 hex)
+ horizontal friction   -6.210943E-09 (BE3AAD0101ED8253 hex)  -7.275344E-08 (BE73879423531485 hex)
+ vertical friction      1.101308E-06 (3EB27A1508F0A96C hex)  -5.412378E-07 (BEA229329559565F hex)
+ pressure forces       -3.947711E-07 (BE9A7E1D77C8EAB5 hex)  -2.158992E-06 (BEC21C6622A628F1 hex)
+ ficticious sources    -1.004766E-08 (BE4593C2990D9500 hex)  -1.135634E-06 (BEB30D8341A62B7E hex)
+ work by wind           1.423107E-06 (3EB7E032836B62DE hex)  -5.411271E-07 (BEA2283F13F3F989 hex)
+ bottom drag           -2.775369E-11 (BDBE83F80A488A48 hex)  -1.810931E-10 (BDE8E3A584A09B1C hex)
+
+ work by buoyancy forces   =  6.211369E-06 (3EDA0D68208E7009 hex)
+ energy conversion error   =  8.765132E-06 (3EE261BE84AF0996 hex)
+ nonlinear error           =  2.601303E-09 (3E265853A28DE1CA hex)
+
+
+Average vertical velocity through bottom of "T" and "u" cells at each level
+
+level   adv_vbt err   "T" cell area     adv_vbu err   "U" cell area
+ (Note: adv_vbu err only goes to zero when non-zero values on boundary cells are taken into account)
+   1   0.1309803E-19   0.3429666E+19   0.1888878E-04   0.3198454E+19
+   2  -0.1950468E-19   0.3429666E+19   0.1996544E-04   0.3198454E+19
+   3   0.1907757E-19   0.3429666E+19   0.2088403E-04   0.3198454E+19
+   4  -0.4612785E-19   0.3429666E+19   0.2171790E-04   0.3198454E+19
+   5   0.9538783E-20   0.3429666E+19   0.2277056E-04   0.3198454E+19
+   6   0.1665728E-19   0.3429666E+19   0.2465035E-04   0.3198454E+19
+   7  -0.1423699E-20   0.3429666E+19   0.2737042E-04   0.3198454E+19
+   8   0.7972714E-20   0.3429666E+19   0.2990340E-04   0.3198454E+19
+   9  -0.7260865E-20   0.3429666E+19   0.3036957E-04   0.3198454E+19
+  10   0.2719265E-19   0.3429666E+19   0.2778415E-04   0.3198454E+19
+  11  -0.1466410E-19   0.3429666E+19   0.2318488E-04   0.3198454E+19
+  12  -0.4384993E-19   0.3429666E+19   0.1707338E-04   0.3198454E+19
+  13   0.1449498E-19   0.3402309E+19   0.1173805E-04   0.3126838E+19
+  14  -0.2920991E-19   0.2758187E+19   0.4362481E-05   0.2438683E+19
+  15  -0.8067408E-20   0.1443147E+19   0.3942045E-05   0.1215209E+19
+  16  -0.1460445E-20   0.3429666E+19  -0.1095037E-19   0.3198454E+19
+  ==>  Global energy analysis written to file energy_int.000001.01.21.dta                                                                                                      on ts =         17 m/d/y= 1/18/   1, h:m:s= 0: 0: 0
+ between latitudes:       2 and       33
+
+
+
+                                        E N E R G Y    A N A L Y S I S
+
+
+
+
+
+ Globally averaged work done for ts =        18m/d/y= 1/19/   1, h:m:s= 0: 0: 0
+ ocean volume = 0.153906029E+25 cm**3, ocean surface area = 0.319845362E+19 cm**2
+
+ work by:              internal mode                         external mode
+
+ time rate of change    2.986034E-06 (3EC90C75A027A87A hex)   1.543427E-06 (3EB9E4F84888BB9A hex)
+ horizontal advection  -1.328760E-09 (BE16D3F267E03AF7 hex)   2.256294E-10 (3DEF02A0918494F9 hex)
+ vertical advection     2.622770E-09 (3E2687887F2E8905 hex)   9.145843E-10 (3E0F6CC4A8650672 hex)
+ horizontal friction   -6.655617E-09 (BE3C95ED9ECDC889 hex)  -5.047257E-08 (BE6B18E5A18625CD hex)
+ vertical friction      1.717422E-06 (3EBCD045E06F9615 hex)  -5.294763E-07 (BEA1C42AC082BC6E hex)
+ pressure forces        1.284789E-06 (3EB58E1FE9516089 hex)   3.473186E-06 (3ECD229C7712AEFD hex)
+ ficticious sources    -1.081515E-08 (BE4739B1BC3B8C00 hex)  -1.350950E-06 (BEB6AA49C5E8ABC2 hex)
+ work by wind           2.058240E-06 (3EC144093305EF0D hex)  -5.296525E-07 (BEA1C5AE1F21C80C hex)
+ bottom drag            8.639986E-11 (3DD7BFD996606B50 hex)   1.345026E-10 (3DE27C63DFA0CF59 hex)
+
+ work by buoyancy forces   =  1.460590E-05 (3EEEA17BF48DD64E hex)
+ energy conversion error   =  9.847928E-06 (3EE4A710D99EFE7E hex)
+ nonlinear error           =  2.434224E-09 (3E24E8EA7E6FF676 hex)
+
+
+Average vertical velocity through bottom of "T" and "u" cells at each level
+
+level   adv_vbt err   "T" cell area     adv_vbu err   "U" cell area
+ (Note: adv_vbu err only goes to zero when non-zero values on boundary cells are taken into account)
+   1  -0.8157795E-19   0.3429666E+19   0.1218711E-04   0.3198454E+19
+   2  -0.2149786E-19   0.3429666E+19   0.1279387E-04   0.3198454E+19
+   3  -0.1338277E-19   0.3429666E+19   0.1328089E-04   0.3198454E+19
+   4  -0.1936231E-19   0.3429666E+19   0.1370677E-04   0.3198454E+19
+   5  -0.2142667E-19   0.3429666E+19   0.1422393E-04   0.3198454E+19
+   6   0.6050721E-20   0.3429666E+19   0.1508552E-04   0.3198454E+19
+   7   0.2441644E-19   0.3429666E+19   0.1615964E-04   0.3198454E+19
+   8  -0.4328045E-19   0.3429666E+19   0.1691128E-04   0.3198454E+19
+   9  -0.2270800E-19   0.3429666E+19   0.1666213E-04   0.3198454E+19
+  10   0.3915172E-19   0.3429666E+19   0.1508778E-04   0.3198454E+19
+  11   0.4043305E-19   0.3429666E+19   0.1267936E-04   0.3198454E+19
+  12  -0.1423699E-20   0.3429666E+19   0.9659995E-05   0.3198454E+19
+  13  -0.5453558E-20   0.3402309E+19   0.7759877E-05   0.3126838E+19
+  14   0.1062179E-20   0.2758187E+19   0.7466439E-05   0.2438683E+19
+  15   0.2432910E-19   0.1443147E+19   0.4425650E-05   0.1215209E+19
+  16  -0.2920865E-20   0.3429666E+19  -0.4316580E-20   0.3198454E+19
+  ==>  Global energy analysis written to file energy_int.000001.01.21.dta                                                                                                      on ts =         18 m/d/y= 1/19/   1, h:m:s= 0: 0: 0
+ between latitudes:       2 and       33
+
+
+
+                                        E N E R G Y    A N A L Y S I S
+
+
+
+
+
+ Globally averaged work done for ts =        19m/d/y= 1/20/   1, h:m:s= 0: 0: 0
+ ocean volume = 0.153906029E+25 cm**3, ocean surface area = 0.319845362E+19 cm**2
+
+ work by:              internal mode                         external mode
+
+ time rate of change    3.030379E-06 (3EC96BB032F64468 hex)   5.455108E-06 (3ED6E160C461A8D9 hex)
+ horizontal advection  -1.548941E-09 (BE1A9C510BBE8FE0 hex)   2.276970E-10 (3DEF4B5FCF1616CF hex)
+ vertical advection     1.653769E-09 (3E1C695A96E7BCEC hex)   7.356126E-10 (3E0946844DF78D98 hex)
+ horizontal friction   -6.910828E-09 (BE3DAE8948B90E4E hex)  -3.611189E-08 (BE63632E45B7C76F hex)
+ vertical friction      2.191140E-06 (3EC2616FC581CD96 hex)  -5.126726E-07 (BEA133D30F70B2DC hex)
+ pressure forces        8.570850E-07 (3EACC24DF4EC6063 hex)   7.708377E-06 (3EE02A67379C8AA5 hex)
+ ficticious sources    -1.104022E-08 (BE47B56C53A9E500 hex)  -1.705447E-06 (BEBC9CD6DCFFD1BC hex)
+ work by wind           2.556237E-06 (3EC57179FAC9C5F9 hex)  -5.130695E-07 (BEA1373BDB558367 hex)
+ bottom drag            1.458847E-10 (3DE40CDC6D5CC1A1 hex)   3.421129E-10 (3DF7828394AC338D hex)
+
+ work by buoyancy forces   =  1.994380E-05 (3EF4E99F929BE970 hex)
+ energy conversion error   =  1.137834E-05 (3EE7DCB30E4C8235 hex)
+ nonlinear error           =  1.068137E-09 (3E1259B7AC07B6B2 hex)
+
+
+Average vertical velocity through bottom of "T" and "u" cells at each level
+
+level   adv_vbt err   "T" cell area     adv_vbu err   "U" cell area
+ (Note: adv_vbu err only goes to zero when non-zero values on boundary cells are taken into account)
+   1   0.6691385E-20   0.3429666E+19   0.5139890E-05   0.3198454E+19
+   2   0.2349103E-20   0.3429666E+19   0.5680740E-05   0.3198454E+19
+   3   0.4274656E-19   0.3429666E+19   0.6184261E-05   0.3198454E+19
+   4  -0.4627022E-20   0.3429666E+19   0.6633578E-05   0.3198454E+19
+   5  -0.1455732E-19   0.3429666E+19   0.7185179E-05   0.3198454E+19
+   6  -0.1772505E-19   0.3429666E+19   0.8124165E-05   0.3198454E+19
+   7   0.1427258E-19   0.3429666E+19   0.9366468E-05   0.3198454E+19
+   8   0.1354294E-19   0.3429666E+19   0.1042089E-04   0.3198454E+19
+   9  -0.8264573E-19   0.3429666E+19   0.1068736E-04   0.3198454E+19
+  10   0.2174700E-19   0.3429666E+19   0.9902785E-05   0.3198454E+19
+  11  -0.1615898E-19   0.3429666E+19   0.8505671E-05   0.3198454E+19
+  12  -0.4142964E-19   0.3429666E+19   0.6706337E-05   0.3198454E+19
+  13   0.1578661E-20   0.3402309E+19   0.6239642E-05   0.3126838E+19
+  14  -0.1734892E-19   0.2758187E+19   0.1076815E-04   0.2438683E+19
+  15  -0.6147302E-19   0.1443147E+19   0.5544540E-05   0.1215209E+19
+  16  -0.5884823E-20   0.3429666E+19  -0.1495000E-19   0.3198454E+19
+  ==>  Global energy analysis written to file energy_int.000001.01.21.dta                                                                                                      on ts =         19 m/d/y= 1/20/   1, h:m:s= 0: 0: 0
+ between latitudes:       2 and       33
+
+
+
+                                        E N E R G Y    A N A L Y S I S
+
+
+
+
+
+ Globally averaged work done for ts =        20m/d/y= 1/21/   1, h:m:s= 0: 0: 0
+ ocean volume = 0.153906029E+25 cm**3, ocean surface area = 0.319845362E+19 cm**2
+
+ work by:              internal mode                         external mode
+
+ time rate of change    3.293759E-06 (3ECBA14AF85C4BA0 hex)   6.450340E-06 (3EDB0DFFD4EE143F hex)
+ horizontal advection  -1.392821E-09 (BE17EDB114E253CB hex)   1.925696E-10 (3DEA7770910CEB98 hex)
+ vertical advection     8.825636E-10 (3E0E531C760FED17 hex)  -4.135110E-10 (BDFC6A90169AA9BC hex)
+ horizontal friction   -7.389357E-09 (BE3FBCAF21CC3F2C hex)  -3.143886E-08 (BE60E0EC7E131036 hex)
+ vertical friction      1.968067E-06 (3EC08264714404D2 hex)  -4.855480E-07 (BEA04AD3700356F7 hex)
+ pressure forces        1.344645E-06 (3EB68F354236CB49 hex)   8.732792E-06 (3EE25061C48110F9 hex)
+ ficticious sources    -1.105444E-08 (BE47BD3E16FD6B00 hex)  -1.765244E-06 (BEBD9DAAC6E1118C hex)
+ work by wind           2.357311E-06 (3EC3C649895EC471 hex)  -4.860571E-07 (BEA04F32E672E031 hex)
+ bottom drag            1.654822E-10 (3DE6BE6319562A21 hex)   4.409710E-10 (3DFE4DA4CCF075FF hex)
+
+ work by buoyancy forces   =  2.199625E-05 (3EF7109277B1263D hex)
+ energy conversion error   =  1.191881E-05 (3EE8FEDC829A6218 hex)
+ nonlinear error           = -7.311989E-10 (BE091FB19ABED477 hex)
+
+
+Average vertical velocity through bottom of "T" and "u" cells at each level
+
+level   adv_vbt err   "T" cell area     adv_vbu err   "U" cell area
+ (Note: adv_vbu err only goes to zero when non-zero values on boundary cells are taken into account)
+   1   0.9595731E-19   0.3429666E+19  -0.1670427E-05   0.3198454E+19
+   2  -0.1808098E-19   0.3429666E+19  -0.2038281E-05   0.3198454E+19
+   3   0.3260271E-19   0.3429666E+19  -0.2365428E-05   0.3198454E+19
+   4  -0.2263681E-19   0.3429666E+19  -0.2688086E-05   0.3198454E+19
+   5   0.2833161E-19   0.3429666E+19  -0.3132945E-05   0.3198454E+19
+   6   0.2149786E-19   0.3429666E+19  -0.4037965E-05   0.3198454E+19
+   7   0.1252855E-19   0.3429666E+19  -0.5620662E-05   0.3198454E+19
+   8   0.6470712E-19   0.3429666E+19  -0.7405678E-05   0.3198454E+19
+   9   0.1865046E-19   0.3429666E+19  -0.8167449E-05   0.3198454E+19
+  10   0.5418954E-19   0.3429666E+19  -0.7350279E-05   0.3198454E+19
+  11  -0.4445500E-19   0.3429666E+19  -0.5683000E-05   0.3198454E+19
+  12   0.1295566E-19   0.3429666E+19  -0.3391362E-05   0.3198454E+19
+  13  -0.3028160E-19   0.3402309E+19   0.6357150E-06   0.3126838E+19
+  14  -0.3098021E-19   0.2758187E+19   0.1212841E-04   0.2438683E+19
+  15  -0.1359723E-19   0.1443147E+19   0.5657154E-05   0.1215209E+19
+  16  -0.1172470E-19   0.3429666E+19  -0.5902642E-20   0.3198454E+19
+  ==>  Global energy analysis written to file energy_int.000001.01.21.dta                                                                                                      on ts =         20 m/d/y= 1/21/   1, h:m:s= 0: 0: 0
+ between latitudes:       2 and       33
+
+ Timing Summary:    72.395 cp seconds, ( 2.8096481E-05 cp seconds per grid point per time step)
+==> Writing MOM restart to file restart.dta at ts=      20 m/d/y= 1/21/   1, h:m:s= 0: 0: 0
+ MOMdone
+
+           ==>  M.O.M. integration is complete.
+  
+ The Redi/GM algorithm coefficients are:
+ redi_gm( 1 ) =  1.
+ redi_gm( 2 ) =  1.
+ redi_gm( 3 ) =  0.E+0
+ redi_gm( 4 ) =  1.
+ redi_gm( 5 ) =  0.E+0
+ redi_gm( 6 ) =  1.

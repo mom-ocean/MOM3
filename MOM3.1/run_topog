@@ -1,0 +1,155 @@
+#! /bin/csh -f
+#
+#     run script for driving the "topog.F" module
+#
+#     consult manual for available options.
+
+set MOMpath = /net/rcp/MOM_3        # base model code
+set WORK = TEMP_DIR                 # temp directory
+set OUTPUT = `pwd`                  # directory holding run script
+                                    # and output files
+
+echo " "
+echo " =>executing: run_topog"
+echo " "
+
+set NETCDF = "" # don't produce netcdf output
+#set NETCDF = "-Dtopog_diagnostic -Duse_netCDF" #  save diagnostic netcdf output
+
+if ("$NETCDF" == "") then #no NETCDF library
+ set NETCDFlib = ""
+else
+ set NETCDFlib    = "-L/usr/local/lib -ludunits -L/usr/local/lib -lnetcdf"
+endif
+
+#set TOPOGRAPHY = '-Dscripps_kmt'  # 1deg Scripps topography
+#set TOPOGRAPHY = '-Detopo_kmt'    # 1/12 deg NGDC topography (not supplied)
+#set TOPOGRAPHY = '-Dgaussian_kmt'
+set TOPOGRAPHY = '-Didealized_kmt'
+
+set OPTIONS = '-Ddrive_topog -Dgenerate_a_grid -Dcyclic -Dfill_isolated_cells'
+
+set OTHER_OPTIONS = ' '
+#set OTHER_OPTIONS = ' -Dsmooth_topo '
+#set OTHER_OPTIONS = ' -Dpartial_cell '
+#set OTHER_OPTIONS = ' -Dbbl_ag '
+#set OTHER_OPTIONS = ' -Dwrite_my_kmt'
+
+set ALL_OPTIONS = ($OPTIONS $OTHER_OPTIONS $TOPOGRAPHY $NETCDF -I/usr/local/include/)
+
+echo OPTION LIST: $ALL_OPTIONS
+echo " "
+
+
+set error = false
+if (! -r grids.F) then
+  echo '=>Error: need to have "grids.F" in this UPDATES directory'
+  echo '         copy "grids.F" to this directory and make modifications here'
+  set error = true
+endif
+
+if (! -r topog.F) then
+  echo '=>Error: need to have "topog.F" in this UPDATES directory'
+  set error = true
+endif
+
+if (! -r size.h) then
+  echo '=>Error: need to have "size.h" in this UPDATES directory'
+  set error = true
+endif
+
+if ("$error" == "true") then
+  exit
+endif
+
+if (-d $WORK) then
+  /bin/rm -r $WORK
+endif
+mkdir $WORK
+
+set list = (taskrows.h param.h tmngr.h vers.h stdunits.h derived_options.h)
+set list = ($list coord.h util.F iomngr.F iomngr.h size_check.F)
+set list = ($list pconst.h iomngr.F iomngr.h size_check.F)
+set list = ($list grids.F size.h diag.h topog.F)
+set listF90 = (mpp.F90 mpp_domains.F90 mpp_io.F90 datamod.F90 mom3mpp.F90)
+
+echo "=>Copying the following files from $MOMpath to $WORK"
+foreach file ($list)
+  echo $file
+  rcp "$MOMpath/$file" $WORK
+end
+foreach file ($listF90)
+  echo $file
+  rcp "$MOMpath/$file" $WORK
+end
+cp grids.F $WORK
+cp size.h $WORK
+cp topog.F $WORK
+
+
+if ("$TOPOGRAPHY" == "-Detopo_kmt") then 
+ echo " ETOPO5 (37 million words) is not available from GFDL"
+ echo " The ETOPO5 dataset can be purchased from the"
+ echo " Marine Geology and Geophysics Division of the"
+ echo " National Geophysical Data Center."
+endif
+
+if ("$TOPOGRAPHY" == "-Dscripps_kmt") then
+  set SCRIPPS_PATH = $MOMpath
+  if  (! -r $SCRIPPS_PATH/scripps.top) then
+    echo '=>Error: file "scripps.top" could not be found '
+    echo '         when using the scripps_kmt option'
+    echo '         change the SCRIPPS_PATH in run_topog to point to it'
+    exit
+  else
+    echo " copying SCRIPPS topography from $SCRIPPS_PATH/scripps.top"  
+    cp $SCRIPPS_PATH/scripps.top $WORK
+  endif
+endif
+cd $WORK
+
+source /local/f90/3.1.0.0
+echo "=>compiling..."
+foreach file ($listF90)
+  f90 -F -c -g $ALL_OPTIONS  $file
+end
+f90 -F -g $ALL_OPTIONS $NETCDFlib topog.F
+
+echo "=> running...results are being written to results_topog"
+a.out > $OUTPUT/results_topog
+
+
+if  (-e kmt.dta && ! -z kmt.dta) then
+  echo " =>Note: Exporting kmt.dta into this UPDATES directory"
+  cp kmt.dta $OUTPUT
+else
+  echo ' =>Note: no kmt.dta file was created for export'
+endif
+
+if  (-e ht.dta && ! -z ht.dta) then
+  echo " =>Note: Exporting ht.dta into this UPDATES directory"
+  cp ht.dta $OUTPUT
+else
+  echo ' =>Note: no ht.dta file was created for export'
+endif
+
+if  (-e ruff.dta && ! -z ruff.dta) then
+  echo " =>Note: Exporting ruff.dta into this UPDATES directory"
+  cp ruff.dta $OUTPUT
+else
+  echo ' =>Note: no ruff.dta file was created for export'
+endif
+
+if  (-e topog.dta.nc && ! -z topog.dta.nc) then
+  echo " =>Note: Copying topog.dta.nc into this UPDATES directory"
+  cp topog.dta.nc $OUTPUT
+else
+  echo ' =>Note: no topog.dta.nc file was created'
+endif
+
+cd $OUTPUT
+/bin/rm -r $WORK
+
+echo " "
+echo "=> Done"
+   

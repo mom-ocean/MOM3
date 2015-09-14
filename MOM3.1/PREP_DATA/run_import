@@ -1,0 +1,51 @@
+#   CRAY run script to convert MOM database to ieee at GFDL
+#  (only needed at GFDL. exported database is ieee)
+# author:  R.C.Pacanowski      e-mail: rcp@gfdl.gov
+#
+
+set myWHOME = $WHOME
+
+set datainpath  = /archive/o/rcp/climatology/FORMATTED_DATA
+set dataoutpath = /archive/o/rcp/MOM_2/DATABASE
+set MOMpath     = $myWHOME/MOM_2
+set PREPpath    = $MOMpath/PREP_DATA
+set WORKDIR      = $FTMPDIR
+
+""cd $WORKDIR   # change to a working directory
+/bin/rm $WORKDIR/*.[Ffhio]
+
+set copydata = no
+if ($copydata == 'yes') then
+ echo "dmgetting data"
+ dmget $datainpath/*.fmt
+ echo "copying data"
+ cp $datainpath/*.fmt .
+else
+ echo "data is assumed to be in $WORKDIR"
+endif
+
+rm .assign
+
+echo "copying  source for run_import"
+cp $PREPpath/import.F .
+cp $MOMpath/iomngr.F .
+cp $MOMpath/iomngr.h .
+
+echo " ==> comiling ...
+set OPTIONS = ' -Dcray_ymp -Dmakeimport'
+echo OPTIONS = $OPTIONS 
+/lib/cpp -P $OPTIONS import.F import.i 
+cf77 -Zc -o import import.i
+
+import > printout           # convert the formatted data to ieee
+
+chmod u+w $dataoutpath/*
+cp scripps.top $dataoutpath
+cp hellerman.tau $dataoutpath
+cp oorts.air $dataoutpath
+cp *.temp $dataoutpath
+cp *.salt $dataoutpath
+chmod u-w $dataoutpath/*
+
+cp printout $PREPpath/import.prn
+echo " => Done"

@@ -1,0 +1,84 @@
+#! /bin/csh -f
+#
+echo " "
+echo " =>executing: run_task_simulator"
+echo " "
+#
+
+set MOMpath = /net/rcp/MOM_3        # base model code
+set WORK = TEMP_DIR                 # temp directory
+set OUTPUT = `pwd`                  # directory holding run script
+                                    # and output files
+
+if (! -r task_simulator.F) then
+  echo '=>Error: "task_simulator.F" is not in this UPDATES directory'
+  exit
+endif
+
+echo "=>Grabbing sources from $MOMpath"
+mkdir $WORK
+set list = (taskrows.h)
+foreach file ($list)
+  cp $MOMpath/$file $WORK
+end
+cp task_simulator.F $WORK
+cd $WORK
+
+echo "=>compiling and executing for 6 sets of options..."
+
+set skip_second = no
+if ($skip_second != "yes") then
+ echo "Testing a second order memory window"
+ set OPTIONS = '-Dtest_task_simulator -Dsecond_order_window'
+ f90 $OPTIONS task_simulator.F
+ a.out >  $OUTPUT/results_task_simulator.1
+ echo "=> results are written to results_task_simulator.1"
+
+ echo " "
+ echo "Testing a second order memory window fully opened"
+ set OPTIONS = '-Dtest_task_simulator  -Dsecond_order_window -Dmax_window'
+ f90 $OPTIONS task_simulator.F
+ a.out >  $OUTPUT/results_task_simulator.2
+ echo "=> results are written to results_task_simulator.2"
+endif
+
+set skip_fourth = no
+if ($skip_fourth != "yes") then
+ echo " "
+ echo "Testing a fourth order memory window"
+ set OPTIONS = '-Dtest_task_simulator -Dfourth_order_window'
+ f90 $OPTIONS task_simulator.F
+ a.out >  $OUTPUT/results_task_simulator.3
+ echo "=> results are written to results_task_simulator.3"
+
+ echo " "
+ echo "Testing a fourth order memory window fully opened"
+ set OPTIONS = '-Dtest_task_simulator -Dfourth_order_window -Dmax_window'
+ f90 $OPTIONS task_simulator.F
+ a.out >  $OUTPUT/results_task_simulator.4
+ echo "=> results are written to results_task_simulator.4"
+endif
+
+set skip_sixth = no
+if ($skip_sixth != "yes") then
+ echo " "
+ echo "Testing a sixth order memory window"
+ set OPTIONS = '-Dtest_task_simulator -Dsixth_order_window'
+ f90 $OPTIONS task_simulator.F
+ a.out >  $OUTPUT/results_task_simulator.5
+ echo "=> results are written to results_task_simulator.5"
+
+ echo " "
+ echo "Testing a sixth order memory window fully opened"
+ set OPTIONS = '-Dtest_task_simulator -Dsixth_order_window -Dmax_window'
+ f90 $OPTIONS task_simulator.F
+ a.out >  $OUTPUT/results_task_simulator.6
+ echo "=> results are written to results_task_simulator.6"
+endif
+
+ 
+cd $OUTPUT
+/bin/rm -r $WORK
+
+echo " "
+echo "=> Done"

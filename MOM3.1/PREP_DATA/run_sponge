@@ -1,0 +1,84 @@
+#! /bin/csh -f
+#  CRAY T90 script for creating sponges for MOM_3 from data
+#  created by script run_ic
+#    author:  R.C. Pacanowski   e-mail: rcp@gfdl.gov
+
+set CASE         = ""
+set myEXP        = TEST_CASE 
+set datainpath   = /archive/rcp/MOM_2/DATABASE
+set MOMpath      = /net/rcp/MOM_3
+set MOMupdates   = $MOMpath/EXP/$myEXP/MOM_UPDATES/$CASE
+set PREPupdates  = $MOMpath/EXP/$myEXP/PREP_UPDATES/$CASE
+set PREPpath     = $MOMpath/PREP_DATA
+set printoutpath = $PREPupdates
+set dataoutpath  = /archive/rcp/MOM_3/EXP/$myEXP/$CASE
+set WORKDIR      = $FTMPDIR
+
+cd $WORKDIR   # change to a working directory
+rm $WORKDIR/*.[Ffh]
+
+echo " "
+echo " preparing climatological monthly data for sponge"
+echo " "
+echo " "
+
+echo " ==> getting sources for run_sponge..."
+set list = (stdunits.h coord.h grids.F size.h derived_options.h util.F iomngr.F iomngr.h size_check.F)
+foreach file ($list)
+  cp $MOMpath/$file .
+end
+
+cp $MOMupdates/*.[Ffh] .
+
+cp $PREPupdates/*.[Ffh]  .
+
+setenv NPROC 1
+
+echo " ==> compiling ..."
+
+# USER INPUT: set OPTIONS
+
+#
+#     options: (must choose only one of these)
+#       -Dread_my_grid    : read in your own grid definition
+#       -Dgenerate_a_grid : generate a grid based on USER INPUT
+#                           in grids.F
+#     optional options:
+#
+#       -Drectangular_box : sets "kmt" to a flat bottom rectangular box
+#       -Dflat_bottom     : sets "kmt" over ocean to maximum levels (km)
+#       -Dcyclic          : sets cyclic conditons in zonal direction
+#
+set OPTIONS = '-Dmakesponge -Dgenerate_a_grid -Dsolid_walls'
+#set OPTIONS = ($OPTIONS -Dsponges_old)
+#set OPTIONS = ($OPTIONS -Dsponges_use_all_rows)
+#set OPTIONS = ($OPTIONS -Dno_northern_sponge)
+#set OPTIONS = ($OPTIONS -Dno_southern_sponge)
+
+echo OPTIONS = $OPTIONS
+
+f90 $OPTIONS -o sponge sponge.F
+
+if (!(-r jan.temp.mom && -r jan.salt.mom)) then
+ echo "dmgetting data"
+ dmget $dataoutpath/*.mom 
+ echo "copying data"
+ cp $dataoutpath/*.mom .
+ cp $dataoutpath/*.mom .
+else
+ echo "data is assumed to be in $WORKDIR"
+endif
+ 
+rm .assign
+
+echo " ==> executing sponge ... "
+sponge > printout
+
+echo " ===> copying printout to $printoutpath/sponge.prn"
+/bin/cp printout $printoutpath/sponge.prn
+
+echo " ===> copying data files to $dataoutpath/sponge.mom"
+/bin/cp sponge.mom $dataoutpath
+
+echo  " ==> all done == "
+echo ""

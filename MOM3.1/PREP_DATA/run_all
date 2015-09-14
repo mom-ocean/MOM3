@@ -1,0 +1,6 @@
+# run all Cray scripts 
+
+# run_import    # converts  data to ieee (do not run this one)
+ run_sbc       # generates monthly climatological surface b.c.
+ run_ic        # generates monthly climatological T & S + surface T & S
+ run_sponge    # generates monthly climatological sponge layres  

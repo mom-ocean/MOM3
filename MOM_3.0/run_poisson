@@ -1,0 +1,80 @@
+#! /bin/csh -f
+echo " "
+echo " =>executing: run_poisson"
+echo " "
+#
+#  script for testing the poisson.F module which is set to execute on an
+#  SGI INDIGO under 64bit precision
+#
+#
+#     options: (must choose only one of these)
+#       -Dscripps_kmt   : interpolate Scripps topography to "kmt"
+#                          on MOM grid
+#       -Dread_my_kmt   : read in your own "kmt"
+#       -Didealized_kmt : use the test case idealized "kmt"
+#
+#     options: (must choose only one of these)
+#       -Dread_my_grid    : read in your own grid definition
+#       -Dgenerate_a_grid : generate a grid based on USER INPUT
+#                           in grids.F
+#     optional options:
+#
+#       -Drectangular_box : sets "kmt" to a flat bottom rectangular box
+#       -Dflat_bottom     : sets "kmt" over ocean to maximum levels (km)
+#       -Dcyclic          : sets cyclic conditons in zonal direction
+#
+
+#set OPTIONS = '-Dtest_poisson -Didealized_kmt -Dgenerate_a_grid -Dcyclic -Dtiming -Dcray_t90'
+set OPTIONS = '-Dtest_poisson -Didealized_kmt -Dgenerate_a_grid -Dcyclic -Dtiming -Dsgi'
+
+set MOMpath = /net/rcp/MOM_3        # base model code
+set WORK = TEMP_DIR                 # temp directory
+set OUTPUT = `pwd`                  # directory holding run script
+                                    # and output files
+
+set error = false
+if (! -r poisson.F) then
+  echo '=>Error: "poisson.F" is not in this UPDATES directory'
+  set error = true
+endif
+
+if (! -r grids.F) then
+  echo '=>Error: "grids.F" is not in this UPDATES directory'
+  set error = true
+endif
+
+if (! -r size.h) then
+  echo '=>Error: "size.h" is not in this UPDATES directory'
+  set error = true
+endif
+
+if ("$error" == "true") then
+  exit
+endif
+
+
+echo "=>Grabbing sources from $MOMpath"
+mkdir $WORK
+set list = (util.F derived_options.h iomngr.F size_check.F switch.F tmngr.F topog.F congrad.F timer.F tropic.F)
+foreach file ($list)
+  cp $MOMpath/$file $WORK
+end
+cp $MOMpath/*.h $WORK
+
+cp poisson.F $WORK
+cp grids.F $WORK
+cp size.h $WORK
+cd $WORK
+
+
+echo "=> compiling..."
+f90  $OPTIONS poisson.F
+
+echo "=> running...results are being written to results_poisson"
+a.out > $OUTPUT/results_poisson
+
+cd $OUTPUT
+/bin/rm -r $WORK
+
+echo " "
+echo "=> Done"

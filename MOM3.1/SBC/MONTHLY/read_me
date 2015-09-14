@@ -1,0 +1,15 @@
+                               MONTHLY
+
+
+     this "atmos" interpolates time dependent surface boundary
+     conditions which have been prepared from the MOM climatological
+     database (using the run scripts in PREP_DATA) to the time step
+     level required by MOM.
+
+     note: boundary conditions are monthly means which must have been
+     prepared prior to this for the current configuration of MOM using
+     the database programs supplied. as an illustration for generality
+     in data assimilation situations, each S.B.C is treated
+     separately.  for example, this allows for a mixture of monthly
+     heatflux with daily winds. the default case assumes, however, that
+     all S.B.C are monthly.

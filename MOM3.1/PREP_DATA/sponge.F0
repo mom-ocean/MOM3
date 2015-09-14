@@ -1,0 +1,223 @@
+#ifdef makesponge
+# define driver_only
+# include "iomngr.F"
+# include "grids.F"
+# include "size_check.F"
+# include "util.F"
+
+      program sponge
+c
+c-----------------------------------------------------------------------
+c     prepare sponge layers for damping T and S back to data near
+c     northern and southern artificial walls in limited domain oceans. 
+c
+c     author:  r. c. pacanowski      e-mail=> rcp@gfdl.gov
+c              a. rosati             e-mail=> ar@gfdl.gov
+c-----------------------------------------------------------------------
+c
+# include "size.h"
+# include "stdunits.h"
+      character*32 stamp
+      character*80 iotext
+c
+      character*12 tempin, saltin
+      dimension tempin(13), saltin(13)
+      dimension iotin(13), iosin(13)
+c
+# include "coord.h"
+c
+      data tempin/
+     &               'jan.temp.mom', 'feb.temp.mom', 'mar.temp.mom'
+     &,              'apr.temp.mom', 'may.temp.mom', 'jun.temp.mom'
+     &,              'jul.temp.mom', 'aug.temp.mom', 'sep.temp.mom'
+     &,              'oct.temp.mom', 'nov.temp.mom', 'dec.temp.mom'
+     &,              'ann.temp.mom' /
+c
+      data saltin/
+     &               'jan.salt.mom', 'feb.salt.mom', 'mar.salt.mom'
+     &,              'apr.salt.mom', 'may.salt.mom', 'jun.salt.mom'
+     &,              'jul.salt.mom', 'aug.salt.mom', 'sep.salt.mom'
+     &,              'oct.salt.mom', 'nov.salt.mom', 'dec.salt.mom'
+     &,              'ann.salt.mom' /
+      dimension spngn(jmt), spngs(jmt)
+      dimension temps(imt,km), salts(imt,km)
+      dimension tempn(imt,km), saltn(imt,km) 
+c
+      stdout = 6
+c
+c-----------------------------------------------------------------------
+c     initialize the i/o units
+c-----------------------------------------------------------------------
+c
+      call ioinit
+      do n=1,13
+        call getunit (iotin(n), tempin(n)
+     &,               'unformatted sequential rewind ieee')
+        call getunit (iosin(n), saltin(n)
+     &,               'unformatted sequential rewind ieee')
+      enddo
+      call getunit (iosp, 'sponge.mom'
+     &,             'unformatted sequential rewind ieee')
+c
+c-----------------------------------------------------------------------
+c     construct the grid.
+c-----------------------------------------------------------------------
+c
+      write (stdout,'(//1x,a,//)') 'Construct the MOM grid'
+c
+      maxlen = max(imt,jmt,km)
+      call gcoord (maxlen, imt2, jmt2, km2, dxtdeg, dytdeg, dxudeg
+     &,            dyudeg, dzt, dzw, xt, xu, yt, yu, zt, zw)
+c
+      call size_check (imt2, jmt2, km2, 'sponge', 'stop')
+c
+c-----------------------------------------------------------------------
+c     apply "sponge" regions adjacent to southern & northern walls by
+c     setting damping factor "spng" to vary linearly from a time
+c     scale of "1/amp1" days at "y1" to "1/amp2" days at "y2".
+c     
+c     wid = width of sponge in degrees (y1 - y2)
+c     y1  = northern most ocean row latitude
+c     spngts = sponge time scale in days at y1
+c
+c     damping will be of newtonian form: -spng(j)*(T-sponge)
+c     where spng(j) = 1/amp, and amp = some factor * spngts
+c     and "sponge" is the Levitus T & S from jrows = 2 and jmt-1
+c-----------------------------------------------------------------------
+c
+      do j=1,jmt
+        spngn(j) = 0.0
+        spngs(j) = 0.0
+      enddo
+c
+      spngts = 15.0
+c
+      wid   = 10.0
+      y1    = yt(jmt-1)
+      amp1  = spngts
+      y2    = y1 - wid
+      amp2  = 10.0*spngts
+      call lintrp (y1, amp1, y2, amp2, yt, spngn, jmt) 
+      do j=1,jmt
+          if (spngn(j) .ne. 0.0) then
+            spngn(j) = 1.0/(spngn(j)*86400.0)
+	  endif
+      enddo
+c
+      wid   = 10.0
+      y1    = yt(2)
+      amp1  = spngts
+      y2    = y1 + wid
+      amp2 = 10.0*spngts
+      call lintrp (y1, amp1, y2, amp2, yt, spngs, jmt) 
+      do j=1,jmt
+	  if (spngs(j) .ne. 0.0) then
+            spngs(j) = 1.0/(spngs(j)*86400.0)
+	  endif
+      enddo
+c
+c     show sponge damping factors
+c
+      write (stdout,'(/a/)') ' Sponge damping factors (1/sec):'
+      do jrow=1,jmt
+        if (spngs(jrow) .ne. 0.0) then
+        write (stdout,'(1x,a,i4,a,f10.5,a,e14.7,a, a, e14.7, a)')
+     &  'jrow=',jrow,' lat=',yt(jrow),' spngs=',spngs(jrow),' (1/sec)'
+     &,' . 1/spngs = ',1.0/(86400.0*spngs(jrow)), 'days'
+        endif
+        if (spngn(jrow) .ne. 0.0) then
+        write (stdout,'(1x,a,i4,a,f10.5,a,e14.7,a, a, e14.7, a)')
+     &  'jrow=',jrow,' lat=',yt(jrow),' spngn=',spngn(jrow),' (1/sec)'
+     &,' . 1/spngn = ',1.0/(86400.0*spngn(jrow)), 'days'
+        endif
+      enddo
+c
+c     get the sponge rows
+c
+      do month=1,13
+c
+c       skip jrow = 1
+c
+        read (iotin(month))
+        read (iotin(month))
+c
+	read (iosin(month))        
+	read (iosin(month))        
+c
+c       read jrow = 2
+c
+        read (iotin(month)) 
+        read (iotin(month))stamp, dpm, im, kk, js, alt, m, xt, zt, temps
+c
+        read (iosin(month))
+        read (iosin(month))stamp, dpm, im, kk, js, alt, m, xt, zt, salts
+c
+c       skip rows 3 .. jmt-2
+c
+        do jrow=3,jmt-2
+          read (iotin(month))
+          read (iotin(month))
+          read (iosin(month))
+	  read (iosin(month))        
+	enddo
+c
+c       read jrow = jmt-1
+c
+        read (iotin(month)) 
+        read (iotin(month))stamp, dpm, im, kk, jn, alt, m, xt, zt, tempn
+c
+        read (iosin(month))
+        read (iosin(month))stamp, dpm, im, kk, jn, alt, m, xt, zt, saltn
+c
+c       save the sponge
+c
+        iotext =
+     &'dim ss(j),sn(j),d(i,k,4);read(n)stmp,avg,i,k,j,js,jn,mon,ss,sn,d'
+        write (iosp) iotext
+        write (iosp) stamp, dpm, imt, km, jmt, js, jn, month, spngs
+     &,              spngn, temps, salts, tempn, saltn
+        write (stdout,'(1x,a,a,a,g14.7,a)')
+     &   'Writing sponges for ',stamp
+     &,  ' averaged over previous ',dpm, ' days'
+      enddo
+      stop
+      end
+
+      subroutine lintrp (y1, t1, y2, t2, y, a, len)
+c
+c     linearly interpolate between t1 at location y1 and t2 at 
+c     location y2 for intermediate points within "a" 
+c
+c     y = array of coordinate locations 
+c     a = interpolated values between t1 & t2 at indices between
+c         coordinate locations corresponding to y1 and y2
+c
+# include "stdunits.h"
+      dimension y(len), a(len)
+c
+      j1 = indp (y1, y, len)
+      j2 = indp (y2, y, len)
+      if (j1 .eq. j2) then
+        write (stdout,*) 'Error in lintrp: j1=',j1,', j2=',j2
+        stop '=>lintrp'
+      endif 
+      a(j1) = t1
+      a(j2) = t2
+      if (abs(j1-j2) .gt. 1) then
+        if (j1 .lt. j2) then
+          inc = 1
+        else
+          inc = -1
+        endif
+        do j=j1+inc,j2-inc,inc
+          a(j) = ((y(j)-y(j1))*t2 + (y(j2)-y(j))*t1)/(y(j2) - y(j1))     
+        enddo
+      endif
+      return
+      end
+#else
+      subroutine sponge
+      return
+      end
+#endif
+

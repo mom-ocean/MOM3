@@ -1,0 +1,68 @@
+#! /bin/csh -f
+echo " "
+echo "=>executing: run_denscoef"
+echo " "
+#
+#  script for executing the "denscoef.F" module
+#
+#     options: (must choose only one of these)
+#       -Dread_my_grid    : read in your own grid definition
+#       -Dgenerate_a_grid : generate a grid based on USER INPUT
+#                           in grids.F
+#
+
+set OPTIONS = '-Ddrive_dencoef -Dgenerate_a_grid -Dsave_denscoef'
+
+set MOMpath = /net/rcp/MOM_3        # base model code
+set WORK = TEMP_DIR                 # temp directory
+set OUTPUT = `pwd`                  # directory holding run script
+                                    # and output files
+set DENSCOEF_OUTPUT = ../../PREP_UPDATES # directory for denscoef output
+
+set error = false
+if (! -r grids.F) then
+  echo '=>Error: "grids.F" is not in this UPDATES directory'
+  set error = true
+endif
+
+if (! -r size.h) then
+  echo '=>Error: "size.h" is not in this UPDATES directory'
+  set error = true
+endif
+
+if (! -r denscoef.F) then
+  echo '=>Error: "denscoef.F" is not in this UPDATES directory'
+  set error = true
+endif
+
+if ("$error" == "true") then
+  exit
+endif
+
+echo "=>Grabbing sources from $MOMpath"
+mkdir $WORK
+set list = (stdunits.h derived_options.h coord.h state.h iomngr.F iomngr.h util.F size_check.F denscoef.F)
+foreach file ($list)
+  cp $MOMpath/$file $WORK
+end
+cp grids.F $WORK
+cp denscoef.F $WORK
+cp size.h $WORK
+cp denscoef.dta $WORK
+cd $WORK
+
+echo "=>compiling..."
+f90  $OPTIONS denscoef.F
+
+echo "=> running...results are being written to results_denscoef"
+
+a.out > $OUTPUT/results_denscoef
+
+/bin/cp denscoef.dta $DENSCOEF_OUTPUT/.
+
+cd $OUTPUT
+tail -10 results_denscoef
+/bin/rm -r $WORK
+echo " "
+echo "=> Done"
+

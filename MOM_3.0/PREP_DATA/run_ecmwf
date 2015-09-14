@@ -1,0 +1,128 @@
+#   CRAY T90 script to prepare montlhy Trenberths ECMWF wind stress 
+#    for MOM_2
+#   authors:   B.L. Samuels      e-mail: bls@gfdl.gov
+#              S.M. Griffies     e-mail: smg@gfdl.gov
+
+set echo
+
+set myEXP       = TEST_CASE 
+set myWHOME     = $WHOME
+set myARCHIVE   = $ARCHIVE
+set MOMupdates  = $myWHOME/MOM_2/EXP/$myEXP/MOM_UPDATES
+set PREPupdates = $myWHOME/MOM_2/EXP/$myEXP/PREP_UPDATES
+
+set MOMpath      = $myWHOME/MOM_2
+set PREPpath     = $MOMpath/PREP_DATA
+set datainpath   = /archive/bls/MOM_2/DATASETS
+set dataoutpath  = $myARCHIVE/MOM_2/EXP/$myEXP
+set printoutpath = $PREPupdates
+set WORKDIR      = $FTMPDIR
+
+
+# save output for visualization
+set OUTPUT = " "
+set OUTPUT = "$OUTPUT -Dsave_ECMWF"
+set OUTPUT = "$OUTPUT -Duse_netCDF"
+
+if ("$OUTPUT" == " ") then
+ set NETCDFlib = ""
+else
+ set NETCDFlib    = "-L/usr/local/lib -ludunits -L/usr/local/lib -lnetcdf"
+endif
+
+cd $WORKDIR   # change to a working directory
+/bin/rm $WORKDIR/*.[Ffh]
+/bin/rm $WORKDIR/ecmwf.dta.nc
+
+echo " "
+echo " preparing Trenberth ECMWF climatological monthly stress for MOM"
+echo " "
+
+echo "=>Grabbing source files from $MOMpath"
+set list = (stdunits.h coord.h diag.h grids.F size.h derived_options.h util.F)
+set list = ($list iomngr.F iomngr.h size_check.F tmngr.h vers.h index.h)
+set list = ($list taskrows.h param.h pconst.h)
+set listF90 = (mpp.F90 mpp_domains.F90 mpp_io.F90 datamod.F90 mom3mpp.F90)
+
+foreach file ($list)
+  cp $MOMpath/$file .
+end
+foreach file ($listF90)
+  echo $file
+  cp "$MOMpath/$file" .
+end
+
+/bin/cp $MOMupdates/*.[Ffh] .
+/bin/cp $PREPpath/ecmwf.F .
+/bin/cp $PREPupdates/*.[Ffh]  .
+
+setenv NPROC 1
+
+echo " ==> compiling ... "
+
+# USER INPUT: set OPTIONS
+#
+#     options: (must choose only one of these)
+#       -Dread_my_grid    : read in your own grid definition
+#       -Dgenerate_a_grid : generate a grid based on USER INPUT
+#                           in grids.F
+#     optional options:
+#
+#       -Drectangular_box : sets "kmt" to a flat bottom rectangular box
+#       -Dflat_bottom     : sets "kmt" over ocean to maximum levels (km)
+#       -Dcyclic          : sets cyclic conditons in zonal direction
+#
+set OPTIONS = "-Dmakeecmwf -Dcray_t90 -Df90 -Dgenerate_a_grid -Dcyclic"
+set COMPILER_OPTIONS  = "-F -I. -O 0 -g -ei"
+#set COMPILER_OPTIONS  = "-F -I. -O 0 -ei"
+set ALL_OPTIONS = ($OPTIONS $COMPILER_OPTIONS $OUTPUT -I/usr/local/include/)
+echo OPTION LIST: $ALL_OPTIONS
+
+source /local/f90/3.1.0.0
+foreach file ($listF90)
+  f90 -F -c -g $ALL_OPTIONS  $file
+end
+f90 -F -g $ALL_OPTIONS $NETCDFlib ecmwf.F
+mv a.out ecmwf.out
+
+echo " ==> getting data from $datainpath "
+# note: the ecmwf dataset is not available from GFDL
+if (!(-r ecmwf.tau )) then
+ dmget $datainpath/ecmwf.tau
+ cp $datainpath/ecmwf.tau .
+else
+ echo "data is assumed to be in $WORKDIR"
+endif
+
+
+# USER INPUT: choose the type of interpolation based on resolution
+
+# intrph = 1 when model resolution is coarser than ECMWF 2.5 deg 
+# intrph = 2 when model resolution is finer than ECMWF 2.5 deg 
+  
+set NAMELIST_EOF = "/"
+cat > ecmwf.in << NAMELIST
+ &input  name='MOM climatological S.B.C.',
+   intrph=1,
+ $NAMELIST_EOF
+NAMELIST
+
+/bin/rm .assign
+
+echo " ==> executing ecmwf ... "
+(ecmwf.out < ecmwf.in) > printout
+
+cp printout $printoutpath/ecmwf.prn
+echo  " ==> copied printout to $printoutpath/ecmwf.prn"
+
+echo " ===> copying data files to $dataoutpath"
+ls -l *.mom ecmwf.dta*
+
+/bin/cp ecmwf_taux.mom $dataoutpath/ecmwf_taux.mom
+echo  " ==> copied ecmwf_taux.mom to $dataoutpath/ecmwf_taux.mom"
+/bin/cp ecmwf_tauy.mom $dataoutpath/ecmwf_tauy.mom
+echo  " ==> copied ecmwf_tauy.mom to $dataoutpath/ecmwf_tauy.mom"
+
+/bin/cp ecmwf.dta* $dataoutpath
+
+echo  " ==> all done "

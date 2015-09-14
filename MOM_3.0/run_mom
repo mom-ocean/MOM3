@@ -1,0 +1,540 @@
+#! /bin/csh -f
+#   run script for MOM_3 test cases on CRAY T90 at GFDL
+#   author:  r.c.pacanowski   e-mail: rcp@gfdl.gov
+#
+# ======================================================================
+#  set all paths (these must be changed if running outside of GFDL)
+# ======================================================================
+
+set myEXP         = TEST_CASE
+set myHOST        = rcp: 
+set datainpath    = /archive/rcp/MOM_3/EXP/$myEXP
+set DATABASE      = /archive/rcp/MOM_3/DATABASE
+set MOMpath       = /net/rcp/MOM_3
+set MOMupdates    = $MOMpath/EXP/$myEXP/MOM_UPDATES
+set printoutpath  = $MOMpath/EXP/$myEXP 
+set WORKDIR       = $FTMPDIR
+set NEWNETCDF     = /usr/local/lib
+set NETCDFlib     = "-L$NEWNETCDF -ludunits -L$NEWNETCDF -lnetcdf"
+set NETCDFINCpath = '/usr/local/include'
+ 
+# ======================================================================
+# select a case. start with CASE = '0' (uses internally generated data)
+# ======================================================================
+
+set CASE = '0' # idealized zonal average surface boundary conditions
+#set CASE = '1' # TIME_MEAN ...constant surface boundary conditions
+#                              requires data prepared in PREP_DATA
+#set CASE = '2' # MONTHLY   ...monthly mean surface boundary conditions 
+#                              requires data prepared in PREP_DATA
+#set CASE = '3' # ATMOS ... simple atmos model to illustrate coupling
+#                           uses internally generated data
+# ======================================================================
+# select real data (needs to have been prepared using PREP_DATA)
+# or idealized data (uses internally generated data)  
+# ======================================================================
+
+set LEVITUS_DATA_IC = no # uses idealized T & S as initial condition
+#set LEVITUS_DATA_IC = yes # uses jan levitus T & S as initial condition
+set SPONGE_DATA     = no # no sponge boundary
+#set SPONGE_DATA     = yes # uses sponges for limited domain models
+set SCRIPPS_DATA    = no # internally generated idealized topography
+#set SCRIPPS_DATA    = yes # uses scripps based topography
+set READ_DENSCOEF   = no # calculate density coef.
+#set READ_DENSCOEF   = yes # uses prepared density coef.
+
+# ======================================================================
+# first, compile everything. after that, if changes are made to only a
+# few subroutines, then just compile the ones that have changed.
+# if "ifdef options" or a .h file is changed, then recompile everything.
+# ======================================================================
+
+set COMPILE_LIST = "all"         # "all" compiles everything
+
+#set COMPILE_LIST = "  checks.F " # will compile just these
+
+setenv NPES 1 #unitasking
+#setenv NPES 2 #multitasking (any number >1)
+
+set BOUNDS_CHECKER = no
+#set BOUNDS_CHECKER = yes
+
+# ======================================================================
+# set the appropriate atmosphere path to supply surface b.c.
+# ======================================================================
+
+if ($CASE == '0') then
+ echo "==> Configuring for internally generated S.B.C. TEST CASE #$CASE"
+else if ($CASE == '1') then
+ set ATMOSpath = $MOMpath/SBC/TIME_MEAN
+ echo "==> Configuring for TIME_MEAN S.B.C. TEST CASE #$CASE"
+else if ($CASE == '2') then
+ set ATMOSpath = $MOMpath/SBC/MONTHLY
+ echo "==> Configuring for MONTHLY S.B.C. TEST CASE #$CASE"
+else if ($CASE == '3') then
+ set ATMOSpath = $MOMpath/SBC/ATMOS
+ echo "==> Configuring for ATMOS S.B.C. TEST CASE #$CASE"
+endif
+
+# ======================================================================
+#   define i/o control  for writing diagnostics.
+#   if < 0 then output is written to unformatted file and stdout
+#   if > 0 then output is written to unformatted file only
+#   if = stdout = 6 then output is written to stdout only
+#   this applies only to those diagnostics which are "enabled"
+# ======================================================================
+
+set iotraj   = -1 # particle trajectories
+set iotavg   = -1 # regional tracer averages
+set iotmb    = -1 # tracer meridional balance diagnostics
+set ioglen   = -1 # global energetic diagnostics
+set iotrmb   = -1 # term balance diagnostic
+set iovmsf   = -1 # meridional mass transport diagnostic
+set iogyre   = -1 # gyre transport diagnostic
+set ioprxz   = -1 # zonal x-z matrix diagnostics
+set ioext    = -1 # show external mode (stream function) diagnostic
+set iodsp    = -1 # diagnostic surface pressure diagnostics
+set iotsi    = -1 # time step monitor integral diagnostics
+set iozmbc   = -1 # zonal mean S.B.C. diagnostics
+set ioxbt    = -1 # XBT stations
+
+
+# ======================================================================
+# enable options
+# ======================================================================
+echo " "; echo "OPTIONS follow:" ;echo " "
+
+
+set OPTS = " "
+if ($LEVITUS_DATA_IC == 'yes') then
+ set OPTS = " $OPTS -Dlevitus_ic"
+else
+ set OPTS = " $OPTS -Didealized_ic"
+endif
+
+if ($SCRIPPS_DATA == 'yes') then
+ set OPTS = " $OPTS -Dscripps_kmt"
+else
+ set OPTS = " $OPTS -Didealized_kmt"
+endif
+
+if ($SPONGE_DATA == 'yes') then
+ set OPTS = " $OPTS -Dsponges"
+endif
+
+if ($READ_DENSCOEF == 'yes') then
+ set OPTS = " $OPTS -Dread_denscoef"
+endif
+
+if ($CASE == '0') then
+ set OPTS = "$OPTS -Dsimple_sbc"
+else if ($CASE == '1') then
+ set OPTS = "$OPTS -Dtime_mean_sbc_data"
+else if ($CASE == '2') then
+ set OPTS = "$OPTS -Dtime_varying_sbc_data"
+else if ($CASE == '3') then
+ set OPTS = "$OPTS -Dcoupled -Dtrace_coupled_fluxes"
+endif
+
+#set TIMING_OPTIONS = "-Dtiming "
+set TIMING_OPTIONS = " "
+echo TIMING_OPTIONS = $TIMING_OPTIONS; echo " "
+
+set IO_OPTIONS = "-Dramdrive"
+#set IO_OPTIONS = "-Dcrayio"
+#set IO_OPTIONS = "-Dfio"
+echo IO_OPTIONS = $IO_OPTIONS; echo " "
+
+
+set GRID_OPTIONS = "-Dgenerate_a_grid"
+echo GRID_OPTIONS = $GRID_OPTIONS; echo " "
+
+
+if ($SCRIPPS_DATA == "yes") then
+ set TOPOGRAPHY_OPTIONS = "-Dsmooth_topo -Dcyclic -Dfill_perimeter_violations -Dfill_isolated_cells"
+else
+ set TOPOGRAPHY_OPTIONS = " -Dcyclic -Dfill_perimeter_violations -Dfill_isolated_cells"
+endif
+echo TOPOGRAPHY_OPTIONS = $TOPOGRAPHY_OPTIONS; echo " "
+
+
+set EXMODE_OPTIONS = "-Dstream_function -Dsf_9_point "
+#set EXMODE_OPTIONS = "-Dstream_function -Dsf_5_point "
+#set EXMODE_OPTIONS = "-Drigid_lid_surface_pressure -Dsf_9_point "
+#set EXMODE_OPTIONS = "-Dimplicit_free_surface -Dsf_9_point "
+#set EXMODE_OPTIONS = "-Dexplicit_free_surface -Dexplicit_free_surface_linear "
+#set EXMODE_OPTIONS = "-Dexplicit_free_surface -Dexplicit_free_surface_nonlinear "
+echo EXMODE_OPTIONS = $EXMODE_OPTIONS; echo " "
+
+set DEBUG_OPTIONS = " "
+echo DEBUG_OPTIONS = $DEBUG_OPTIONS; echo " "
+
+
+set COMPILER_OPTIONS = " -F -O 2 "
+#set COMPILER_OPTIONS = " -F -g "
+#set COMPILER_OPTIONS = " -F -O 0 -ei"
+
+if ($BOUNDS_CHECKER == "yes") then
+ set COMPILER_OPTIONS = ( $COMPILER_OPTIONS -R b )
+endif
+
+source /local/f90/3.1.0.0 #latest compiler #will not run stream function case
+if ($NPES != 1) then
+ set COMPILER_OPTIONS = ( -ataskcommon $COMPILER_OPTIONS )
+ set PARALLEL_OPTIONS = " -Dparallel_1d -Duse_libSMA"  #SHMEM library
+# set PARALLEL_OPTIONS = " -Dparallel_1d -Duse_libMPI" #MPI library
+ module load mpt.1.2.1.0         #message passing toolkit library
+else
+ set PARALLEL_OPTIONS = " "
+endif
+
+echo "=>COMPILER OPTIONS = $COMPILER_OPTIONS"; echo " "
+
+echo "=>PARALLEL OPTIONS = $PARALLEL_OPTIONS"; echo " "
+
+
+#set OPT2 = (-Dfourfil -Drestorst -Dvarhmix -Dam_cosine -Dconstvmix -Drobert_time_filter ) 
+#set OPT2 = " -Drestorst -Dconstvmix -Dconsthmix " 
+set OPT2 = (-Dfirfil -Drestorst -Dconstvmix -Drobert_time_filter ) 
+set OPT2 = ($OPT2  -Dtracer_horz_laplacian -Dtracer_horz_mix_const)
+set OPT2 = ($OPT2 -Dvelocity_horz_laplacian -Dvelocity_horz_mix_var -Dam_cosine)
+echo OPT2 = $OPT2; echo " "
+
+#
+
+set OPT = "$TIMING_OPTIONS $IO_OPTIONS $GRID_OPTIONS $TOPOGRAPHY_OPTIONS $EXMODE_OPTIONS $DEBUG_OPTIONS $PARALLEL_OPTIONS"
+echo OPT = $OPT ; echo " "          
+           
+if ($NPES != 1) then
+ set DIAGNOSTICS = (-Dtime_step_monitor -Denergy_analysis)
+else           
+ set DIAGNOSTICS = (-Ddiagnostics_lomem \
+                    -Dshow_zonal_mean_of_sbc \
+		    -Dgyre_components \
+		    -Dtracer_averages \
+                    -Denergy_analysis \
+		    -Dtime_step_monitor \
+		    -Dmatrix_sections \
+		    -Dtrajectories \
+		    -Dstability_tests \
+		    -Dsave_convection \
+		    -Dsnapshots \
+		    -Dtime_averages \
+                    -Dsave_mixing_coeff \
+		    -Dsave_pressure )
+#set DIAGNOSTICS = (-Dterm_balances \
+#		    -Dsave_xbts \
+#                   -Dmeridional_overturning_basin \
+#  	            -Dmeridional_overturning_density \
+#	            -Ddiagnostic_surf_height \
+#                   -Dmeridional_tracer_budget \
+#                   -Dtracer_yz)
+
+endif
+echo DIAGNOSTICS = $DIAGNOSTICS; echo " "
+
+set NETCDF = "" # diagnostic output is IEEE format
+#set NETCDF = "-Duse_netCDF"  # diagnostic output is netcdf format
+
+if ("$NETCDF" == "") then #no NETCDF library
+ set NETCDFlib = ""
+endif
+
+set OPTIONS = "$OPTS  $OPT2 $OPT $NETCDF"
+
+echo OPTIONS = $OPTIONS; echo " "
+
+# ======================================================================
+# change to a working directory and clean it out (except restart file)
+# ======================================================================
+
+echo "==> changing to a working directory and cleaning it out"
+cd $WORKDIR
+if ("$COMPILE_LIST" == "all") then
+  /bin/rm $WORKDIR/*.[Ffh]
+  /bin/rm $WORKDIR/*.F90
+  /bin/rm $WORKDIR/*.inc
+endif
+if (-r restart.dta) then
+ /bin/mv restart.dta restart.dta.save
+ /bin/rm $WORKDIR/*.dta
+ /bin/mv restart.dta.save restart.dta
+else
+ /bin/rm $WORKDIR/*.dta
+endif
+/bin/rm $WORKDIR/*.nc
+
+# ======================================================================
+# copy all code to the working directory
+# ======================================================================
+
+if ("$COMPILE_LIST" == "all") then
+ echo "==> copying files from $MOMpath"
+ rcp $MOMpath/*.F90 . 
+ rcp $MOMpath/*.[Ffh] .
+ rcp $MOMpath/*.inc .
+else
+ set list = ($COMPILE_LIST)
+ foreach file ($list)
+  rcp $MOMpath/$file .
+  echo $file
+ end
+endif
+
+if ($CASE != '0') then
+ echo "==> copying  ATMOS files from $ATMOSpath"
+ rcp "$myHOST$ATMOSpath/*.[Ffh]" . 
+ rcp "$myHOST$ATMOSpath/*.F90" . 
+endif
+
+echo "==> copying updated files from $MOMupdates"
+rcp "$myHOST$MOMupdates/*.[Ffh]" . 
+rcp "$myHOST$MOMupdates/*.F90" . 
+rcp "$myHOST$MOMupdates/*.inc" . 
+
+
+# ======================================================================
+# remove executable
+# ======================================================================
+
+/bin/rm a.out
+
+# ======================================================================
+# compile and link 
+# ======================================================================
+
+setenv NPROC 5
+
+
+if ($BOUNDS_CHECKER == "yes") then
+  echo "=> compiling with the bounds checker option"
+endif
+
+if ("$COMPILE_LIST" == "all") then
+  set list = `ls  *.[Ff] `
+  /bin/rm *.o
+else
+  set list = ($COMPILE_LIST)
+endif
+
+echo " ";echo "=> Preprocessing and Compiling the following..."
+set list90 = (mpp.F90 mpp_domains.F90 mpp_io.F90 datamod.F90)
+set list90 = ($list90 mom3mpp.F90 sbcmod.F90 tmngr_mod.F90)
+set list90 = ($list90 xobc_mod.F90 xsponge_mod.F90 chksum.F90)
+
+if ($CASE == '2') then
+ set list90 = ( $list90  xctdbc_mod.F90 )
+endif
+foreach file ($list90)
+ echo $file
+ f90 $COMPILER_OPTIONS $DIAGNOSTICS $OPTIONS -I$NETCDFINCpath -c $file
+end
+foreach file ($list)
+ echo $file
+ f90 $COMPILER_OPTIONS $DIAGNOSTICS $OPTIONS -I$NETCDFINCpath -c $file
+end
+echo "=> linking ..."
+f90  -Wl"-S 250000 -D preset=nan $NETCDFlib" *.o
+echo "           ... done linking"
+
+
+# ======================================================================
+#   set namelist variables
+# ======================================================================
+
+set days = 30.0
+set diag = 30.0
+ 
+  set NAMELIST_EOF = "/"
+
+cat > namelist.contrl << ENDNAMELIST
+ &contrl init=.true., runlen=$days, rununits='days',
+         restrt=.false., initpt=.true.
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.mbcin << ENDNAMELIST
+ &mbcin   $NAMELIST_EOF
+ENDNAMELIST
+
+# &tsteps dtts=896., dtuv=896., dtsf=30.,
+cat > namelist.tsteps << ENDNAMELIST
+ &tsteps dtts=86400., dtuv=3600., dtsf=3600.,
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.riglid << ENDNAMELIST
+ &riglid mxscan=2000, tolrsf=1.0e8, tolrsp=1.0e-4,
+         tolrfs=1.0e-4,
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.mixing << ENDNAMELIST
+ &mixing am=1.42e9, ah=1.e7, ambi=1.e22, ahbi=1.e21,
+         kappa_m=10.0, kappa_h=1.0, aidif=1.0,
+         nmix=17, eb=.true.,  ncon=1, cdbot=0.0,
+         acor=0.0, dampts=30.0, 30.0, 
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.isopyc << ENDNAMELIST
+ &isopyc ahisop=1.e7, slmx=0.01, athkdf=1.e7,   
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.bbl << ENDNAMELIST
+ &bbl raydrag=2.0e-5, cdbotbbl=3.0e-3, kvbbltop=200.0, entrain_kbbl=0.0,
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.blmix << ENDNAMELIST
+ &blmix   
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.ncdiff << ENDNAMELIST
+ &ncdiff dbot=2000.e2, dtop=100.e2, 
+         diffmin=1.e5, diffmax=1.e8,  
+         vmhs_alpha=0.015, vmhs_rate2_limit=1.96e-12,
+         ijvmhs_maxlen=10,diffint=4.0, diffsnapint=$diag 
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.kppmix << ENDNAMELIST
+ &kppmix
+  lri=.true., ldd=.false.,
+  visc_con_limit=50.0, diff_con_limit=50.0,
+  visc_cbu_iw=1.0, diff_cbt_iw=0.0,
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.smagnl << ENDNAMELIST
+ &smagnl k_smag=25.0, diff_c_back=0.0, visc_c_back=0.0, prandtl=100.0
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.ppmix << ENDNAMELIST
+ &ppmix wndmix=10.0,  
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.diagn << ENDNAMELIST
+ &diagn  tsiint=0.0, 
+         tavgint=$diag,  itavg=.true.,
+         tmbint=$diag,    itmb=.true., tmbper=$diag,
+         trmbint=$diag,  itrmb=.true., 
+         gyreint=$diag,  igyre=.true., 
+	 snapint=$diag,
+	 timavgint=$diag, timavgper=$diag,
+         glenint=$diag,  vmsfint=$diag, stabint=$diag, zmbcint=$diag,
+         extint=$diag,   prxzint=$diag, dspint=$diag, dspper=$diag,
+         trajint=$diag,  xbtint=$diag, xbtper=$diag, exconvint=$diag, cmixint=$diag,
+         crossint=$diag, pressint=$diag, fctint=$diag, tyzint=$diag, rhoint=$diag
+ $NAMELIST_EOF
+ENDNAMELIST
+
+cat > namelist.io << ENDNAMELIST
+ &io     iotavg=$iotavg, iotmb=$iotmb,   iotrmb=$iotrmb, iozmbc=$iozmbc,
+         ioglen=$ioglen, iovmsf=$iovmsf, iogyre=$iogyre,
+         ioprxz=$ioprxz, ioext=$ioext,   iodsp=$iodsp,
+         iotsi=$iotsi,   iotraj=$iotraj, ioxbt=$ioxbt,
+ $NAMELIST_EOF         
+ENDNAMELIST
+
+cat > namelist.ictime << ENDNAMELIST
+ &ictime eqyear=.true., eqmon=.false., refinit=.true., 
+         year0=1, month0=1, day0=1, hour0=0, min0=0, sec0=0,
+ $NAMELIST_EOF         
+ENDNAMELIST
+
+echo " "
+echo ' ==> the namelists are:'
+cat namelist*
+
+# ======================================================================
+# All assigns are done from fortran. Remove file environment variable
+# ======================================================================
+
+echo '==>Assigning files...'
+/bin/rm .assign
+setenv FILENV .assign
+
+# ======================================================================
+# Bring in real data constructed by PREP_DATA if not running idealized
+# ======================================================================
+
+
+if ($LEVITUS_DATA_IC == 'yes') then
+ if (!(-r temp.mom.ic) || !(-r salt.mom.ic)) then
+   echo "...getting and copying to temp.mom.ic and salt.mom.ic"
+   dmget $datainpath/jan.temp.mom $datainpath/jan.salt.mom
+   cp $datainpath/jan.temp.mom temp.mom.ic 
+   cp $datainpath/jan.salt.mom salt.mom.ic
+ endif 
+endif
+
+if ($SPONGE_DATA == 'yes') then
+ if (!(-r sponge.mom)) then
+   echo "...getting and copying sponge.mom"
+   dmget $datainpath/sponge.mom
+   cp $datainpath/sponge.mom .
+ endif
+endif
+
+if ($SCRIPPS_DATA == 'yes') then
+ rcp "$myHOST$MOMpath/scripps.top" .
+endif
+
+if ($CASE == '1' || $CASE == '2') then
+ if (!(-r taux.mom) || !(-r tauy.mom)) then
+   echo "...getting and copying taux, tauy, SST, and SSS"
+   dmget $datainpath/taux.mom $datainpath/tauy.mom $datainpath/sst.mom $datainpath/sss.mom
+   cp $datainpath/taux.mom .
+   cp $datainpath/tauy.mom .
+   cp $datainpath/sst.mom .
+   cp $datainpath/sss.mom .
+ endif
+endif
+
+if ($READ_DENSCOEF == 'yes') then
+ if (!(-r denscoef.dta)) then
+   echo "copying denscoef.dta"
+   if (!(-r $datainpath/denscoef.dta)) then
+     echo "=>Error: Cannot find $datainpath/denscoef.dta"
+     echo "         denscoef.dta must be prepared using run_denscoef "
+     echo "         with option -Dsave_denscoef enabled and the data"
+     echo "         must be placed in $datainpath "
+     exit
+   else
+     cp $datainpath/denscoef.dta .
+   endif
+ endif
+endif
+
+# ======================================================================
+# Get the archive.time file to insure the restart file is correct one
+# ======================================================================
+
+ rcp "$myHOST$printoutpath/archive.$CASE" archive.time 
+
+# ======================================================================
+# Run the model
+# ======================================================================
+
+echo "==> Running with $NPES processor(s)"
+
+a.out > results
+echo "copying results to $printoutpath/printout.$CASE"
+rcp results "$myHOST$printoutpath/printout.$CASE"  
+echo " "
+/bin/ls -laF *.dta
+/bin/ls -laF *.dta.nc
+
+# ======================================================================
+# Save the archive.time file to verify next restart file is correct one
+# ======================================================================
+
+rcp archive.time "$myHOST$printoutpath/archive.$CASE"  
+
+echo " "
+echo "==> done"
